@@ -1,0 +1,6 @@
+spring:
+  application.name: zenorger
+  main.banner-mode: console
+  jackson.default-property-inclusion: non_null
+
+#logging.config: ./config/logback-spring.xml
