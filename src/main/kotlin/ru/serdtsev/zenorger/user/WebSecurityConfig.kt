@@ -5,31 +5,35 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import javax.sql.DataSource
 
 @Configuration
-@EnableWebSecurity
-class WebSecurityConfig : WebSecurityConfigurerAdapter() {
-  @Throws(Exception::class)
-  override fun configure(http: HttpSecurity) {
-    http.csrf().disable()
-            .authorizeRequests().antMatchers("/").permitAll().anyRequest().authenticated()
-            .and().httpBasic()
-  }
+@EnableWebSecurity(debug = false)
+class WebSecurityConfig(val dataSource: DataSource) : WebSecurityConfigurerAdapter() {
+    override fun configure(http: HttpSecurity) {
+        http.csrf().disable().httpBasic()
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http.authorizeRequests().anyRequest().hasAnyRole("USER")
+    }
 
-  @Bean
-  fun encoder(): BCryptPasswordEncoder {
-    return BCryptPasswordEncoder()
-  }
+    override fun configure(web: WebSecurity?) {
+        web!!.ignoring().antMatchers("/", "/swagger*/**", "/webjars/**", "/v2/api-docs", "/csrf",
+                "/user/signup", "/error")
+    }
 
-  @Autowired
-  @Throws(Exception::class)
-  fun configureGlobal(auth: AuthenticationManagerBuilder) {
-    auth.inMemoryAuthentication()
-        .withUser("andrey.serdtsev@gmail.com")
-        .password("\$2a\$04\$FBkPSIKW3NnenSDmZDRhQe4zLNqeOfDOiXt6J6d7H16V.WxaKqB06")
-        .roles("USER")
-  }
+    @Bean
+    fun encoder(): BCryptPasswordEncoder = BCryptPasswordEncoder()
+
+    @Autowired
+    fun configureGlobal(auth: AuthenticationManagerBuilder) {
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select login, password, true from zenorger.service_user where login = ?")
+                .authoritiesByUsernameQuery("select login, 'ROLE_USER' from zenorger.service_user where login = ?")
+    }
 }

@@ -1,35 +1,37 @@
 package ru.serdtsev.zenorger.user
 
-import org.apache.ignite.Ignite
-import org.apache.ignite.cache.CacheAtomicityMode
-import org.apache.ignite.cache.CacheMode
-import org.apache.ignite.cache.CacheWriteSynchronizationMode
-import org.apache.ignite.configuration.CacheConfiguration
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
-import ru.serdtsev.zenorger.common.Realm
+import org.springframework.transaction.annotation.Transactional
+import ru.serdtsev.zenorger.common.LoginExistsException
+import ru.serdtsev.zenorger.common.Organizer
+import ru.serdtsev.zenorger.common.OrganizerRepo
+import java.time.OffsetDateTime
 import java.util.*
 
 @Service
-class UserService(val ignite: Ignite) {
-    @Suppress("unused")
-    fun auth(authorization: String): Boolean = authorization == "Basic YW5kcmV5LnNlcmR0c2V2QGdtYWlsLmNvbToxMjM0NTY="
+class UserService(val encoder: BCryptPasswordEncoder, val userRepo: UserRepo, val organizerRepo: OrganizerRepo) {
+    fun getUser(authorization: String): User? {
+        val login = decodeAuthorization(authorization).first
+        return userRepo.findByLogin(login)
+    }
 
-    fun getUser(authorization: String): User {
+    @Transactional
+    fun signup(authorization: String): User {
+        val (login, password) = decodeAuthorization(authorization)
+        userRepo.findByLogin(login)?.also { throw LoginExistsException(login) }
+        val user = User(UUID.randomUUID(), OffsetDateTime.now(), login, encoder.encode(password))
+        val organizer = Organizer(UUID.randomUUID(), OffsetDateTime.now(), user,"Default organizer")
+        userRepo.save(user)
+        organizerRepo.save(organizer)
+        return user
+    }
+
+    private fun decodeAuthorization(authorization: String): Pair<String, String> {
         val base64Credentials = authorization.substring("Basic".length).trim()
         val credDecoded = Base64.getDecoder().decode(base64Credentials)
         val credentials = String(credDecoded)
-        val (login, password) = credentials.split(":".toRegex(), 2).toTypedArray()
-
-        val userCache = ignite.getOrCreateCache<UUID, User>("user")
-        val user = userCache.find { it.value.login == login }?.value ?: run {
-            val realm = Realm(UUID.randomUUID())
-            val realmCache = ignite.getOrCreateCache<Realm, UUID>("realm")
-            realmCache.put(realm, realm.id)
-            User(UUID.randomUUID(), login, password, realm.id)
-        }
-
-        userCache.putIfAbsent(user.id, user)
-
-        return user
+        val arrayCredential = credentials.split(":".toRegex(), 2)
+        return Pair(arrayCredential[0], arrayCredential[1])
     }
 }

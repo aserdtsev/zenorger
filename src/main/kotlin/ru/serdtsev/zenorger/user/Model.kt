@@ -1,13 +1,19 @@
 package ru.serdtsev.zenorger.user
 
-import org.apache.ignite.cache.query.annotations.QuerySqlField
-import ru.serdtsev.zenorger.common.Realm
-import java.io.Serializable
+import ru.serdtsev.zenorger.common.Organizer
+import java.time.OffsetDateTime
 import java.util.*
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.OneToMany
+import javax.persistence.Table
 
+@Entity
+@Table(name = "service_user")
 data class User(
-    @QuerySqlField val id: UUID,
-    @QuerySqlField val login: String,
-    @QuerySqlField val password: String,
-    @QuerySqlField(name = "realm_id") val realmId: UUID
-): Serializable
+    @Id val id: UUID? = null,
+    val createdAt: OffsetDateTime? = null,
+    val login: String? = null,
+    val password: String? = null) {
+    @OneToMany val organizers: List<Organizer> = emptyList()
+}

@@ -1,9 +1,16 @@
 package ru.serdtsev.zenorger.common
 
-import org.apache.ignite.cache.query.annotations.QuerySqlField
-import java.io.Serializable
+import ru.serdtsev.zenorger.user.User
+import java.time.OffsetDateTime
 import java.util.*
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.ManyToOne
 
-data class Realm(
-    @QuerySqlField(index = true) val id: UUID
-): Serializable
+@Entity
+data class Organizer(
+        @Id val id: UUID? = null,
+        val createdAt: OffsetDateTime? = null,
+        @ManyToOne val user: User? = null,
+        var name: String? = null
+)
