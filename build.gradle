@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		kotlinVersion = '1.3.10'
+		kotlinVersion = '1.3.11'
 		springBootVersion = '2.1.0.RELEASE'
 		springFrameworkVersion = '5.1.1.RELEASE'
 		springFoxVersion = '2.9.2'
@@ -51,6 +51,7 @@ idea {
 dependencies {
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compile("org.jetbrains.kotlin:kotlin-reflect")
+	compile group: 'io.github.microutils', name: 'kotlin-logging', version: '1.6.22'
 	compile('com.fasterxml.jackson.module:jackson-module-kotlin')
 
 	compile('org.springframework.boot:spring-boot-starter-web')

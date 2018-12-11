@@ -1,5 +1,6 @@
 package ru.serdtsev.zenorger.user
 
+import mu.KotlinLogging
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -11,14 +12,18 @@ import java.util.*
 
 @Service
 class UserService(val encoder: BCryptPasswordEncoder, val userRepo: UserRepo, val organizerRepo: OrganizerRepo) {
-    fun getUser(authorization: String): User? {
+    private val log = KotlinLogging.logger {  }
+    
+    fun getUser(authorization: String): User {
         val login = decodeAuthorization(authorization).first
-        return userRepo.findByLogin(login)
+        return userRepo.findByLogin(login)!!
     }
 
     @Transactional
     fun signup(authorization: String): User {
         val (login, password) = decodeAuthorization(authorization)
+        log.info { "Login $login." }
+        
         userRepo.findByLogin(login)?.also { throw LoginExistsException(login) }
         val user = User(UUID.randomUUID(), OffsetDateTime.now(), login, encoder.encode(password))
         val organizer = Organizer(UUID.randomUUID(), OffsetDateTime.now(), user,"Default organizer")
