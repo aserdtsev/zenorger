@@ -5,13 +5,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.serdtsev.zenorger.common.LoginExistsException
-import ru.serdtsev.zenorger.common.Organizer
-import ru.serdtsev.zenorger.common.OrganizerRepo
-import java.time.OffsetDateTime
+import ru.serdtsev.zenorger.organizer.OrganizerService
 import java.util.*
 
 @Service
-class UserService(val encoder: BCryptPasswordEncoder, val userRepo: UserRepo, val organizerRepo: OrganizerRepo) {
+class UserService(
+        val encoder: BCryptPasswordEncoder,
+        val userRepo: UserRepo,
+        val organizerService: OrganizerService) {
     private val log = KotlinLogging.logger {  }
     
     fun getUser(authorization: String): User {
@@ -19,16 +20,19 @@ class UserService(val encoder: BCryptPasswordEncoder, val userRepo: UserRepo, va
         return userRepo.findByLogin(login)!!
     }
 
+    fun createUser(login: String, password: String): User {
+        userRepo.findByLogin(login)?.also { throw LoginExistsException(login) }
+        val user = User(UUID.randomUUID(), login, encoder.encode(password))
+        userRepo.save(user)
+        return user
+    }
+
     @Transactional
     fun signup(authorization: String): User {
         val (login, password) = decodeAuthorization(authorization)
         log.info { "Login $login." }
-        
-        userRepo.findByLogin(login)?.also { throw LoginExistsException(login) }
-        val user = User(UUID.randomUUID(), OffsetDateTime.now(), login, encoder.encode(password))
-        val organizer = Organizer(UUID.randomUUID(), OffsetDateTime.now(), user,"Default organizer")
-        userRepo.save(user)
-        organizerRepo.save(organizer)
+        val user = createUser(login, password)
+        organizerService.createOrganizer(UUID.randomUUID(), user)
         return user
     }
 
