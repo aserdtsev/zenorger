@@ -35,6 +35,19 @@ create table tag (
 );
 create unique index tag_organizer_id_name_uix on tag(organizer_id, name);
 
+create table periodicity (
+  id           uuid not null
+    constraint periodicity_id_pk primary key,
+  organizer_id uuid not null references organizer,
+  period       text,
+  period_qty   int,
+  repeat_qty   int,
+  start_date   date,
+  start_time   time without time zone,
+  finish_date  date,
+  next_date    date
+);
+
 create table task (
   id                     uuid not null
     constraint task_id_pk primary key,
@@ -46,11 +59,7 @@ create table task (
   start_time             time without time zone,
   complete_date          date,
   complete_time          time without time zone,
-  periodicity_period     text,
-  periodicity_period_qty int,
-  periodicity_repeat_qty int,
-  periodicity_start_date date,
-  periodicity_start_time time without time zone,
+  periodicity_id         uuid references periodicity,
   parent_id              uuid
 );
 alter table task

@@ -60,6 +60,7 @@ data class Periodicity (
         /** Кол-во повторений */
         var repeatQty: Int? = null,
         var startDate: LocalDate? = null,
+        var startTime: LocalTime? = null,
         var finishDate: LocalDate? = null,
         var nextDate: LocalDate? = null
 )
