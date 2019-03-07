@@ -81,14 +81,6 @@ create table task_tag (
     primary key (task_id, tag_id)
 );
 
-create table task_list (
-  id           uuid not null
-    constraint task_list_id_pk primary key,
-  organizer_id uuid not null references organizer,
-  name         text not null,
-  type         text not null
-);
-
 create table comment (
   id           uuid not null
     constraint comment_id_pk primary key,

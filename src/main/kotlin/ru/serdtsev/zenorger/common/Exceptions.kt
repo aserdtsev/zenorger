@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus
 import java.lang.RuntimeException
 import java.time.Instant
 
-open class ZenorgerException(val httpStatus: HttpStatus, val error: String, message: String): RuntimeException(message)
+open class ZenorgerException(val httpStatus: HttpStatus, val error: String, message: String? = null): RuntimeException(message)
 
 class LoginExistsException(message: String): ZenorgerException(HttpStatus.FORBIDDEN, "Login exists", message)
 

@@ -6,55 +6,58 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.util.DigestUtils
 import org.springframework.web.filter.GenericFilterBean
-import java.io.IOException
 import java.util.*
 import javax.servlet.*
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @Configuration
 class MdcConfig {
     private val log = KotlinLogging.logger {}
-    private val mdcHeaderPrefix = "x-mdc-"
-    private val oid = "oid"
-    private val rci = "rci"
-    private val requestChannel = "request-channel"
-    private val instanceId = "instance-id"
+    private val mdcHeaderPrefix = "X-MDC-"
+    private val organizerIdSuffix = "Organizer-Id"
+    private val requestIdSuffix = "Request-Id"
+    private val requestChannelSuffix = "Request-Channel"
+    private val instanceIdSuffix = "Instance-Id"
     private val ignorableUriPrefixes = arrayOf("/webjars", "/swagger", "/api-doc")
 
     @Bean
     fun mdcProviderFilter(): Filter {
         return object : GenericFilterBean() {
-            @Throws(IOException::class, ServletException::class)
             override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
                 val httpServletRequest = request as HttpServletRequest
                 val uri = httpServletRequest.requestURI
-                val oid = httpServletRequest.getHeader(mdcHeaderPrefix + oid)
-                val rci = httpServletRequest.getHeader(mdcHeaderPrefix + rci) ?: run { generateRci() }
-                val requestChannel = httpServletRequest.getHeader(mdcHeaderPrefix + requestChannel)
-                val instanceId = httpServletRequest.getHeader(mdcHeaderPrefix + instanceId)
+                val requestId = httpServletRequest.getHeader(mdcHeaderPrefix + requestIdSuffix) ?: run { generateRequestId() }
+                val organizerId = httpServletRequest.getHeader(mdcHeaderPrefix + organizerIdSuffix)
+                val requestChannel = httpServletRequest.getHeader(mdcHeaderPrefix + requestChannelSuffix)
+                val instanceId = httpServletRequest.getHeader(mdcHeaderPrefix + instanceIdSuffix)
 
                 val ignorableUri = isIgnorableUri(uri)
                 if (!ignorableUri) {
                     // Organizer Id
-                    MDC.put(this@MdcConfig.oid, oid)
+                    MDC.put(this@MdcConfig.organizerIdSuffix, organizerId)
                     // Request Context Id
-                    MDC.put(this@MdcConfig.rci, rci)
-                    MDC.put(this@MdcConfig.requestChannel, requestChannel)
-                    MDC.put(this@MdcConfig.instanceId, instanceId)
+                    MDC.put(this@MdcConfig.requestIdSuffix, requestId)
+                    MDC.put(this@MdcConfig.requestChannelSuffix, requestChannel)
+                    MDC.put(this@MdcConfig.instanceIdSuffix, instanceId)
                     log.trace {
-                        "Saved MDC: REQ $uri: rci = $rci; requestChannel = $requestChannel; oid = $oid; instanceId = $instanceId"
+                        "Saved MDC: REQ $uri: requestIdSuffix = $requestId; requestChannelSuffix = $requestChannel; organizerIdSuffix = $organizerId; instanceIdSuffix = $instanceId"
                     }
 
                     // Labels for access.log
                     with (httpServletRequest) {
-                        setAttribute(this@MdcConfig.oid, oid)
-                        setAttribute(this@MdcConfig.rci, rci)
-                        setAttribute(this@MdcConfig.requestChannel, requestChannel)
-                        setAttribute(this@MdcConfig.instanceId, instanceId)
+                        setAttribute(this@MdcConfig.organizerIdSuffix, organizerId)
+                        setAttribute(this@MdcConfig.requestIdSuffix, requestId)
+                        setAttribute(this@MdcConfig.requestChannelSuffix, requestChannel)
+                        setAttribute(this@MdcConfig.instanceIdSuffix, instanceId)
                     }
                 }
 
                 chain.doFilter(request, response)
+
+                val httpServletResponse = response as HttpServletResponse
+                httpServletResponse.setHeader(mdcHeaderPrefix + requestIdSuffix, MDC.get(requestId))
+                httpServletResponse.setHeader(mdcHeaderPrefix + organizerIdSuffix, MDC.get(organizerIdSuffix))
 
                 if (!ignorableUri) {
                     log.trace("Clear MDC")
@@ -66,5 +69,5 @@ class MdcConfig {
 
     private fun isIgnorableUri(uri: String): Boolean = Arrays.stream(ignorableUriPrefixes).anyMatch { uri.startsWith(it) }
 
-    private fun generateRci() = DigestUtils.md5DigestAsHex(UUID.randomUUID().toString().toByteArray()).substring(26)
+    private fun generateRequestId() = DigestUtils.md5DigestAsHex(UUID.randomUUID().toString().toByteArray()).substring(26)
 }
