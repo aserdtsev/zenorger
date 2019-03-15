@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Configuration
-class MdcConfig {
+class MdcConfig(val requestContext: RequestContext) {
     private val log = KotlinLogging.logger {}
     private val mdcHeaderPrefix = "X-MDC-"
     private val organizerIdSuffix = "Organizer-Id"
@@ -35,8 +35,10 @@ class MdcConfig {
                 val ignorableUri = isIgnorableUri(uri)
                 if (!ignorableUri) {
                     // Organizer Id
+                    requestContext.organizerId = organizerId?.let { UUID.fromString(it) }
                     MDC.put(this@MdcConfig.organizerIdSuffix, organizerId)
                     // Request Context Id
+                    requestContext.requestId = requestId
                     MDC.put(this@MdcConfig.requestIdSuffix, requestId)
                     MDC.put(this@MdcConfig.requestChannelSuffix, requestChannel)
                     MDC.put(this@MdcConfig.instanceIdSuffix, instanceId)
