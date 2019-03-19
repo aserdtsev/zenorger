@@ -6,7 +6,7 @@ import java.util.*
 
 @Component
 @RequestScope
-class RequestContext(
+data class RequestContext(
     var requestId: String? = null,
     var organizerId: UUID? = null
 )

@@ -1,26 +1,27 @@
 package ru.serdtsev.zenorger.organizer
 
-import org.slf4j.MDC
 import org.springframework.context.ApplicationContext
 import org.springframework.core.convert.ConversionService
 import org.springframework.core.convert.converter.Converter
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
+import ru.serdtsev.zenorger.RequestContext
 import ru.serdtsev.zenorger.common.ZenorgerException
 import java.time.LocalDate
 import java.time.LocalTime
-import java.util.*
 
 @Component
 class TaskDtoToTaskConverter(appCtx: ApplicationContext) : Converter<TaskDto, Task> {
+    private val requestContext = appCtx.getBean(RequestContext::class.java)
     private val organizerRepo = appCtx.getBean(OrganizerRepo::class.java)
     private val taskRepo = appCtx.getBean(TaskRepo::class.java)
 
     override fun convert(src: TaskDto): Task? {
-        val organizer = organizerRepo.findById(UUID.fromString(MDC.get("Organizer-Id")))
-                .orElseThrow { ZenorgerException(HttpStatus.BAD_REQUEST, "Organizer not found.") }
+        val organizer = organizerRepo.findByIdOrNull(requestContext.organizerId!!)
+                ?: run { throw ZenorgerException(HttpStatus.BAD_REQUEST, "Organizer not found.") }
         val parentTask = src.parentId?.let {
-            taskRepo.findById(it).orElseThrow { ZenorgerException(HttpStatus.BAD_REQUEST, "Parent task not found.") }
+            taskRepo.findByIdOrNull(it) ?: run { throw ZenorgerException(HttpStatus.BAD_REQUEST, "Parent task not found.") }
         }
         val status = src.status?.let { TaskStatus.valueOf(src.status) } ?: TaskStatus.Inbox
         val startDate = src.startDate?.let { LocalDate.parse(it) }
