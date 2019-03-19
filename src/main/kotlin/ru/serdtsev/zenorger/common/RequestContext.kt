@@ -1,4 +1,4 @@
-package ru.serdtsev.zenorger
+package ru.serdtsev.zenorger.common
 
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope

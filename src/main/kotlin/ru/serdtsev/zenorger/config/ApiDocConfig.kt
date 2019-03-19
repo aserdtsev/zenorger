@@ -1,8 +1,9 @@
-package ru.serdtsev.zenorger
+package ru.serdtsev.zenorger.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.bind.annotation.RequestHeader
+import ru.serdtsev.zenorger.ZenorgerApplication
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.service.*

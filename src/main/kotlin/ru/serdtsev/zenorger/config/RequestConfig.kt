@@ -1,5 +1,6 @@
-package ru.serdtsev.zenorger
+package ru.serdtsev.zenorger.config
 
+import ch.qos.logback.classic.Logger
 import mu.KotlinLogging
 import org.slf4j.MDC
 import org.springframework.context.annotation.Bean
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.util.DigestUtils
 import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.filter.GenericFilterBean
+import ru.serdtsev.zenorger.common.RequestContext
 import java.util.*
 import javax.servlet.Filter
 import javax.servlet.FilterChain

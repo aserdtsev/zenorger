@@ -6,7 +6,7 @@ import org.springframework.core.convert.converter.Converter
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
-import ru.serdtsev.zenorger.RequestContext
+import ru.serdtsev.zenorger.common.RequestContext
 import ru.serdtsev.zenorger.common.ZenorgerException
 import java.time.LocalDate
 import java.time.LocalTime
