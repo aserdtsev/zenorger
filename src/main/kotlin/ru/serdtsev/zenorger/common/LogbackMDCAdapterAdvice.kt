@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component
 @Component
 @Aspect
 class LogbackMDCAdapterAdvice {
-    @Pointcut("execution(public String ch.qos.logback.classic.util.LogbackMDCAdapter.get(String))")
-    fun getExecution(key: String?) {}
+    @Pointcut("execution(public String ch.qos.logback.classic.util.LogbackMDCAdapter.get(String)) && args(key)")
+    fun getExecution(key: String) {}
 
-    @Around("getExecution(String)")
+    @Around("getExecution(key)")
     fun getAdvice(pjp: ProceedingJoinPoint, key: String?): Any {
         val retVal = pjp.proceed()
         return retVal
