@@ -23,7 +23,7 @@ class WebSecurityConfig(val dataSource: DataSource) : WebSecurityConfigurerAdapt
 
     override fun configure(web: WebSecurity?) {
         web!!.ignoring().antMatchers("/", "/swagger*/**", "/webjars/**", "/v2/api-docs", "/csrf",
-                "/user/signup", "/error")
+                "/user/signUp", "/error")
     }
 
     @Bean

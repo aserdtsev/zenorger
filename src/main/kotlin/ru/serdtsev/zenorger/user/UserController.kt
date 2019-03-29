@@ -18,9 +18,9 @@ class UserController(val userService: UserService) {
         log.debug { "User ${user.login} login." }
     }
 
-    @RequestMapping(value = ["/signup"], method = [RequestMethod.POST])
-    fun signup(@RequestHeader(HttpHeaders.AUTHORIZATION) authorization: String) {
-        userService.signup(authorization)
+    @RequestMapping(value = ["/signUp"], method = [RequestMethod.POST])
+    fun signUp(@RequestHeader(HttpHeaders.AUTHORIZATION) authorization: String) {
+        userService.signUp(authorization)
     }
 
 }

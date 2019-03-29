@@ -28,7 +28,7 @@ class UserService(
     }
 
     @Transactional
-    fun signup(authorization: String): User {
+    fun signUp(authorization: String): User {
         val (login, password) = decodeAuthorization(authorization)
         log.info { "Login $login." }
         val user = createUser(login, password)
