@@ -1,12 +1,16 @@
 package ru.serdtsev.zenorger.user
 
 import mu.KotlinLogging
+import org.springframework.scheduling.annotation.Async
+import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.context.annotation.RequestScope
 import ru.serdtsev.zenorger.common.LoginExistsException
 import ru.serdtsev.zenorger.organizer.OrganizerService
 import java.util.*
+import java.util.concurrent.Future
 
 @Service
 class UserService(
@@ -14,10 +18,10 @@ class UserService(
         val userRepo: UserRepo,
         val organizerService: OrganizerService) {
     private val log = KotlinLogging.logger {  }
-    
-    fun getUser(authorization: String): User {
+
+    fun getUser(authorization: String): Future<User> {
         val login = decodeAuthorization(authorization).first
-        return userRepo.findByLogin(login)!!
+        return AsyncResult(userRepo.findByLogin(login)!!)
     }
 
     fun createUser(login: String, password: String): User {

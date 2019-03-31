@@ -1,4 +1,4 @@
-package ru.serdtsev.zenorger.user
+package ru.serdtsev.zenorger.config
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean

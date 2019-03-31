@@ -19,4 +19,7 @@
     <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
         <level value="DEBUG" />
     </logger>
+    <logger name="ru.serdtsev.zenorger">
+        <level value="DEBUG" />
+    </logger>
 </configuration>

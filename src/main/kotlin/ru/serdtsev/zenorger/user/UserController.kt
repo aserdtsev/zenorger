@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(val userService: UserService) {
     private val log = KotlinLogging.logger {}
 
+
     @RequestMapping(value = ["/auth"], method = [RequestMethod.POST])
     fun auth(@RequestHeader(HttpHeaders.AUTHORIZATION) authorization: String) {
-        val user = userService.getUser(authorization)
-        log.debug { "User ${user.login} login." }
+        val user = userService.getUser(authorization).get()
+        log.debug { "User ${user.login} has logged in." }
     }
 
     @RequestMapping(value = ["/signUp"], method = [RequestMethod.POST])

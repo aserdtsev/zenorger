@@ -1,6 +1,5 @@
 package ru.serdtsev.zenorger.config
 
-import ch.qos.logback.classic.Logger
 import mu.KotlinLogging
 import org.slf4j.MDC
 import org.springframework.context.annotation.Bean
@@ -8,7 +7,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.util.DigestUtils
 import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.filter.GenericFilterBean
-import ru.serdtsev.zenorger.common.RequestContext
+import ru.serdtsev.zenorger.common.ApiRequestContextHolder
 import java.util.*
 import javax.servlet.Filter
 import javax.servlet.FilterChain
@@ -18,25 +17,26 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Configuration
-class RequestConfig(val requestContext: RequestContext) {
+class RequestConfig(val apiRequestContextHolder: ApiRequestContextHolder) {
     private val log = KotlinLogging.logger {}
     private val ignorableUriPrefixes = arrayOf("/webjars", "/swagger", "/api-doc")
     private val requestIdHeaderName = "X-Request-Id"
     private val organizerIdHeaderName = "X-Organizer-Id"
+    private val requestIdKey = "requestId"
 
     @Bean
     fun appRequestContextFilter(): Filter = object : GenericFilterBean() {
         override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
             val httpServletRequest = request as HttpServletRequest
-            requestContext.requestId = httpServletRequest.getHeader(requestIdHeaderName) ?: run { generateRequestId() }
-            requestContext.organizerId = httpServletRequest.getHeader(organizerIdHeaderName)?.let { UUID.fromString(it) }
+            apiRequestContextHolder.requestId = httpServletRequest.getHeader(requestIdHeaderName) ?: run { generateRequestId() }
+            apiRequestContextHolder.organizerId = httpServletRequest.getHeader(organizerIdHeaderName)?.let { UUID.fromString(it) }
 
             chain.doFilter(request, response)
 
             val httpServletResponse = response as HttpServletResponse
             with (httpServletResponse) {
-                setHeader(requestIdHeaderName, requestContext.requestId)
-                setHeader(organizerIdHeaderName, requestContext.organizerId?.toString())
+                setHeader(requestIdHeaderName, apiRequestContextHolder.requestId)
+                setHeader(organizerIdHeaderName, apiRequestContextHolder.organizerId?.toString())
             }
         }
 
@@ -51,12 +51,12 @@ class RequestConfig(val requestContext: RequestContext) {
 
             val ignorableUri = isIgnorableUri(uri)
             if (!ignorableUri) {
-                MDC.put("requestId", requestContext.requestId)
-                log.info { requestContext }
+                MDC.put(requestIdKey, apiRequestContextHolder.requestId)
+                log.info { apiRequestContextHolder.apiRequestContext }
 
                 // Labels for access.log
                 with (httpServletRequest) {
-                    setAttribute("requestId", requestContext.requestId)
+                    setAttribute(requestIdKey, apiRequestContextHolder.requestId)
                 }
             }
 
