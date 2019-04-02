@@ -16,7 +16,7 @@ class OrganizerController(
 ) {
     @RequestMapping(value = ["/getDefaultOrganizerId"], method = [RequestMethod.GET])
     fun getDefaultOrganizerId(@RequestHeader(HttpHeaders.AUTHORIZATION) authorization: String): UUID {
-        val user = userService.getUser(authorization).get()
+        val user = userService.getUser(authorization)
         val organizer = organizerService.getDefaultOrganizerByUser(user)
         return organizer.id
     }

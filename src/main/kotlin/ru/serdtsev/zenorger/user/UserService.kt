@@ -17,9 +17,9 @@ class UserService(
         val organizerService: OrganizerService) {
     private val log = KotlinLogging.logger {  }
 
-    fun getUser(authorization: String): Future<User> {
+    fun getUser(authorization: String): User {
         val login = decodeAuthorization(authorization).first
-        return AsyncResult(userRepo.findByLogin(login)!!)
+        return userRepo.findByLogin(login)!!
     }
 
     fun createUser(login: String, password: String): User {

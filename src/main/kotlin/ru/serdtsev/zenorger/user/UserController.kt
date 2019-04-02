@@ -15,7 +15,7 @@ class UserController(val userService: UserService) {
 
     @RequestMapping(value = ["/auth"], method = [RequestMethod.POST])
     fun auth(@RequestHeader(HttpHeaders.AUTHORIZATION) authorization: String) {
-        val user = userService.getUser(authorization).get()
+        val user = userService.getUser(authorization)
         log.debug { "User ${user.login} has logged in." }
     }
 
