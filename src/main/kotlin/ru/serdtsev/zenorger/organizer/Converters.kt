@@ -13,12 +13,11 @@ import java.time.LocalTime
 
 @Component
 class TaskDtoToTaskConverter(appCtx: ApplicationContext) : Converter<TaskDto, Task> {
-    private val apiRequestContextHolder = appCtx.getBean(ApiRequestContextHolder::class.java)
     private val organizerRepo = appCtx.getBean(OrganizerRepo::class.java)
     private val taskRepo = appCtx.getBean(TaskRepo::class.java)
 
     override fun convert(src: TaskDto): Task? {
-        val organizer = organizerRepo.findByIdOrNull(apiRequestContextHolder.organizerId!!)
+        val organizer = organizerRepo.findByIdOrNull(ApiRequestContextHolder.organizerId!!)
                 ?: run { throw ZenorgerException(HttpStatus.BAD_REQUEST, "Organizer not found.") }
         val parentTask = src.parentId?.let {
             taskRepo.findByIdOrNull(it) ?: run { throw ZenorgerException(HttpStatus.BAD_REQUEST, "Parent task not found.") }

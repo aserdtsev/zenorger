@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Configuration
-class RequestConfig(val apiRequestContextHolder: ApiRequestContextHolder) {
+class RequestConfig {
     private val log = KotlinLogging.logger {}
     private val ignorableUriPrefixes = arrayOf("/webjars", "/swagger", "/api-doc")
     private val requestIdHeaderName = "X-Request-Id"
@@ -28,15 +28,15 @@ class RequestConfig(val apiRequestContextHolder: ApiRequestContextHolder) {
     fun appRequestContextFilter(): Filter = object : GenericFilterBean() {
         override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
             val httpServletRequest = request as HttpServletRequest
-            apiRequestContextHolder.requestId = httpServletRequest.getHeader(requestIdHeaderName) ?: run { generateRequestId() }
-            apiRequestContextHolder.organizerId = httpServletRequest.getHeader(organizerIdHeaderName)?.let { UUID.fromString(it) }
+            ApiRequestContextHolder.requestId = httpServletRequest.getHeader(requestIdHeaderName) ?: run { generateRequestId() }
+            ApiRequestContextHolder.organizerId = httpServletRequest.getHeader(organizerIdHeaderName)?.let { UUID.fromString(it) }
 
             chain.doFilter(request, response)
 
             val httpServletResponse = response as HttpServletResponse
             with (httpServletResponse) {
-                setHeader(requestIdHeaderName, apiRequestContextHolder.requestId)
-                setHeader(organizerIdHeaderName, apiRequestContextHolder.organizerId?.toString())
+                setHeader(requestIdHeaderName, ApiRequestContextHolder.requestId)
+                setHeader(organizerIdHeaderName, ApiRequestContextHolder.organizerId?.toString())
             }
         }
 
@@ -51,12 +51,12 @@ class RequestConfig(val apiRequestContextHolder: ApiRequestContextHolder) {
 
             val ignorableUri = isIgnorableUri(uri)
             if (!ignorableUri) {
-                MDC.put(requestIdKey, apiRequestContextHolder.requestId)
-                log.info { apiRequestContextHolder.apiRequestContext }
+                MDC.put(requestIdKey, ApiRequestContextHolder.requestId)
+                log.info { ApiRequestContextHolder.apiRequestContext }
 
                 // Labels for access.log
                 with (httpServletRequest) {
-                    setAttribute(requestIdKey, apiRequestContextHolder.requestId)
+                    setAttribute(requestIdKey, ApiRequestContextHolder.requestId)
                 }
             }
 
