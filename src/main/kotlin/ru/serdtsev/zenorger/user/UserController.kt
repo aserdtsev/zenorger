@@ -1,16 +1,11 @@
 package ru.serdtsev.zenorger.user
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import org.springframework.http.HttpHeaders
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-import ru.serdtsev.zenorger.config.CoroutineApiRequestContext
 
 @RestController
 @RequestMapping(value = ["/user"])
