@@ -9,7 +9,7 @@ class ApiRequestContextHolder {
     companion object {
         private val requestContextTls = ThreadLocal<ApiRequestContext>()
         var apiRequestContext: ApiRequestContext
-            get() = requestContextTls.get()
+            get() = requestContextTls.getOrSet { ApiRequestContext() }
             set(value) = requestContextTls.set(value)
 
         var requestId: String?

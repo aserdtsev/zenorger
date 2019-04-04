@@ -44,6 +44,11 @@ class ContextCopyingDecorator : TaskDecorator {
     }
 }
 
+/**
+ * Обеспечивает передачу ApiRequestContext и MDC в корутины.
+ *
+ * Usage example: launch(Dispatchers.Default + CoroutineApiRequestContext()) {...
+ */
 class CoroutineApiRequestContext(
         private val apiRequestContext: ApiRequestContext = ApiRequestContextHolder.apiRequestContext,
         private val requestAttributes: RequestAttributes = RequestContextHolder.currentRequestAttributes(),
@@ -68,6 +73,7 @@ class CoroutineApiRequestContext(
     }
 
     // this is invoked after coroutine has suspended on current thread
+    @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
     override fun restoreThreadContext(context: CoroutineContext, oldApiRequestContext: ApiRequestContext) {
         MDC.clear()
         RequestContextHolder.resetRequestAttributes()

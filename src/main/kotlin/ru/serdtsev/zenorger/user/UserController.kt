@@ -1,6 +1,7 @@
 package ru.serdtsev.zenorger.user
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
@@ -18,12 +19,8 @@ class UserController(val userService: UserService) {
 
     @RequestMapping(value = ["/auth"], method = [RequestMethod.POST])
     fun auth(@RequestHeader(HttpHeaders.AUTHORIZATION) authorization: String) {
-        runBlocking {
-            launch(Dispatchers.Default + CoroutineApiRequestContext()) {
-                val user = userService.getUser(authorization)
-                log.debug { "User ${user.login} has logged in." }
-            }
-        }
+        val user = userService.getUser(authorization)
+        log.debug { "User ${user.login} has logged in." }
     }
 
     @RequestMapping(value = ["/signUp"], method = [RequestMethod.POST])
