@@ -36,7 +36,7 @@ data class Task (
         @OneToMany val comments: List<Comment>? = null
 )
 
-enum class TaskStatus { Inbox, Active, Pending, SomedayMaybe, Done }
+enum class TaskStatus { Inbox, Active, Pending, SomedayMaybe, Done, Removed }
 
 @Entity
 @Table(name = "periodicity")
