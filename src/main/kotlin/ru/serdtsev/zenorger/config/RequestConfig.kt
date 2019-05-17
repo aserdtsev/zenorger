@@ -18,11 +18,13 @@ import javax.servlet.http.HttpServletResponse
 
 @Configuration
 class RequestConfig {
-    private val log = KotlinLogging.logger {}
-    private val ignorableUriPrefixes = arrayOf("/webjars", "/swagger", "/api-doc")
-    private val requestIdHeaderName = "X-Request-Id"
-    private val organizerIdHeaderName = "X-Organizer-Id"
-    private val requestIdKey = "requestId"
+    companion object {
+        private val log = KotlinLogging.logger {}
+        private val ignorableUriPrefixes = arrayOf("/webjars", "/swagger", "/api-doc")
+        private const val requestIdHeaderName = "X-Request-Id"
+        private const val organizerIdHeaderName = "X-Organizer-Id"
+        private const val requestIdKey = "requestId"
+    }
 
     @Bean
     fun appRequestContextFilter(): Filter = object : GenericFilterBean() {
