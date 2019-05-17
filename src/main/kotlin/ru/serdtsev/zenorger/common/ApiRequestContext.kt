@@ -15,13 +15,13 @@ class ApiRequestContextHolder {
         var requestId: String?
             get() = apiRequestContext.requestId
             set(value) {
-                requestContextTls.getOrSet { ApiRequestContext(requestId = value) }
+                apiRequestContext.requestId = value
             }
 
         var organizerId: UUID?
             get() = apiRequestContext.organizerId
             set(value) {
-                requestContextTls.getOrSet { ApiRequestContext(organizerId = value) }
+                apiRequestContext.organizerId = value
             }
 
         fun clear() {
