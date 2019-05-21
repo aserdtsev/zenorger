@@ -37,7 +37,7 @@ class TaskToTaskDtoConverter(val appCtx: ApplicationContext): Converter<Task, Ta
         val comments = src.comments?.map { it.id }
         return TaskDto(src.id, src.name, src.status.name, src.description, src.startDate?.toString(),
                 src.startTime?.toString(), src.completeDate?.toString(), src.completeTime?.toString(), periodicity,
-                contexts, tags, comments)
+                emptyMap(), contexts, tags, comments)
     }
 }
 
