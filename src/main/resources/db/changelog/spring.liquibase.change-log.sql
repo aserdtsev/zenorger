@@ -59,15 +59,16 @@ create table task (
     start_time     time without time zone,
     complete_date  date,
     complete_time  time without time zone,
-    periodicity_id uuid references periodicity
+    periodicity_id uuid references periodicity,
+    is_project     boolean
 );
 
-create table task_subtask (
+create table task_project (
     task_id    uuid references task,
-    subtask_id uuid references task,
+    project_id uuid references task,
     serial_num int not null,
-    constraint task_subtask_task_id_subtask_id_pk
-        primary key (task_id, subtask_id)
+    constraint task_project_task_id_project_id_pk
+        primary key (task_id, project_id)
 );
 
 create table task_context (

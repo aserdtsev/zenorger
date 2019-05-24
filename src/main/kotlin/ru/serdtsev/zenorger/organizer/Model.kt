@@ -29,7 +29,8 @@ data class Task (
         var completeDate: LocalDate? = null,
         var completeTime: LocalTime? = null,
         @OneToOne val periodicity: Periodicity? = null,
-        @ManyToMany @JoinTable(name = "task_subtask") val subTasks: List<Task>? = null,
+        var isProject: Boolean? = null,
+        @ManyToMany @JoinTable(name = "task_project") val projectTasks: List<Task>? = null,
         @ManyToMany @JoinTable(name = "task_context") val contexts: List<TaskContext>? = null,
         @ManyToMany @JoinTable(name = "task_tag") val tags: List<Tag>? = null,
         @OneToMany val comments: List<Comment>? = null
