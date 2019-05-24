@@ -12,7 +12,7 @@ data class TaskDto(
         val completeDate: String? = null,
         val completeTime: String? = null,
         val periodicity: PeriodicityDto? = null,
-        val subTasks: Map<UUID, String>? = null,
+        val projects: Map<UUID, String>? = null,
         val contexts: List<UUID>? = null,
         val tags: List<String>? = null,
         val comments: List<UUID>? = null
