@@ -3,21 +3,16 @@ package ru.serdtsev.zenorger.organizer
 import org.springframework.context.ApplicationContext
 import org.springframework.core.convert.ConversionService
 import org.springframework.core.convert.converter.Converter
-import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
-import ru.serdtsev.zenorger.common.ApiRequestContextHolder
-import ru.serdtsev.zenorger.common.ZenorgerException
 import java.time.LocalDate
 import java.time.LocalTime
 
 @Component
 class TaskDtoToTaskConverter(appCtx: ApplicationContext) : Converter<TaskDto, Task> {
-    private val organizerRepo = appCtx.getBean(OrganizerRepo::class.java)
+    private val organizerService = appCtx.getBean(OrganizerService::class.java)
 
     override fun convert(src: TaskDto): Task? {
-        val organizer = organizerRepo.findByIdOrNull(ApiRequestContextHolder.organizerId!!)
-                ?: throw ZenorgerException(HttpStatus.BAD_REQUEST, "Organizer not found.")
+        val organizer = organizerService.getOrganizer()
         val status = src.status?.let { TaskStatus.valueOf(src.status) } ?: TaskStatus.Inbox
         val startDate = src.startDate?.let { LocalDate.parse(it) }
         val startTime = src.startTime?.let { LocalTime.parse(it) }

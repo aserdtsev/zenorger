@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RestController
 class TaskController(val taskService: TaskService, val conversionService: ConversionService) {
     private val log = KotlinLogging.logger {}
 
+    @RequestMapping(value = ["/list"], method = [RequestMethod.GET], produces = [APPLICATION_JSON_UTF8_VALUE])
+    fun list(): List<TaskDto> {
+
+    }
+
     @RequestMapping(value = ["/add"], method = [RequestMethod.POST], consumes = [APPLICATION_JSON_UTF8_VALUE],
             produces = [APPLICATION_JSON_UTF8_VALUE])
     fun addTask(@RequestBody taskDto: TaskDto): TaskDto {
