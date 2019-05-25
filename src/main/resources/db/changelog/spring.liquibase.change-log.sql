@@ -92,6 +92,7 @@ create table comment (
         constraint comment_id_pk primary key,
     organizer_id uuid not null references organizer,
     task_id      uuid not null references task,
+    created_at   timestamptz not null,
     content      text not null
 );
 

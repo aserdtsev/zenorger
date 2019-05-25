@@ -30,10 +30,33 @@ data class Task (
         var completeTime: LocalTime? = null,
         @OneToOne val periodicity: Periodicity? = null,
         var isProject: Boolean? = null,
-        @ManyToMany @JoinTable(name = "task_project") val projectTasks: List<Task>? = null,
-        @ManyToMany @JoinTable(name = "task_context") val contexts: List<TaskContext>? = null,
-        @ManyToMany @JoinTable(name = "task_tag") val tags: List<Tag>? = null,
-        @OneToMany val comments: List<Comment>? = null
+
+        @ManyToMany
+        @JoinTable(
+                name = "task_project",
+                joinColumns = [JoinColumn(name = "task_id")],
+                inverseJoinColumns = [JoinColumn(name = "project_id")])
+        val projects: List<Task>? = null,
+
+        @ManyToMany
+        @JoinTable(
+                name = "task_context",
+                joinColumns = [JoinColumn(name = "task_id")],
+                inverseJoinColumns = [JoinColumn(name = "context_id")])
+        val contexts: List<TaskContext>? = null,
+
+        @ManyToMany
+        @JoinTable(
+                name = "task_tag",
+                joinColumns = [JoinColumn(name = "task_id")],
+                inverseJoinColumns = [JoinColumn(name = "tag_id")])
+        val tags: List<Tag>? = null,
+
+        @OneToMany
+        @JoinTable(
+                name = "comment",
+                inverseJoinColumns = [JoinColumn(name = "id")])
+        val comments: List<Comment>? = null
 )
 
 enum class TaskStatus { Inbox, Active, Pending, SomedayMaybe, Done, Removed }
@@ -77,5 +100,5 @@ data class Comment (
         @ManyToOne val organizer: Organizer,
         @ManyToOne val task: Task,
         val createdAt: ZonedDateTime? = null,
-        var text: String
+        var content: String
 )

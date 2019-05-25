@@ -27,12 +27,13 @@ class TaskToTaskDtoConverter(val appCtx: ApplicationContext): Converter<Task, Ta
     override fun convert(src: Task): TaskDto? {
         val conversionService = appCtx.getBean(ConversionService::class.java)
         val periodicity = conversionService.convert(src.periodicity, PeriodicityDto::class.java)
+        val projects = src.projects?.map { it.id to it.name }?.toMap()
         val contexts = src.contexts?.map { it.id }
         val tags = src.tags?.map { it.name }
         val comments = src.comments?.map { it.id }
         return TaskDto(src.id, src.name, src.status.name, src.description, src.startDate?.toString(),
                 src.startTime?.toString(), src.completeDate?.toString(), src.completeTime?.toString(), periodicity,
-                emptyMap(), contexts, tags, comments)
+                projects, contexts, tags, comments)
     }
 }
 

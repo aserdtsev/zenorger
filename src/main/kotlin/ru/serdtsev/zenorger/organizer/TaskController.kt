@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
+import ru.serdtsev.zenorger.common.ApiRequestContextHolder
 
 @RestController
 @RequestMapping(value = ["/task"])
@@ -15,15 +16,21 @@ class TaskController(val taskService: TaskService, val conversionService: Conver
 
     @RequestMapping(value = ["/list"], method = [RequestMethod.GET], produces = [APPLICATION_JSON_UTF8_VALUE])
     fun list(): List<TaskDto> {
-
+        checkAppRequestContext()
+        val tasks = taskService.getList()
+        return tasks.map { conversionService.convert(it, TaskDto::class.java)!! }
     }
 
     @RequestMapping(value = ["/add"], method = [RequestMethod.POST], consumes = [APPLICATION_JSON_UTF8_VALUE],
             produces = [APPLICATION_JSON_UTF8_VALUE])
     fun addTask(@RequestBody taskDto: TaskDto): TaskDto {
+        checkAppRequestContext()
         var task = conversionService.convert(taskDto, Task::class.java)!!
         task = taskService.createTask(task)
         return conversionService.convert(task, TaskDto::class.java)!!
     }
 
+    fun checkAppRequestContext() {
+        assert(ApiRequestContextHolder.organizerId != null) { "Header 'X-Organizer-Id' is not defined." }
+    }
 }
