@@ -36,6 +36,7 @@ data class Task (
                 name = "task_project",
                 joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "project_id")])
+        @OrderColumn(name = "serialNum")
         val projects: List<Task>? = null,
 
         @ManyToMany

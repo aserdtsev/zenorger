@@ -8,17 +8,20 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @Component
-class TaskDtoToTaskConverter(appCtx: ApplicationContext) : Converter<TaskDto, Task> {
-    private val organizerService = appCtx.getBean(OrganizerService::class.java)
-
+class TaskDtoToTaskConverter(val appCtx: ApplicationContext) : Converter<TaskDto, Task> {
     override fun convert(src: TaskDto): Task? {
+        val organizerService = appCtx.getBean(OrganizerService::class.java)
+        val taskService = appCtx.getBean(TaskService::class.java)
         val organizer = organizerService.getOrganizer()
         val status = src.status?.let { TaskStatus.valueOf(src.status) } ?: TaskStatus.Inbox
         val startDate = src.startDate?.let { LocalDate.parse(it) }
         val startTime = src.startTime?.let { LocalTime.parse(it) }
         val completeDate = src.completeDate?.let { LocalDate.parse(it) }
         val completeTime = src.completeTime?.let { LocalTime.parse(it) }
-        return Task(src.id, organizer, src.name, status, src.description, startDate, startTime, completeDate, completeTime)
+        val projects = src.projects
+                ?.map { taskService.getTask(it.id)!! }
+        return Task(src.id, organizer, src.name, status, src.description, startDate, startTime, completeDate, completeTime,
+                projects = projects)
     }
 }
 
@@ -27,7 +30,7 @@ class TaskToTaskDtoConverter(val appCtx: ApplicationContext): Converter<Task, Ta
     override fun convert(src: Task): TaskDto? {
         val conversionService = appCtx.getBean(ConversionService::class.java)
         val periodicity = conversionService.convert(src.periodicity, PeriodicityDto::class.java)
-        val projects = src.projects?.map { it.id to it.name }?.toMap()
+        val projects = src.projects?.map { ProjectDto(it.id, it.name) }
         val contexts = src.contexts?.map { it.id }
         val tags = src.tags?.map { it.name }
         val comments = src.comments?.map { it.id }
