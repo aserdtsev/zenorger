@@ -21,7 +21,7 @@ class TaskDtoToTaskConverter(val appCtx: ApplicationContext) : Converter<TaskDto
         val projects = src.projects
                 ?.map { taskService.getTask(it.id)!! }
         return Task(src.id, organizer, src.name, status, src.description, startDate, startTime, completeDate, completeTime,
-                projects = projects)
+                isProject = src.isProject, projects = projects)
     }
 }
 
@@ -36,7 +36,7 @@ class TaskToTaskDtoConverter(val appCtx: ApplicationContext): Converter<Task, Ta
         val comments = src.comments?.map { it.id }
         return TaskDto(src.id, src.name, src.status.name, src.description, src.startDate?.toString(),
                 src.startTime?.toString(), src.completeDate?.toString(), src.completeTime?.toString(), periodicity,
-                projects, contexts, tags, comments)
+                src.isProject, projects, contexts, tags, comments)
     }
 }
 

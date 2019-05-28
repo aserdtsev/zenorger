@@ -21,12 +21,12 @@ class TaskController(val taskService: TaskService, val conversionService: Conver
         return tasks.map { conversionService.convert(it, TaskDto::class.java)!! }
     }
 
-    @RequestMapping(value = ["/add"], method = [RequestMethod.POST], consumes = [APPLICATION_JSON_UTF8_VALUE],
+    @RequestMapping(value = ["/add", "/update"], method = [RequestMethod.POST], consumes = [APPLICATION_JSON_UTF8_VALUE],
             produces = [APPLICATION_JSON_UTF8_VALUE])
-    fun addTask(@RequestBody taskDto: TaskDto): TaskDto {
+    fun addOrUpdateTask(@RequestBody taskDto: TaskDto): TaskDto {
         checkAppRequestContext()
         var task = conversionService.convert(taskDto, Task::class.java)!!
-        task = taskService.createTask(task)
+        task = taskService.createOrUpdateTask(task)
         return conversionService.convert(task, TaskDto::class.java)!!
     }
 

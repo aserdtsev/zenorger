@@ -21,5 +21,5 @@ class OrganizerService(val organizerRepo: OrganizerRepo) {
     fun getDefaultOrganizerByUser(user: User): Organizer = organizerRepo.findByUser(user).firstOrNull()!!
 
     fun getOrganizer(): Organizer = organizerRepo.findByIdOrNull(ApiRequestContextHolder.organizerId!!)
-            ?: throw ZenorgerException(HttpStatus.BAD_REQUEST, "Organizer not found.")
+            ?: throw ZenorgerException(HttpStatus.BAD_REQUEST, "Organizer not found", "${ApiRequestContextHolder.organizerId}")
 }
