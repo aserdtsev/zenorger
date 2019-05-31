@@ -13,13 +13,15 @@ data class TaskDto(
         val completeTime: String? = null,
         val periodicity: PeriodicityDto? = null,
         val isProject: Boolean? = null,
-        val projects: List<ProjectDto>? = null,
+        val projectTasksInOrder: Boolean? = null,
+        val projectTasks: List<NamedObjectDto>? = null,
+        val projects: List<NamedObjectDto>? = null,
         val contexts: List<UUID>? = null,
         val tags: List<String>? = null,
         val comments: List<UUID>? = null
 )
 
-data class ProjectDto(
+data class NamedObjectDto(
         val id: UUID,
         val name: String
 )

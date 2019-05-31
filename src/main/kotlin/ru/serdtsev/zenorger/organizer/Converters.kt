@@ -18,10 +18,11 @@ class TaskDtoToTaskConverter(val appCtx: ApplicationContext) : Converter<TaskDto
         val startTime = src.startTime?.let { LocalTime.parse(it) }
         val completeDate = src.completeDate?.let { LocalDate.parse(it) }
         val completeTime = src.completeTime?.let { LocalTime.parse(it) }
-        val projects = src.projects
-                ?.map { taskService.getTask(it.id)!! }
+        val projectTasks = src.projectTasks?.map { taskService.getTask(it.id)!! }
+        val projects = src.projects?.map { taskService.getTask(it.id)!! }
         return Task(src.id, organizer, src.name, status, src.description, startDate, startTime, completeDate, completeTime,
-                isProject = src.isProject, projects = projects)
+                isProject = src.isProject, projectTasksInOrder = src.projectTasksInOrder, projectTasks = projectTasks,
+                projects = projects)
     }
 }
 
@@ -30,13 +31,14 @@ class TaskToTaskDtoConverter(val appCtx: ApplicationContext): Converter<Task, Ta
     override fun convert(src: Task): TaskDto? {
         val conversionService = appCtx.getBean(ConversionService::class.java)
         val periodicity = conversionService.convert(src.periodicity, PeriodicityDto::class.java)
-        val projects = src.projects?.map { ProjectDto(it.id, it.name) }
+        val projectTasks = src.projectTasks?.map { NamedObjectDto(it.id, it.name) }
+        val projects = src.projects?.map { NamedObjectDto(it.id, it.name) }
         val contexts = src.contexts?.map { it.id }
         val tags = src.tags?.map { it.name }
         val comments = src.comments?.map { it.id }
         return TaskDto(src.id, src.name, src.status.name, src.description, src.startDate?.toString(),
                 src.startTime?.toString(), src.completeDate?.toString(), src.completeTime?.toString(), periodicity,
-                src.isProject, projects, contexts, tags, comments)
+                src.isProject, src.projectTasksInOrder, projectTasks, projects, contexts, tags, comments)
     }
 }
 

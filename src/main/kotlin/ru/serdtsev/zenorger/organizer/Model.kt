@@ -30,13 +30,21 @@ data class Task (
         var completeTime: LocalTime? = null,
         @OneToOne val periodicity: Periodicity? = null,
         var isProject: Boolean? = null,
+        var projectTasksInOrder: Boolean? = null,
 
         @ManyToMany
         @JoinTable(
-                name = "task_project",
-                joinColumns = [JoinColumn(name = "task_id")],
-                inverseJoinColumns = [JoinColumn(name = "project_id")])
-        @OrderColumn(name = "serialNum")
+                name = "project_task",
+                joinColumns = [JoinColumn(name = "project_id")],
+                inverseJoinColumns = [JoinColumn(name = "task_id")])
+        @OrderColumn(name = "orderNum", nullable = false)
+        var projectTasks: List<Task>? = null,
+
+        @ManyToMany(mappedBy = "projectTasks")
+//        @JoinTable(
+//                name = "project_task",
+//                joinColumns = [JoinColumn(name = "task_id")],
+//                inverseJoinColumns = [JoinColumn(name = "project_id")])
         val projects: List<Task>? = null,
 
         @ManyToMany
@@ -44,6 +52,7 @@ data class Task (
                 name = "task_context",
                 joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "context_id")])
+        @OrderColumn(name = "orderNum", nullable = false)
         val contexts: List<TaskContext>? = null,
 
         @ManyToMany
@@ -51,6 +60,7 @@ data class Task (
                 name = "task_tag",
                 joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "tag_id")])
+        @OrderColumn(name = "orderNum", nullable = false)
         val tags: List<Tag>? = null,
 
         @OneToMany
