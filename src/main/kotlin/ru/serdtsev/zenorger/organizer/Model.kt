@@ -41,10 +41,6 @@ data class Task (
         var projectTasks: List<Task>? = null,
 
         @ManyToMany(mappedBy = "projectTasks")
-//        @JoinTable(
-//                name = "project_task",
-//                joinColumns = [JoinColumn(name = "task_id")],
-//                inverseJoinColumns = [JoinColumn(name = "project_id")])
         val projects: List<Task>? = null,
 
         @ManyToMany
