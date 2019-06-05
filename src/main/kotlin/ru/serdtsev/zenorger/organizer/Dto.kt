@@ -34,3 +34,8 @@ data class PeriodicityDto(
         val startTime: String? = null,
         val finishDate: String? = null
 )
+
+data class TaskContextDto(
+        val id: UUID,
+        val name: String
+)

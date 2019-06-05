@@ -12,6 +12,7 @@ class TaskDtoToTaskConverter(val appCtx: ApplicationContext) : Converter<TaskDto
     override fun convert(src: TaskDto): Task? {
         val organizerService = appCtx.getBean(OrganizerService::class.java)
         val taskService = appCtx.getBean(TaskService::class.java)
+        val taskContextService = appCtx.getBean(TaskContextService::class.java)
         val organizer = organizerService.getOrganizer()
         val status = src.status?.let { TaskStatus.valueOf(src.status) } ?: TaskStatus.Inbox
         val startDate = src.startDate?.let { LocalDate.parse(it) }
@@ -20,9 +21,10 @@ class TaskDtoToTaskConverter(val appCtx: ApplicationContext) : Converter<TaskDto
         val completeTime = src.completeTime?.let { LocalTime.parse(it) }
         val projectTasks = src.projectTasks?.map { taskService.getTask(it.id)!! }
         val projects = src.projects?.map { taskService.getTask(it.id)!! }
+        val contexts = src.contexts?.map { taskContextService.getTaskContext(it)!! }
         return Task(src.id, organizer, src.name, status, src.description, startDate, startTime, completeDate, completeTime,
                 isProject = src.isProject, projectTasksInOrder = src.projectTasksInOrder, projectTasks = projectTasks,
-                projects = projects)
+                projects = projects, contexts = contexts)
     }
 }
 
@@ -44,12 +46,23 @@ class TaskToTaskDtoConverter(val appCtx: ApplicationContext): Converter<Task, Ta
 
 @Component
 class PeriodicityToPeriodicityDtoConverter: Converter<Periodicity, PeriodicityDto> {
-    override fun convert(src: Periodicity): PeriodicityDto? {
-        return PeriodicityDto(src.period.name, src.periodQty, src.repeatQty, src.startDate.toString(),
-                src.startTime.toString(), src.finishDate.toString())
-    }
+    override fun convert(src: Periodicity): PeriodicityDto? =
+            PeriodicityDto(src.period.name, src.periodQty, src.repeatQty, src.startDate.toString(),
+                    src.startTime.toString(), src.finishDate.toString())
 }
 
+@Component
+class TaskContextToTaskContextDtoConverter: Converter<TaskContext, TaskContextDto> {
+    override fun convert(src: TaskContext): TaskContextDto? = TaskContextDto(src.id, src.name)
+}
 
+@Component
+class TaskContextDtoToTaskContextConverter(val appCtx: ApplicationContext): Converter<TaskContextDto, TaskContext> {
+    override fun convert(src: TaskContextDto): TaskContext? {
+        val organizerService = appCtx.getBean(OrganizerService::class.java)
+        val organizer = organizerService.getOrganizer()
+        return TaskContext(src.id, organizer, src.name)
+    }
+}
 
 
