@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController
 class TaskController(val taskService: TaskService, val conversionService: ConversionService) {
     @RequestMapping(value = ["/list"], method = [RequestMethod.GET], produces = [APPLICATION_JSON_UTF8_VALUE])
     fun list(): List<TaskDto> {
-        checkAppRequestContext()
         val tasks = taskService.getList()
         return tasks.map { conversionService.convert(it, TaskDto::class.java)!! }
     }
@@ -20,7 +19,6 @@ class TaskController(val taskService: TaskService, val conversionService: Conver
     @RequestMapping(value = ["/add", "/update"], method = [RequestMethod.POST], consumes = [APPLICATION_JSON_UTF8_VALUE],
             produces = [APPLICATION_JSON_UTF8_VALUE])
     fun addOrUpdateTask(@RequestBody taskDto: TaskDto): TaskDto {
-        checkAppRequestContext()
         var task = conversionService.convert(taskDto, Task::class.java)!!
         task = taskService.createOrUpdateTask(task)
         return conversionService.convert(task, TaskDto::class.java)!!
