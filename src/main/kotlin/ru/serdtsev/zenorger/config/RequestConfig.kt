@@ -37,22 +37,26 @@ class RequestConfig {
             val ignorableUri = isUriContain(uri, ignorableUriPrefixes)
             val organizerIdNotNeedUri = isUriContain(uri, organizerIdNotNeedUriPrefixes)
 
-            if (!ignorableUri)
-                ApiRequestContextHolder.requestId = httpServletRequest.getHeader(requestIdHeaderName) ?: generateRequestId()
+            try {
+                if (!ignorableUri)
+                    ApiRequestContextHolder.requestId = httpServletRequest.getHeader(requestIdHeaderName) ?: generateRequestId()
 
-            if (!organizerIdNotNeedUri)
-                ApiRequestContextHolder.organizerId = httpServletRequest.getHeader(organizerIdHeaderName)
-                        ?.let { UUID.fromString(it) }
-                        ?: throw ZenorgerException(HttpStatus.BAD_REQUEST, "Header 'X-Organizer-Id' is not defined")
+                if (!organizerIdNotNeedUri)
+                    ApiRequestContextHolder.organizerId = httpServletRequest.getHeader(organizerIdHeaderName)
+                            ?.let { UUID.fromString(it) }
+                            ?: throw ZenorgerException(HttpStatus.BAD_REQUEST, "Header 'X-Organizer-Id' is not defined")
 
-            chain.doFilter(request, response)
+                chain.doFilter(request, response)
 
-            val httpServletResponse = response as HttpServletResponse
-            if (!ignorableUri)
-                httpServletResponse.setHeader(requestIdHeaderName, ApiRequestContextHolder.requestId)
+                val httpServletResponse = response as HttpServletResponse
+                if (!ignorableUri)
+                    httpServletResponse.setHeader(requestIdHeaderName, ApiRequestContextHolder.requestId)
 
-            if (!organizerIdNotNeedUri)
-                httpServletResponse.setHeader(organizerIdHeaderName, ApiRequestContextHolder.organizerId?.toString())
+                if (!organizerIdNotNeedUri)
+                    httpServletResponse.setHeader(organizerIdHeaderName, ApiRequestContextHolder.organizerId?.toString())
+            } catch (e: ZenorgerException) {
+                response.
+            }
         }
 
         private fun generateRequestId() = DigestUtils.md5DigestAsHex(UUID.randomUUID().toString().toByteArray()).substring(24)
