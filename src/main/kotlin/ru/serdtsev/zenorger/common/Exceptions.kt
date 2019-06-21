@@ -1,7 +1,6 @@
 package ru.serdtsev.zenorger.common
 
 import org.springframework.http.HttpStatus
-import java.lang.RuntimeException
 import java.time.Instant
 
 open class ZenorgerException(val httpStatus: HttpStatus, val error: String, message: String? = null): RuntimeException(message)
