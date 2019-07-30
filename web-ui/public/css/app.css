@@ -7,12 +7,12 @@
     margin-top: 60px;
 }
 
-/*[class*="col-"] {*/
-/*    background-color: #eee;*/
-/*    border-right: 2px solid #fff;*/
-/*    text-align: center;*/
-/*    padding-top: 15px;*/
-/*    padding-bottom: 15px;*/
-/*    font-size: 2rem;*/
-/*}*/
+[class*="col-"] {
+    background-color: #eee;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    /*text-align: center;*/
+    /*padding-top: 15px;*/
+    /*padding-bottom: 15px;*/
+}
 

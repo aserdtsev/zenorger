@@ -6,7 +6,14 @@
             <div id="header" class="col-sm-12">Zenorger</div>
         </div>
         <div class="row">
-            <div id="nav" class="col-sm-4">Navigation</div>
+            <div id="nav" class="col-sm-4">
+                <div>Inbox</div>
+                <div>Contexts</div>
+                <ul>
+                    <li>Home</li>
+                    <li>Work</li>
+                </ul>
+            </div>
             <div id="main" class="col-sm-8">Content</div>
         </div>
     </div>
