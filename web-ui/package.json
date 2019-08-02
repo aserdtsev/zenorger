@@ -11,7 +11,8 @@
     "bootstrap-vue": "^2.0.0-rc.27",
     "core-js": "^2.6.5",
     "jquery": "^1.9.1",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "axios": "latest"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

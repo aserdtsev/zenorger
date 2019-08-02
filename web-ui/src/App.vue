@@ -14,7 +14,7 @@
                     <li>Work</li>
                 </ul>
             </div>
-            <div id="main" class="col-sm-8">Content</div>
+            <div id="main" class="col-sm-8">{{ info }}</div>
         </div>
     </div>
 </template>
