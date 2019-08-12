@@ -4,6 +4,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'zenorger'
-
-include 'server'
+include 'api'
