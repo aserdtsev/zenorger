@@ -2,44 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f65e2f06-eb8f-4b15-b108-ca453164813b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/api/zenorger.api.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/zenorger.api.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/zenorger.api.test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/application-home.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/application-office.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/logback-spring.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/AppController.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/ZenorgerApplication.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/common/ApiRequestContext.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/common/Exceptions.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/common/GlobalExceptionHandler.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/config/ApiContextConfig.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/config/ApiDocConfig.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/config/RequestConfig.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/config/WebSecurityConfig.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/ControllerHelper.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/Converters.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/Dto.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/Model.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/OrganizerController.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/OrganizerService.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/Repositories.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/TaskContextController.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/TaskContextService.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/TaskController.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/organizer/TaskService.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/user/Model.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/user/UserController.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/user/UserRepo.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/ru/serdtsev/zenorger/user/UserService.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/db.scripts/clear-schema.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/db/changelog/spring.liquibase.change-log.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/ehcache.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/ru/serdtsev/zenorger/ZenorgerApplicationTests.kt" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/api.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/serdtsev.zenorger.web.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/serdtsev.zenorger.web.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/serdtsev.zenorger.web.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/web.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/build/kotlin/compileKotlin/build-history.bin" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/kotlin/compileKotlin/build-history.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/build/kotlin/compileKotlin/last-build.bin" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/kotlin/compileKotlin/last-build.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/zenorger.api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/api/ru.serdtsev.zenorger.zenorger.api.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/zenorger.api.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/api/serdtsev.zenorger.api.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/zenorger.api.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/api/serdtsev.zenorger.api.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/zenorger.iml" beforeDir="false" afterPath="$PROJECT_DIR$/zenorger.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/zenorger.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/zenorger.ipr" afterDir="false" />
@@ -95,16 +71,27 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+    <projectState path="$PROJECT_DIR$/api">
+      <ProjectState />
+    </projectState>
   </component>
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="zenorger" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="zenorger" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
               </path>
             </expand>
             <select />
@@ -132,6 +119,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
+    <property name="ExpandSpringBootSpringBootSettingsPanel" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="GoToFile.includeJavaFiles" value="false" />
@@ -145,11 +133,28 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/web" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/web" />
+    </key>
+  </component>
   <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
     <option name="ruleStates">
       <list>
         <RuleState>
@@ -161,7 +166,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.ZenorgerApplication">
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
       <Port>5050</Port>
@@ -203,15 +208,37 @@
         <option name="BuildArtifacts" enabled="false" />
       </method>
     </configuration>
+    <configuration name="WebApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="web" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ru.serdtsev.zenorger.web.WebApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ZenorgerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="zenorger.api.main" />
+      <module name="serdtsev.zenorger.api.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="ru.serdtsev.zenorger.ZenorgerApplication" />
+      <option name="ACTIVE_PROFILES" value="work" />
       <option name="WORKING_DIRECTORY" value="file://$MODULE_WORKING_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Spring Boot.ZenorgerApplication" />
+      <item itemvalue="Spring Boot.WebApplication" />
+    </list>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="allServicesViewState">
+      <serviceView>
+        <treeState>
+          <expand />
+          <select />
+        </treeState>
+      </serviceView>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -224,6 +251,9 @@
       <option name="presentableId" value="Default" />
       <updated>1565607626152</updated>
       <workItem from="1565607627279" duration="162000" />
+      <workItem from="1565691625339" duration="1920000" />
+      <workItem from="1565922216788" duration="656000" />
+      <workItem from="1565937110619" duration="16000" />
     </task>
     <servers />
   </component>
@@ -235,7 +265,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
