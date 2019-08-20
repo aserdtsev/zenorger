@@ -2,9 +2,8 @@ repositories {
 	mavenCentral()
 }
 
-group = 'ru.serdtsev.zenorger'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = javaVersion
+
 compileKotlin {
 	kotlinOptions {
 		freeCompilerArgs = ["-Xjsr305=strict"]

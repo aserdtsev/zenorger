@@ -39,3 +39,7 @@ out/production/classes/META-INF/
 out/production/resources/
 out/test/classes/META-INF/
 build/classes/kotlin/main/META-INF/
+
+zenorger.iml
+zenorger.ipr
+zenorger.iws
