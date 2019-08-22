@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="assets/images/favicon.ico">
+    <link href="assets/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/app.css" rel="stylesheet">
+    <title>Zenorger</title>
+  <body>
+    <noscript>
+      <strong>We're sorry but web-ui doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app" class="container">
+      <div class="row text-center">
+        <div id="header" class="col-sm-12">Zenorger</div>
+      </div>
+      <div class="row">
+        <div id="nav" class="col-sm-4">
+          <div>Inbox</div>
+          <div>Contexts</div>
+          <ul>
+            <li>Home</li>
+            <li>Work</li>
+          </ul>
+        </div>
+        <div id="main" class="col-sm-8">{{ info }}</div>
+      </div>
+    </div>
+  </body>
+</html>
+<script src="https://unpkg.com/vue"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app'
+  })
+</script>
