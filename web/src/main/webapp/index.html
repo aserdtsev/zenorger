@@ -31,8 +31,19 @@
   </body>
 </html>
 <script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
-  var app = new Vue({
-    el: '#app'
-  })
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        info: null
+      };
+    },
+    mounted() {
+      axios
+              .get('https://api.coindesk.com/v1/bpi/currentprice.json')
+              .then(response => (this.info = response));
+    }
+  });
 </script>
