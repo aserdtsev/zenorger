@@ -3,6 +3,7 @@ package ru.serdtsev.zenorger.config
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
@@ -16,7 +17,8 @@ import javax.sql.DataSource
 @EnableWebSecurity(debug = false)
 class WebSecurityConfig(val dataSource: DataSource) : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
-        http.csrf().disable().httpBasic()
+        http.csrf().disable()
+        http.httpBasic()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http.authorizeRequests().anyRequest().hasAnyRole("USER")
     }

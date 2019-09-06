@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletResponse
 class RequestConfig {
     companion object {
         private val log = KotlinLogging.logger {}
-        private val ignorableUriPrefixes = listOf("/webjars", "/swagger", "/api-doc")
-        private val organizerIdNotNeedUriPrefixes = listOf("/user/signUp")
+        private val ignorableUriPrefixes = listOf("/webjars", "/swagger", "/v2/api-doc")
+        private val organizerIdNotNeedUriPrefixes = listOf("/user/signUp").plus(ignorableUriPrefixes)
         private const val requestIdHeaderName = "X-Request-Id"
         private const val organizerIdHeaderName = "X-Organizer-Id"
         private const val requestIdKey = "requestId"
