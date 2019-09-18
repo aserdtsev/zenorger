@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="assets/images/favicon.ico">
-    <link href="assets/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/app.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="assets/images/favicon.ico">
     <title>Zenorger</title>
   <body>
     <noscript>
@@ -42,22 +42,21 @@
     },
     mounted() {
       const instance = axios.create({
-        baseURL: 'http://localhost:8085/',
+        baseURL: 'http://localhost:8080/',
         withCredentials: true,
         crossDomain: true,
-        // auth: {
-        //   username: 'andrey.serdtsev@gmail.com',
-        //   password: '123456'
-        // },
+        auth: {
+          username: 'andrey.serdtsev@gmail.com',
+          password: '123456'
+        },
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
-          'Authorization': 'Basic YW5kcmV5LnNlcmR0c2V2QGdtYWlsLmNvbToxMjM0NTY=',
           'X-Organizer-Id': '59d27375-2dfe-4bec-8002-5e6514a7bce2'
         }
       });
       instance
-              .get('context/list')
+              .get('api/context/list')
               .then(response => (this.info = response));
     }
   });

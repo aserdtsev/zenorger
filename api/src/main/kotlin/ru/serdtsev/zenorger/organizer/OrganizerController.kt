@@ -9,7 +9,7 @@ import ru.serdtsev.zenorger.user.UserService
 import java.util.*
 
 @RestController
-@RequestMapping(value = ["/organizer"])
+@RequestMapping(value = ["/api/organizer"])
 class OrganizerController(
         val organizerService: OrganizerService,
         val userService: UserService

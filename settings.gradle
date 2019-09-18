@@ -4,4 +4,4 @@ pluginManagement {
     }
 }
 
-include 'api', 'web'
+include 'api'

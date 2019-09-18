@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping(value = ["/user"])
+@RequestMapping(value = ["/api/user"])
 class UserController(val userService: UserService) {
     private val log = KotlinLogging.logger {}
 

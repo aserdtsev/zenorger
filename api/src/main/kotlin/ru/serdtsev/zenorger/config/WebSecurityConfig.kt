@@ -3,7 +3,6 @@ package ru.serdtsev.zenorger.config
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
@@ -24,8 +23,14 @@ class WebSecurityConfig(val dataSource: DataSource) : WebSecurityConfigurerAdapt
     }
 
     override fun configure(web: WebSecurity?) {
-        web!!.ignoring().antMatchers("/", "/swagger*/**", "/webjars/**", "/v2/api-docs", "/csrf",
-                "/user/signUp", "/error")
+        web!!.ignoring().antMatchers(
+                "/static/**",
+                "/api/user/signUp",
+                "/swagger*/**",
+                "/v2/api-docs",
+                "/webjars/**",
+                "/csrf",
+                "/error")
     }
 
     @Bean

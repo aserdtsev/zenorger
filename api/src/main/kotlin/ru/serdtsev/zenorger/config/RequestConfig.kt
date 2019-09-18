@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletResponse
 class RequestConfig {
     companion object {
         private val log = KotlinLogging.logger {}
-        private val ignorableUriPrefixes = listOf("/webjars", "/swagger", "/v2/api-doc")
-        private val organizerIdNotNeedUriPrefixes = listOf("/user/signUp").plus(ignorableUriPrefixes)
+        private const val apiPrefix = "/api"
+        private val organizerIdNotNeedUriPrefixes = listOf("/user/signUp")
         private const val requestIdHeaderName = "X-Request-Id"
         private const val organizerIdHeaderName = "X-Organizer-Id"
         private const val requestIdKey = "requestId"
@@ -41,12 +41,12 @@ class RequestConfig {
         override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
             val httpServletRequest = request as HttpServletRequest
             val uri = httpServletRequest.requestURI
-            val ignorableUri = isUriContain(uri, ignorableUriPrefixes)
+            val isApiUri = uri.startsWith(apiPrefix)
             val organizerIdNotNeedUri = isUriContain(uri, organizerIdNotNeedUriPrefixes)
 
             val httpServletResponse = response as HttpServletResponse
             try {
-                if (!ignorableUri)
+                if (isApiUri)
                     ApiRequestContextHolder.requestId = httpServletRequest.getHeader(requestIdHeaderName) ?: generateRequestId()
 
                 if (!organizerIdNotNeedUri)
@@ -55,7 +55,7 @@ class RequestConfig {
 
                 chain.doFilter(request, response)
 
-                if (!ignorableUri)
+                if (isApiUri)
                     httpServletResponse.setHeader(requestIdHeaderName, ApiRequestContextHolder.requestId)
 
                 if (!organizerIdNotNeedUri)
@@ -89,8 +89,8 @@ class RequestConfig {
             val httpServletRequest = request as HttpServletRequest
             val uri = httpServletRequest.requestURI
 
-            val ignorableUri = isUriContain(uri, ignorableUriPrefixes)
-            if (!ignorableUri) {
+            val isApiUri = uri.startsWith(apiPrefix)
+            if (isApiUri) {
                 MDC.put(requestIdKey, ApiRequestContextHolder.requestId)
                 log.debug { ApiRequestContextHolder.apiRequestContext }
 
@@ -102,7 +102,7 @@ class RequestConfig {
 
             chain.doFilter(request, response)
 
-            if (!ignorableUri) {
+            if (isApiUri) {
                 MDC.clear()
             }
         }
@@ -122,14 +122,14 @@ class RequestConfig {
             val httpServletRequest = request as HttpServletRequest
             val uri = httpServletRequest.requestURI
             val organizerIdNotNeedUri = isUriContain(uri, organizerIdNotNeedUriPrefixes)
-
             val httpServletResponse = response as HttpServletResponse
             try {
-                if (!organizerIdNotNeedUri && ApiRequestContextHolder.organizerId == null)
-                    throw ZenorgerException(HttpStatus.BAD_REQUEST, "Header 'X-Organizer-Id' is not defined")
-                // Проверим существование органайзера.
-                organizerService.getOrganizer()
-
+                if (uri.startsWith(apiPrefix) && !organizerIdNotNeedUri) {
+                    if (ApiRequestContextHolder.organizerId == null)
+                        throw ZenorgerException(HttpStatus.BAD_REQUEST, "Header 'X-Organizer-Id' is not defined")
+                    // Проверим существование органайзера.
+                    organizerService.getOrganizer()
+                }
                 chain.doFilter(request, response)
             } catch (ex: ZenorgerException) {
                 setErrorInResponse(httpServletResponse, ex, uri)
@@ -152,5 +152,6 @@ class RequestConfig {
         }
     }
 
+    @Suppress("SameParameterValue")
     private fun isUriContain(uri: String, list: List<String>): Boolean = list.any { uri.startsWith(it) }
 }

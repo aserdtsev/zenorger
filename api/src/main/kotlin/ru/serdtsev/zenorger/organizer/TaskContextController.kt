@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping(value = ["/context"])
+@RequestMapping(value = ["/api/context"])
 class TaskContextController(val taskContextService: TaskContextService, val conversionService: ConversionService) {
     @RequestMapping(value = ["/list"], method = [RequestMethod.GET], produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun list(): List<TaskContextDto> {
