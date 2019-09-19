@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,46 +18,21 @@
       </div>
       <div class="row">
         <div id="nav" class="col-sm-4">
-          <div>Inbox</div>
+          <div>
+            <a href="" @click="showContextTasks()">Inbox</a>
+          </div>
           <div>Contexts</div>
           <ul>
-            <li>Home</li>
-            <li>Work</li>
+            <li v-for="context in contexts">
+              <a href="" @click="showContextTasks(context.id)">{{context.name}}</a>
+            </li>
           </ul>
         </div>
-        <div id="main" class="col-sm-8">{{ info }}</div>
+        <div id="main" class="col-sm-8">{{ contexts }}</div>
       </div>
     </div>
   </body>
 </html>
 <script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script type="text/javascript">
-  new Vue({
-    el: '#app',
-    data() {
-      return {
-        info: null
-      };
-    },
-    mounted() {
-      const instance = axios.create({
-        baseURL: 'http://localhost:8080/',
-        withCredentials: true,
-        crossDomain: true,
-        auth: {
-          username: 'andrey.serdtsev@gmail.com',
-          password: '123456'
-        },
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-          'X-Organizer-Id': '59d27375-2dfe-4bec-8002-5e6514a7bce2'
-        }
-      });
-      instance
-              .get('api/context/list')
-              .then(response => (this.info = response));
-    }
-  });
-</script>
+<script src="app.js"></script>
