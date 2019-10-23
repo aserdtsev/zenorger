@@ -30,7 +30,11 @@ class RequestConfig {
     companion object {
         private val log = KotlinLogging.logger {}
         private const val apiPrefix = "/api"
-        private val organizerIdNotNeedUriPrefixes = listOf("/user/signUp")
+        private val organizerIdNotNeedUriPrefixes = listOf(
+                "/api/user/signUp",
+                "/api/user/auth",
+                "/api/organizer/getDefaultOrganizerId"
+        )
         private const val requestIdHeaderName = "X-Request-Id"
         private const val organizerIdHeaderName = "X-Organizer-Id"
         private const val requestIdKey = "requestId"

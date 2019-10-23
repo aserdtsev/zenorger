@@ -12,7 +12,7 @@ new Vue({
     },
     mounted() {
         const instance = axios.create({
-            baseURL: 'http://localhost:8080/',
+            baseURL: 'http://localhost:8080/api',
             withCredentials: true,
             auth: {
                 username: 'andrey.serdtsev@gmail.com',
@@ -26,7 +26,7 @@ new Vue({
             }
         });
         instance
-            .get('api/context/list')
+            .get('/context/list')
             .then(response => (this.contexts = response.data));
     }
 });

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a8924c2-297c-494d-8311-7bc59a07693a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/api/src/main/webapp/static/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/webapp/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/webapp/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/ru/serdtsev/zenorger/config/RequestConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/ru/serdtsev/zenorger/config/RequestConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/webapp/static/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/webapp/static/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/zenorger.iws" beforeDir="false" afterPath="$PROJECT_DIR$/zenorger.iws" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -11,6 +11,20 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -108,12 +122,12 @@
           <expand>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@9e4a6477" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@cbdcb129" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@9e4a6477" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@a729b13c" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@cbdcb129" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@79c86634" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
           </expand>
           <select />
@@ -159,7 +173,9 @@
       <workItem from="1568684148130" duration="761000" />
       <workItem from="1568770579205" duration="3759000" />
       <workItem from="1568774694542" duration="3158000" />
-      <workItem from="1568856043305" duration="4864000" />
+      <workItem from="1568856043305" duration="4985000" />
+      <workItem from="1571621858028" duration="2498000" />
+      <workItem from="1571798366081" duration="266000" />
     </task>
     <task id="LOCAL-00003" summary="Настройка проекта">
       <created>1566448173716</created>
@@ -189,7 +205,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568775016804</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Frontend&#10;&#10;Реализация отображения контекстов из API.">
+      <created>1568861212286</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1568861212286</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,6 +233,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Настройка проекта" />
-    <option name="LAST_COMMIT_MESSAGE" value="Настройка проекта" />
+    <MESSAGE value="Frontend&#10;&#10;Реализация отображения контекстов из API." />
+    <option name="LAST_COMMIT_MESSAGE" value="Frontend&#10;&#10;Реализация отображения контекстов из API." />
   </component>
 </project>
