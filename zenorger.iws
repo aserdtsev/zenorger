@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a8924c2-297c-494d-8311-7bc59a07693a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/ru/serdtsev/zenorger/config/RequestConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/ru/serdtsev/zenorger/config/RequestConfig.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/webapp/static/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/webapp/static/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/webapp/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/webapp/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zenorger.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/zenorger.ipr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/zenorger.iws" beforeDir="false" afterPath="$PROJECT_DIR$/zenorger.iws" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -175,7 +176,8 @@
       <workItem from="1568774694542" duration="3158000" />
       <workItem from="1568856043305" duration="4985000" />
       <workItem from="1571621858028" duration="2498000" />
-      <workItem from="1571798366081" duration="266000" />
+      <workItem from="1571798366081" duration="3722000" />
+      <workItem from="1571880573683" duration="3628000" />
     </task>
     <task id="LOCAL-00003" summary="Настройка проекта">
       <created>1566448173716</created>
@@ -212,7 +214,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568861212286</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Frontend&#10;&#10;Реализация отображения контекстов из API.">
+      <created>1571798660953</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1571798660953</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
