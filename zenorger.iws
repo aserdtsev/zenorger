@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a8924c2-297c-494d-8311-7bc59a07693a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/api/src/main/webapp/static/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/webapp/static/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/webapp/static/assets/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/webapp/static/assets/css/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/webapp/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/webapp/static/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/zenorger.iws" beforeDir="false" afterPath="$PROJECT_DIR$/zenorger.iws" afterDir="false" />
     </list>
@@ -119,17 +119,7 @@
     <option name="allServicesViewState">
       <serviceView>
         <treeState>
-          <expand>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@e471f02b" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-            </path>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@e471f02b" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@d953b639" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-            </path>
-          </expand>
+          <expand />
           <select />
         </treeState>
       </serviceView>
@@ -178,7 +168,8 @@
       <workItem from="1571798366081" duration="3722000" />
       <workItem from="1571880573683" duration="3628000" />
       <workItem from="1571999482992" duration="45000" />
-      <workItem from="1573801415619" duration="5512000" />
+      <workItem from="1573801415619" duration="5744000" />
+      <workItem from="1574060402367" duration="12601000" />
     </task>
     <task id="LOCAL-00003" summary="Настройка проекта">
       <created>1566448173716</created>
@@ -229,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1571999520843</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Frontend">
+      <created>1573807847664</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1573807847664</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

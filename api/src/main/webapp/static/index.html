@@ -19,18 +19,16 @@
         </div>
         <div class="row">
           <div id="nav" class="col-sm-4">
-            <nav class="navbar navbar-nav navbar-light bg-light">
-              <div class="nav-item">
-                <span @click="showContextTasks()">Inbox</span>
-              </div>
-              <div>Contexts</div>
+            <nav class="navbar navbar-nav navbar-light align-items-start">
+              <button class="nav-item navbar-toggler" @click="showContextTasks()">Inbox</button>
+              <h4>Contexts</h4>
               <ul>
                 <li v-for="context in contexts">
-                  <a href="" @click="showContextTasks(context.id)">{{context.name}}</a>
+                  <button class="nav-item navbar-toggler" @click="showContextTasks(context.id)">{{context.name}}</button>
                 </li>
               </ul>
-          </div>
             </nav>
+          </div>
           <div id="main" class="col-sm-8">
             <ul>
               <li v-for="task in tasks">
