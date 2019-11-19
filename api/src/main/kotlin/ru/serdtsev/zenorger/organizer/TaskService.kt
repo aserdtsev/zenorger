@@ -9,14 +9,23 @@ import java.util.*
 
 @Service
 @Transactional(readOnly = true)
-class TaskService(val taskRepo: TaskRepo) {
+class TaskService(val taskRepo: TaskRepo, val taskContextRepo: TaskContextRepo) {
     private val log = KotlinLogging.logger {}
 
     fun getTask(id: UUID): Task? = taskRepo.findByIdOrNull(id)
 
-    fun getList(): List<Task> {
+    fun getList(contextId: UUID?, status: TaskStatus?): List<Task> {
         val organizerId = ApiRequestContextHolder.organizerId!!
-        return taskRepo.findByOrganizerId(organizerId)
+        val context = taskContextRepo.findByOrganizerIdAndId(organizerId, contextId)
+        val contexts = if (context != null) listOf(context) else emptyList()
+        return if (contexts.isNotEmpty() && status != null)
+            taskRepo.findByOrganizerIdAndContextsAndStatus(organizerId, contexts, status)
+        else if (contexts.isNotEmpty() && status == null)
+            taskRepo.findByOrganizerIdAndContexts(organizerId, contexts)
+        else if (contexts.isEmpty() && status != null)
+            taskRepo.findByOrganizerIdAndStatus(organizerId, status)
+        else
+            taskRepo.findByOrganizerId(organizerId)
     }
 
     @Transactional(readOnly = false)

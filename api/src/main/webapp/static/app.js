@@ -7,68 +7,15 @@ var vm = new Vue({
         };
     },
     methods: {
-        showContextTasks: function(contextId) {
-            this.tasks = [
-                {
-                    "id": "d5388c7b-89ee-40fb-8fed-83bf1ff71c92",
-                    "name": "Task name",
-                    "status": "Inbox",
-                    "startDate": "2019-03-01",
-                    "startTime": "09:01",
-                    "completeDate": "2019-04-01",
-                    "completeTime": "18:00",
-                    "projectTasks": [],
-                    "projects": [
-                        {
-                            "id": "e53e7a37-f7ec-4cc1-837d-d815a2ca2406",
-                            "name": "Task name"
-                        }
-                    ],
-                    "contexts": [],
-                    "tags": [],
-                    "comments": []
-                },
-                {
-                    "id": "e53e7a37-f7ec-4cc1-837d-d815a2ca2406",
-                    "name": "Task name",
-                    "status": "Inbox",
-                    "startDate": "2019-03-01",
-                    "startTime": "09:01",
-                    "completeDate": "2019-04-01",
-                    "completeTime": "18:00",
-                    "projectTasks": [
-                        {
-                            "id": "d5388c7b-89ee-40fb-8fed-83bf1ff71c92",
-                            "name": "Task name"
-                        }
-                    ],
-                    "projects": [],
-                    "contexts": [
-                        "bc5181fe-dbdc-4dbd-b422-290800adb828"
-                    ],
-                    "tags": [],
-                    "comments": [],
-                    "project": true
-                },
-                {
-                    "id": "70457016-c00e-4f39-9461-16b849316cba",
-                    "name": "Task name",
-                    "status": "Inbox",
-                    "startDate": "2019-03-01",
-                    "startTime": "09:00",
-                    "completeDate": "2019-04-01",
-                    "completeTime": "18:00",
-                    "projectTasks": [],
-                    "projects": [],
-                    "contexts": [],
-                    "tags": [],
-                    "comments": [],
-                    "project": false
-                }
-            ]
-            // axiosInst
-            //     .get('/task/list')
-            //     .then(response => (this.tasks = response.data));
+        showContextTasks: function(contextId, status) {
+            axiosInst
+                .get('/task/list', {
+                    params: {
+                        contextId: contextId,
+                        status: status
+                    }
+                })
+                .then(response => (this.tasks = response.data));
         }
     },
     mounted() {
@@ -89,9 +36,6 @@ var vm = new Vue({
         axiosInst
             .get('/context/list')
             .then(response => (this.contexts = response.data));
-        // axiosInst
-        //     .get('/task/list')
-        //     .then(response => (this.tasks = response.data));
     }
 });
 

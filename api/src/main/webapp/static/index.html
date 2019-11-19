@@ -20,7 +20,7 @@
         <div class="row">
           <div id="nav" class="col-sm-4">
             <nav class="navbar navbar-nav navbar-light align-items-start">
-              <button class="nav-item navbar-toggler" @click="showContextTasks()">Inbox</button>
+              <button class="nav-item navbar-toggler" @click="showContextTasks(null, 'Inbox')">Inbox</button>
               <h4>Contexts</h4>
               <ul>
                 <li v-for="context in contexts">
