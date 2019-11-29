@@ -11,3 +11,7 @@
     border-right: 2px solid #fff;
     border-bottom: 2px solid #fff;
 }
+
+.block {
+    padding-top: 15px;
+}

@@ -31,9 +31,16 @@
           </div>
           <div id="taskList" class="col-sm-5">
             <div id="addTask" class="row">
-              <input type="text"/>
+              <div class="col-sm-12 block">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control"/>
+                  <div class="input-group-append">
+                    <button class="btn btn-primary" type="button">Добавить задачу</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="row">
+            <div class="row block">
               <ul>
                 <li v-for="task in tasks">
                   {{task.name}}
