@@ -18,22 +18,20 @@
           <div id="header" class="col-sm-12">Zenorger</div>
         </div>
         <div class="row">
-          <div id="nav" class="col-sm-2">
-            <nav class="navbar navbar-nav navbar-light align-items-start">
-              <button class="nav-item navbar-toggler" @click="showContextTasks(null, 'Inbox')">Inbox</button>
-              <h4>Contexts</h4>
+          <div class="col-sm-2">
+              <button class="btn btn-link" @click="showContextTasks(null, 'Inbox')">Inbox</button>
+              <div>Contexts</div>
               <ul>
                 <li v-for="context in contexts">
-                  <button class="nav-item navbar-toggler" @click="showContextTasks(context.id)">{{context.name}}</button>
+                  <button class="btn btn-link" @click="showContextTasks(context.id)">{{context.name}}</button>
                 </li>
               </ul>
-            </nav>
           </div>
           <div id="taskList" class="col-sm-5">
             <div id="addTask" class="row">
               <div class="col-sm-12 block">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control"/>
+                  <input type="text" class="form-control" placeholder="Добавить задачу..."/>
                   <div class="input-group-append">
                     <button class="btn btn-primary" type="button">Добавить задачу</button>
                   </div>
@@ -41,15 +39,19 @@
               </div>
             </div>
             <div class="row block">
-              <ul>
-                <li v-for="task in tasks">
-                  {{task.name}}
-                </li>
-              </ul>
+              <table class="table table-sm table-hover">
+                <tbody>
+                  <tr v-for="task in tasks">
+                    <td>
+                      <button class="btn btn-link">{{task.name}}</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-          <div id="taskForm" class="col-sm-5">
-
+          <div id="taskForm" class="col-sm-5 block">
+            <input type="text" class="form-control" placeholder="Название" />
           </div>
         </div>
       </div>
