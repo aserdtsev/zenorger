@@ -31,9 +31,9 @@
             <div id="addTask" class="row">
               <div class="col-sm-12 block">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" placeholder="Добавить задачу..."/>
+                  <input type="text" class="form-control" placeholder="Add task..."/>
                   <div class="input-group-append">
-                    <button class="btn btn-primary" type="button">Добавить задачу</button>
+                    <button class="btn btn-primary" type="button">Add task</button>
                   </div>
                 </div>
               </div>
@@ -43,7 +43,7 @@
                 <tbody>
                   <tr v-for="task in tasks">
                     <td>
-                      <button class="btn btn-link">{{task.name}}</button>
+                      <button class="btn btn-link" v-on:click="showTask(task)">{{task.name}}</button>
                     </td>
                   </tr>
                 </tbody>
@@ -51,7 +51,7 @@
             </div>
           </div>
           <div id="taskForm" class="col-sm-5 block">
-            <input type="text" class="form-control" placeholder="Название" />
+            <input v-model.lazy="task.name" type="text" class="form-control" placeholder="Name" />
           </div>
         </div>
       </div>

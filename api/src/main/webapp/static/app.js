@@ -3,7 +3,8 @@ var vm = new Vue({
     data() {
         return {
             contexts: null,
-            tasks: null
+            tasks: null,
+            task: { }
         };
     },
     methods: {
@@ -16,6 +17,9 @@ var vm = new Vue({
                     }
                 })
                 .then(response => (this.tasks = response.data));
+        },
+        showTask: function(task) {
+            this.task = task;
         }
     },
     mounted() {
