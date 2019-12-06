@@ -52,6 +52,7 @@
           </div>
           <div id="taskForm" class="col-sm-5 block">
             <input v-model.lazy="task.name" type="text" class="form-control" placeholder="Name" />
+            <button v-on:click="saveTask(task)" class="btn btn-primary">Save</button>
           </div>
         </div>
       </div>

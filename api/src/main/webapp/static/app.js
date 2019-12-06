@@ -19,7 +19,12 @@ var vm = new Vue({
                 .then(response => (this.tasks = response.data));
         },
         showTask: function(task) {
-            this.task = task;
+            this.task = jsonCopy(task);
+        },
+        saveTask: function(task) {
+            axiosInst
+                .post('/task/update', task)
+                .then(response => (this.task = response.data))
         }
     },
     mounted() {
@@ -47,4 +52,8 @@ function createUuid() {
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     )
+}
+
+function jsonCopy(src) {
+    return JSON.parse(JSON.stringify(src));
 }
