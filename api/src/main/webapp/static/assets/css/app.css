@@ -12,10 +12,11 @@
     border-bottom: 2px solid #fff;
 }
 
-.block {
-    padding-top: 15px;
+.form {
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
-/*.form-control {*/
-/*    margin-top: 15px;*/
-/*}*/
+.btn {
+    margin-top: 6px;
+}

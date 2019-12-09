@@ -4,7 +4,8 @@ var vm = new Vue({
         return {
             contexts: null,
             tasks: null,
-            task: { }
+            newTaskName: '',
+            task: { },
         };
     },
     methods: {
