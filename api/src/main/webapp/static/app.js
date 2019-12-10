@@ -3,29 +3,40 @@ var vm = new Vue({
     data() {
         return {
             contexts: null,
+            selectedList: 'Inbox', /** 'Inbox' или contextId */
             tasks: null,
             newTaskName: '',
-            task: { },
+            currentTask: { },
         };
     },
     methods: {
-        showContextTasks: function(contextId, status) {
+        showInboxTasks: function() {
+            this.selectedList = 'Inbox'
             axiosInst
                 .get('/task/list', {
                     params: {
-                        contextId: contextId,
-                        status: status
+                        status: 'Inbox'
+                    }
+                })
+                .then(response => (this.tasks = response.data));
+        },
+        showContextTasks: function(contextId) {
+            this.selectedList = contextId
+            axiosInst
+                .get('/task/list', {
+                    params: {
+                        contextId: contextId
                     }
                 })
                 .then(response => (this.tasks = response.data));
         },
         showTask: function(task) {
-            this.task = jsonCopy(task);
+            this.currentTask = jsonCopy(task);
         },
         saveTask: function(task) {
             axiosInst
                 .post('/task/update', task)
-                .then(response => (this.task = response.data))
+                .then(response => (this.currentTask = response.data))
         }
     },
     mounted() {

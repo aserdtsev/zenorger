@@ -19,11 +19,15 @@
         </div>
         <div class="row">
           <div class="col-sm-2">
-              <button class="btn btn-link" v-on:click="showContextTasks(null, 'Inbox')">Inbox</button>
+              <button class="btn btn-link"
+                      v-bind:class="{ 'btn-outline-primary': selectedList == 'Inbox' }"
+                      v-on:click="showInboxTasks()">Inbox</button>
               <div>Contexts</div>
               <ul>
                 <li v-for="context in contexts">
-                  <button class="btn btn-link" v-on:click="showContextTasks(context.id)">{{context.name}}</button>
+                  <button class="btn btn-link"
+                          v-bind:class="{ 'btn-outline-primary': context.id == selectedList }"
+                          v-on:click="showContextTasks(context.id)">{{context.name}}</button>
                 </li>
               </ul>
           </div>
@@ -54,8 +58,8 @@
           </div>
           <div id="taskForm" class="col-sm-5">
             <div class="form">
-              <input v-model.lazy="task.name" type="text" class="form-control" placeholder="Name" />
-              <button v-on:click="saveTask(task)" class="btn btn-primary" type="button">Save</button>
+              <input v-model.lazy="currentTask.name" type="text" class="form-control" placeholder="Name" />
+              <button v-on:click="saveTask(currentTask)" class="btn btn-primary" type="button">Save</button>
             </div>
           </div>
         </div>
