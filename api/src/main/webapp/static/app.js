@@ -36,27 +36,33 @@ var vm = new Vue({
         saveTask: function(task) {
             axiosInst
                 .post('/task/update', task)
-                .then(response => (this.currentTask = response.data))
+                .then(response => (this.updateTask(response.data)))
+        },
+        updateTask: function(task) {
+            this.currentTask = task;
+            let idx = this.tasks.findIndex(it => it.id === task.id);
+            this.tasks[idx] = task
         }
     },
     mounted() {
         axiosInst = axios.create({
-                baseURL: 'http://localhost:8080/api',
-                withCredentials: true,
-                auth: {
-                    username: 'andrey.serdtsev@gmail.com',
-                    password: '123456'
-                },
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    'X-Organizer-Id': '59d27375-2dfe-4bec-8002-5e6514a7bce2',
-                    'X-Request-Id': createUuid()
-                }
-            });
+            baseURL: 'http://localhost:8080/api',
+            withCredentials: true,
+            auth: {
+                username: 'andrey.serdtsev@gmail.com',
+                password: '123456'
+            },
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                'X-Organizer-Id': '59d27375-2dfe-4bec-8002-5e6514a7bce2',
+                'X-Request-Id': createUuid()
+            }
+        });
         axiosInst
             .get('/context/list')
             .then(response => (this.contexts = response.data));
+        this.showInboxTasks();
     }
 });
 

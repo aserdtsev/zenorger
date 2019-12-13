@@ -48,7 +48,7 @@
               <table class="table table-sm table-hover">
                 <tbody>
                   <tr v-for="task in tasks">
-                    <td>
+                    <td v-bind:class="{ 'table-success': task.id === currentTask.id }">
                       <button class="btn btn-link" v-on:click="showTask(task)">{{task.name}}</button>
                     </td>
                   </tr>
