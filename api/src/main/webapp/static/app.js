@@ -30,6 +30,12 @@ var vm = new Vue({
                 })
                 .then(response => (this.tasks = response.data));
         },
+        addTask: function(taskName) {
+            task = { id: createUuid(), name: taskName };
+            axiosInst
+                .post('/task/add', task)
+                .then(response => (this.pushTask(response.data)))
+        },
         showTask: function(task) {
             this.currentTask = jsonCopy(task);
         },
@@ -37,6 +43,10 @@ var vm = new Vue({
             axiosInst
                 .post('/task/update', task)
                 .then(response => (this.updateTask(response.data)))
+        },
+        pushTask: function(task) {
+            this.tasks.push(task);
+            this.currentTask = task;
         },
         updateTask: function(task) {
             this.currentTask = task;
