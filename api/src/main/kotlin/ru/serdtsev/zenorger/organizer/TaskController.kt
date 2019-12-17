@@ -8,6 +8,9 @@ import java.util.*
 @RestController
 @RequestMapping(value = ["/api/task"])
 class TaskController(val taskService: TaskService, val conversionService: ConversionService) {
+    @RequestMapping(value = ["/inbox"], method = [RequestMethod.GET], produces = [APPLICATION_JSON_UTF8_VALUE])
+    fun inbox(): List<TaskDto> = taskService.getInbox().map { conversionService.convert(it, TaskDto::class.java)!! }
+
     @RequestMapping(value = ["/list"], method = [RequestMethod.GET], produces = [APPLICATION_JSON_UTF8_VALUE])
     fun list(
             @RequestParam(required = false) contextId: UUID? = null,

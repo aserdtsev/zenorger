@@ -14,6 +14,11 @@ class TaskService(val taskRepo: TaskRepo, val taskContextRepo: TaskContextRepo) 
 
     fun getTask(id: UUID): Task? = taskRepo.findByIdOrNull(id)
 
+    fun getInbox(): List<Task> {
+        val organizerId = ApiRequestContextHolder.organizerId!!
+        return taskRepo.findByOrganizerIdAndStatus(organizerId, TaskStatus.Inbox);
+    }
+
     fun getList(contextId: UUID?, status: TaskStatus?): List<Task> {
         val organizerId = ApiRequestContextHolder.organizerId!!
         val context = taskContextRepo.findByOrganizerIdAndId(organizerId, contextId)

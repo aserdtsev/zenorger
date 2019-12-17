@@ -13,11 +13,7 @@ var vm = new Vue({
         showInboxTasks: function() {
             this.selectedList = 'Inbox'
             axiosInst
-                .get('/task/list', {
-                    params: {
-                        status: 'Inbox'
-                    }
-                })
+                .get('/task/inbox')
                 .then(response => (this.tasks = response.data));
         },
         showContextTasks: function(contextId) {
@@ -35,6 +31,7 @@ var vm = new Vue({
             axiosInst
                 .post('/task/add', task)
                 .then(response => (this.pushTask(response.data)))
+            this.newTaskName = ''
         },
         showTask: function(task) {
             this.currentTask = jsonCopy(task);
