@@ -10,9 +10,10 @@ interface OrganizerRepo: JpaRepository<Organizer, UUID> {
 
 interface TaskRepo: JpaRepository<Task, UUID> {
     fun findByOrganizerId(organizerId: UUID): List<Task>
-    fun findByOrganizerIdAndContexts(organizerId: UUID, contexts: List<TaskContext>): List<Task>
-    fun findByOrganizerIdAndStatus(organizerId: UUID, taskStatus: TaskStatus): List<Task>
-    fun findByOrganizerIdAndContextsAndStatus(organizerId: UUID, contexts: List<TaskContext>, status: TaskStatus): List<Task>
+    fun findByOrganizerIdAndContextsOrderByCreatedAt(organizerId: UUID, contexts: List<TaskContext>): List<Task>
+    fun findByOrganizerIdAndStatusOrderByCreatedAt(organizerId: UUID, taskStatus: TaskStatus): List<Task>
+    fun findByOrganizerIdAndContextsAndStatusOrderByCreatedAt(organizerId: UUID, contexts: List<TaskContext>,
+            status: TaskStatus): List<Task>
 }
 
 interface TaskContextRepo: JpaRepository<TaskContext, UUID> {

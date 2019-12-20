@@ -27,7 +27,7 @@ var vm = new Vue({
                 .then(response => (this.tasks = response.data));
         },
         addTask: function(taskName) {
-            task = { id: createUuid(), name: taskName };
+            let task = { id: createUuid(), createdAt: new Date(), name: taskName };
             axiosInst
                 .post('/task/add', task)
                 .then(response => (this.pushTask(response.data)))
@@ -62,7 +62,7 @@ var vm = new Vue({
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                'X-Organizer-Id': '59d27375-2dfe-4bec-8002-5e6514a7bce2',
+                'X-Organizer-Id': '640021fc-4093-4dd4-84f2-5792a6116cb7',
                 'X-Request-Id': createUuid()
             }
         });

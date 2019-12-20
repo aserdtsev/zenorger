@@ -1,9 +1,11 @@
 package ru.serdtsev.zenorger.organizer
 
+import java.time.ZonedDateTime
 import java.util.*
 
 data class TaskDto(
         val id: UUID,
+        val createdAt: ZonedDateTime,
         val name: String,
         val status: String?,
         val description: String? = null,

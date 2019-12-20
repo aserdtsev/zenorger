@@ -52,6 +52,7 @@ create table task (
     id uuid not null
         constraint task_id_pk primary key,
     organizer_id uuid not null references organizer,
+    created_at timestamptz,
     name text not null,
     status text not null,
     description text,
@@ -97,3 +98,10 @@ create table comment (
     created_at timestamptz not null,
     content text not null
 );
+
+INSERT INTO zenorger.service_user (id, login, password)
+VALUES ('70f112fd-71ba-4b85-a066-833ee2988ecd', 'andrey.serdtsev@gmail.com', '$2a$10$c.F710SsYjsiNGAI1k.Ug.UEInOP9tm5c5t3hfkpHV8/ZPNLeQm46');
+
+INSERT INTO zenorger.organizer (id, user_id, name)
+VALUES ('640021fc-4093-4dd4-84f2-5792a6116cb7', '70f112fd-71ba-4b85-a066-833ee2988ecd', 'Default organizer');
+

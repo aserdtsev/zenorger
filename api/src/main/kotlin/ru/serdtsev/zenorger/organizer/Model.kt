@@ -21,6 +21,7 @@ data class Organizer (
 data class Task (
         @Id val id: UUID,
         @ManyToOne val organizer: Organizer,
+        val createdAt: ZonedDateTime,
         var name: String,
         @Enumerated(EnumType.STRING) var status: TaskStatus,
         var description: String? = null,
