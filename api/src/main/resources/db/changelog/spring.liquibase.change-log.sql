@@ -77,7 +77,7 @@ create unique index project_task_task_id_project_id_uix on project_task(task_id,
 create table task_context (
     task_id uuid not null references task,
     context_id uuid not null references context,
-    order_num int not null,
+    index numeric not null,
     constraint task_context_task_id_context_id_pk
         primary key (task_id, context_id)
 );
@@ -85,7 +85,7 @@ create table task_context (
 create table task_tag (
     task_id uuid not null references task,
     tag_id uuid not null references tag,
-    order_num int not null,
+    index numeric not null,
     constraint task_tag_task_id_tag_id_pk
         primary key (task_id, tag_id)
 );
@@ -105,3 +105,11 @@ VALUES ('70f112fd-71ba-4b85-a066-833ee2988ecd', 'andrey.serdtsev@gmail.com', '$2
 INSERT INTO zenorger.organizer (id, user_id, name)
 VALUES ('640021fc-4093-4dd4-84f2-5792a6116cb7', '70f112fd-71ba-4b85-a066-833ee2988ecd', 'Default organizer');
 
+INSERT INTO zenorger.context (id, organizer_id, name)
+VALUES ('8d6b92ca-7a1c-47e7-ae21-173bbb06f0d7', '640021fc-4093-4dd4-84f2-5792a6116cb7', 'Car');
+INSERT INTO zenorger.context (id, organizer_id, name)
+VALUES ('3d468462-eca5-4cb0-866e-9a579a144c24', '640021fc-4093-4dd4-84f2-5792a6116cb7', 'Home');
+INSERT INTO zenorger.context (id, organizer_id, name)
+VALUES ('85e9364e-156e-4f63-aa48-2da1468c7160', '640021fc-4093-4dd4-84f2-5792a6116cb7', 'Shop');
+INSERT INTO zenorger.context (id, organizer_id, name)
+VALUES ('42f49207-2e82-4009-9aa8-0ed5c4717584', '640021fc-4093-4dd4-84f2-5792a6116cb7', 'Work');
