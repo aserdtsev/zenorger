@@ -53,7 +53,11 @@ var vm = new Vue({
             this.currentTask = task;
             let idx = this.tasks.findIndex(it => it.id === task.id);
             this.tasks[idx] = task
+        },
+        getContextName: function(contextId) {
+            this.contexts.find(id === contextId)
         }
+
     },
     mounted() {
         axiosInst = axios.create({

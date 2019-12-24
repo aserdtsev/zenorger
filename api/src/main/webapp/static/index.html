@@ -63,6 +63,10 @@
           <div id="taskForm" class="col-sm-5">
             <div class="form">
               <input v-model.lazy="currentTask.name" type="text" class="form-control" placeholder="Name" />
+              <div>
+                <span>Контексты:</span>
+                <span v-for="contextId in currentTask.contexts">{{getContextName(contextId)}}</span>
+              </div>
               <button v-on:click="saveTask(currentTask)" class="btn btn-primary" type="button">Save</button>
             </div>
           </div>
