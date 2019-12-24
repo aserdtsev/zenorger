@@ -28,6 +28,10 @@ var vm = new Vue({
         },
         addTask: function(taskName) {
             let task = { id: createUuid(), createdAt: new Date(), name: taskName };
+            if (this.selectedList !== 'Inbox') {
+                task.contexts = [this.selectedList]
+                task.status = 'Active'
+            }
             axiosInst
                 .post('/task/add', task)
                 .then(response => (this.pushTask(response.data)))
