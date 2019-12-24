@@ -68,7 +68,7 @@ create table task (
 create table project_task (
     project_id uuid references task,
     task_id uuid references task,
-    order_num int not null,
+    index numeric not null,
     constraint project_task_project_id_task_id_pk
         primary key (project_id, task_id)
 );

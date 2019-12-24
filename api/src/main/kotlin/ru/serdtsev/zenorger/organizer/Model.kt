@@ -38,7 +38,7 @@ data class Task (
                 name = "project_task",
                 joinColumns = [JoinColumn(name = "project_id")],
                 inverseJoinColumns = [JoinColumn(name = "task_id")])
-        @OrderColumn(name = "orderNum", nullable = false)
+        @OrderColumn(name = "index", nullable = false)
         var projectTasks: List<Task>? = null,
 
         @ManyToMany(mappedBy = "projectTasks")
@@ -57,7 +57,7 @@ data class Task (
                 name = "task_tag",
                 joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "tag_id")])
-        @OrderColumn(name = "orderNum", nullable = false)
+        @OrderColumn(name = "index", nullable = false)
         val tags: List<Tag>? = null,
 
         @OneToMany
