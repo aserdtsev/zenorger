@@ -55,7 +55,7 @@ var vm = new Vue({
             this.tasks[idx] = task
         },
         getContextName: function(contextId) {
-            this.contexts.find(id === contextId)
+            return this.contexts.find(item => item.id === contextId).name
         }
 
     },

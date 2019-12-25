@@ -62,12 +62,26 @@
           </div>
           <div id="taskForm" class="col-sm-5">
             <div class="form">
-              <input v-model.lazy="currentTask.name" type="text" class="form-control" placeholder="Name" />
-              <div>
-                <span>Контексты:</span>
-                <span v-for="contextId in currentTask.contexts">{{getContextName(contextId)}}</span>
+              <div class="form-row">
+                <input v-model.lazy="currentTask.name" type="text" class="form-control" placeholder="Name" />
               </div>
-              <button v-on:click="saveTask(currentTask)" class="btn btn-primary" type="button">Save</button>
+              <div class="dropdown">
+                <span>Контексты:</span>
+                <span class="mark" v-for="contextId in currentTask.contexts">{{getContextName(contextId)}}</span>
+                <button id="contextsDropDown"
+                        class="btn btn-sm btn-primary dropdown-toggle float-right"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Изменить
+                </button>
+                <div class="dropdown-menu" aria-labelledby="contextsDropDown">
+                  <span class="dropdown-item" v-for="context in contexts">{{context.name}}</span>
+                </div>
+              </div>
+              <div class="form-row">
+                <button v-on:click="saveTask(currentTask)" class="btn btn-primary" type="button">Save</button>
+              </div>
             </div>
           </div>
         </div>
