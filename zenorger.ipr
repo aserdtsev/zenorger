@@ -66,6 +66,9 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
+  <component name="ProjectCodeStyleConfiguration">
+    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
+  </component>
   <component name="ProjectDictionaryState">
     <dictionary name="serdtsev">
       <words>
