@@ -4,7 +4,7 @@ spring:
   main.banner-mode: console
   jackson.default-property-inclusion: non_null
   datasource:
-    url: jdbc:postgresql://localhost:5432/serdtsev
+    url: jdbc:postgresql://localhost:5433/serdtsev
     username: serdtsev
     password: serdtsev
   jpa:
