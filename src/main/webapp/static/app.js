@@ -7,18 +7,18 @@ var vm = new Vue({
             tasks: null,
             newTaskName: '',
             currentTask: { },
+            isTaskEdit: false
         };
     },
     methods: {
         showInboxTasks: function() {
-            this.selectedList = 'Inbox'
+            this.selectedList = 'Inbox';
             axiosInst
                 .get('/task/inbox')
                 .then(response => (this.tasks = response.data));
         },
         showContextTasks: function(contextId) {
-            this.selectedList = contextId
-            axiosInst
+            this.selectedList = contextId;            axiosInst
                 .get('/task/list', {
                     params: {
                         contextId: contextId
@@ -29,21 +29,23 @@ var vm = new Vue({
         addTask: function(taskName) {
             let task = { id: createUuid(), createdAt: new Date(), name: taskName };
             if (this.selectedList !== 'Inbox') {
-                task.contexts = [this.selectedList]
-                task.status = 'Active'
+                task.contexts = [this.selectedList];
+                task.status = 'Active';
             }
             axiosInst
                 .post('/task/add', task)
-                .then(response => (this.pushTask(response.data)))
+                .then(response => (this.pushTask(response.data)));
             this.newTaskName = ''
         },
         showTask: function(task) {
             this.currentTask = jsonCopy(task);
+            this.isTaskEdit = true
         },
         saveTask: function(task) {
             axiosInst
                 .post('/task/update', task)
                 .then(response => (this.updateTask(response.data)))
+            this.isTaskEdit = false
         },
         pushTask: function(task) {
             this.tasks.push(task);
@@ -52,12 +54,11 @@ var vm = new Vue({
         updateTask: function(task) {
             this.currentTask = task;
             let idx = this.tasks.findIndex(it => it.id === task.id);
-            this.tasks[idx] = task
+            this.tasks[idx] = task;
         },
         getContextName: function(contextId) {
-            return this.contexts.find(item => item.id === contextId).name
+            return this.contexts.find(item => item.id === contextId).name;
         }
-
     },
     mounted() {
         axiosInst = axios.create({

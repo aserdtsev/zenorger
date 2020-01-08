@@ -64,7 +64,7 @@
         </div>
       </div>
       <div id="taskForm" class="col-sm-5">
-        <div class="form">
+        <div class="form" v-if="isTaskEdit">
           <input v-model.lazy="currentTask.name" type="text" class="form-control" placeholder="Name"/>
           <div class="form-control dropdown">
             <span>Contexts:</span>
@@ -77,7 +77,11 @@
                   aria-expanded="false">Change</span>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="contextsDropDown">
               <label class="dropdown-item" v-for="context in contexts">
-                <input type="checkbox" name="options"/>&nbsp;{{context.name}}
+                <input type="checkbox"
+                       name="options"
+                       v-model="currentTask.contexts"
+                       v-bind:value="context.id"/>&nbsp;{{context.name}}
+
               </label>
             </div>
           </div>
