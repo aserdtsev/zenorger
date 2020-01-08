@@ -43,3 +43,4 @@ build/classes/kotlin/main/META-INF/
 *.iml
 *.ipr
 *.iws
+/build/
