@@ -44,7 +44,7 @@ var vm = new Vue({
         saveTask: function(task) {
             axiosInst
                 .post('/task/update', task)
-                .then(response => (this.updateTask(response.data)))
+                .then(response => (this.updateTask(response.data)));
             this.isTaskEdit = false
         },
         pushTask: function(task) {
