@@ -12,7 +12,7 @@ var vm = new Vue({
     },
     methods: {
         showTasks: function(code) {
-            this.selectedList = code;
+            this.selectedListCode = code;
             axiosInst
                 .get('/task/list', {
                     params: {
