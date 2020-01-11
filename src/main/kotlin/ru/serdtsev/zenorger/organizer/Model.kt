@@ -50,7 +50,7 @@ data class Task (
                 joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "context_id")])
         @OrderColumn(name = "index", nullable = false)
-        val contexts: List<TaskContext>? = null,
+        var contexts: List<TaskContext>? = null,
 
         @ManyToMany
         @JoinTable(

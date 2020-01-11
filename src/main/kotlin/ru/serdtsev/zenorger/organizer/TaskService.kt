@@ -30,7 +30,9 @@ class TaskService(val taskRepo: TaskRepo, val taskContextRepo: TaskContextRepo) 
     @Transactional(readOnly = false)
     fun createOrUpdateTask(task: Task): Task {
         task.isProject = !task.projectTasks.isNullOrEmpty()
-        task.status = if (task.contexts.isNullOrEmpty()) TaskStatus.Inbox else TaskStatus.Active
+        if (task.status in listOf(TaskStatus.Inbox, TaskStatus.Active)) {
+            task.status = if (task.contexts.isNullOrEmpty()) TaskStatus.Inbox else TaskStatus.Active
+        } else task.contexts = null
         return taskRepo.save(task)
     }
 }
