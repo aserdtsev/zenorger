@@ -21,15 +21,15 @@
     <div class="row">
       <div class="col-sm-2">
         <button class="btn btn-link"
-                v-bind:class="{ 'btn-outline-primary': selectedList == 'Inbox' }"
-                v-on:click="showInboxTasks()">Inbox
+                v-bind:class="{ 'btn-outline-primary': selectedListCode == 'Inbox' }"
+                v-on:click="showTasks('Inbox')">Inbox
         </button>
         <div>Contexts</div>
         <ul>
           <li v-for="context in contexts">
             <button class="btn btn-link"
-                    v-bind:class="{ 'btn-outline-primary': context.id == selectedList }"
-                    v-on:click="showContextTasks(context.id)">{{context.name}}
+                    v-bind:class="{ 'btn-outline-primary': context.id == selectedListCode }"
+                    v-on:click="showTasks(context.id)">{{context.name}}
             </button>
           </li>
         </ul>

@@ -14,23 +14,17 @@ class TaskService(val taskRepo: TaskRepo, val taskContextRepo: TaskContextRepo) 
 
     fun getTask(id: UUID): Task? = taskRepo.findByIdOrNull(id)
 
-    fun getInbox(): List<Task> {
+    fun getList(code: String): List<Task> {
         val organizerId = ApiRequestContextHolder.organizerId!!
-        return taskRepo.findByOrganizerIdAndStatusOrderByCreatedAt(organizerId, TaskStatus.Inbox);
-    }
-
-    fun getList(contextId: UUID?, status: TaskStatus?): List<Task> {
-        val organizerId = ApiRequestContextHolder.organizerId!!
-        val context = taskContextRepo.findByOrganizerIdAndId(organizerId, contextId)
-        val contexts = if (context != null) listOf(context) else emptyList()
-        return if (contexts.isNotEmpty() && status != null)
-            taskRepo.findByOrganizerIdAndContextsAndStatusOrderByCreatedAt(organizerId, contexts, status)
-        else if (contexts.isNotEmpty() && status == null)
-            taskRepo.findByOrganizerIdAndContextsOrderByCreatedAt(organizerId, contexts)
-        else if (contexts.isEmpty() && status != null)
+        return if (TaskStatus.values().any { it.name == code }) {
+            val status = TaskStatus.valueOf(code)
             taskRepo.findByOrganizerIdAndStatusOrderByCreatedAt(organizerId, status)
-        else
-            taskRepo.findByOrganizerId(organizerId)
+        } else {
+            val contextId = UUID.fromString(code)
+            val context = taskContextRepo.findByOrganizerIdAndId(organizerId, contextId)
+            val contexts = if (context != null) listOf(context) else emptyList()
+            taskRepo.findByOrganizerIdAndContextsOrderByCreatedAt(organizerId, contexts)
+        }
     }
 
     @Transactional(readOnly = false)

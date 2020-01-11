@@ -3,7 +3,7 @@ var vm = new Vue({
     data() {
         return {
             contexts: null,
-            selectedList: 'Inbox', /** 'Inbox' или contextId */
+            selectedListCode: 'Inbox',
             tasks: null,
             newTaskName: '',
             currentTask: { },
@@ -11,25 +11,20 @@ var vm = new Vue({
         };
     },
     methods: {
-        showInboxTasks: function() {
-            this.selectedList = 'Inbox';
+        showTasks: function(code) {
+            this.selectedList = code;
             axiosInst
-                .get('/task/inbox')
-                .then(response => (this.tasks = response.data));
-        },
-        showContextTasks: function(contextId) {
-            this.selectedList = contextId;            axiosInst
                 .get('/task/list', {
                     params: {
-                        contextId: contextId
+                        code: code
                     }
                 })
                 .then(response => (this.tasks = response.data));
         },
         addTask: function(taskName) {
             let task = { id: createUuid(), createdAt: new Date(), name: taskName };
-            if (this.selectedList !== 'Inbox') {
-                task.contexts = [this.selectedList];
+            if (this.selectedListCode !== 'Inbox') {
+                task.contexts = [this.selectedListCode];
                 task.status = 'Active';
             }
             axiosInst
