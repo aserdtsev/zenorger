@@ -19,7 +19,7 @@ var vm = new Vue({
                         code: code
                     }
                 })
-                .then(response => (this.tasks = response.data));
+                .then(response => this.tasks = response.data);
         },
         addTask: function(taskName) {
             let task = { id: createUuid(), createdAt: new Date(), name: taskName };
@@ -29,7 +29,7 @@ var vm = new Vue({
             }
             axiosInst
                 .post('/task/add', task)
-                .then(response => (this.pushTask(response.data)));
+                .then(response => this.pushTask(response.data));
             this.newTaskName = ''
         },
         showTask: function(task) {
@@ -39,8 +39,11 @@ var vm = new Vue({
         saveTask: function(task) {
             axiosInst
                 .post('/task/update', task)
-                .then(response => (this.updateTask(response.data)));
-            this.isTaskEdit = false
+                .then(response => {
+                    this.updateTask(response.data);
+                    this.showTasks(this.selectedListCode);
+                });
+            this.isTaskEdit = false;
         },
         pushTask: function(task) {
             this.tasks.push(task);
@@ -73,7 +76,7 @@ var vm = new Vue({
         axiosInst
             .get('/context/list')
             .then(response => (this.contexts = response.data));
-        this.showInboxTasks();
+        this.showTasks('Inbox');
     }
 });
 
