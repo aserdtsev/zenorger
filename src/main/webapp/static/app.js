@@ -2,11 +2,12 @@ var vm = new Vue({
     el: '#app',
     data() {
         return {
+            statuses: ['Inbox', 'Active', 'Pending', 'SomedayMaybe'],
             contexts: null,
             selectedListCode: 'Inbox',
             tasks: null,
             newTaskName: '',
-            currentTask: { },
+            editableTask: { },
             isTaskEdit: false
         };
     },
@@ -20,6 +21,7 @@ var vm = new Vue({
                     }
                 })
                 .then(response => this.tasks = response.data);
+            this.isTaskEdit = false;
         },
         addTask: function(taskName) {
             let task = { id: createUuid(), createdAt: new Date(), name: taskName };
@@ -33,7 +35,7 @@ var vm = new Vue({
             this.newTaskName = ''
         },
         showTask: function(task) {
-            this.currentTask = jsonCopy(task);
+            this.editableTask = jsonCopy(task);
             this.isTaskEdit = true
         },
         saveTask: function(task) {
@@ -47,15 +49,23 @@ var vm = new Vue({
         },
         pushTask: function(task) {
             this.tasks.push(task);
-            this.currentTask = task;
+            this.editableTask = task;
         },
         updateTask: function(task) {
-            this.currentTask = task;
+            this.editableTask = task;
             let idx = this.tasks.findIndex(it => it.id === task.id);
             this.tasks[idx] = task;
         },
         getContextName: function(contextId) {
             return this.contexts.find(item => item.id === contextId).name;
+        },
+        setContexts: function(status) {
+            if (status != 'Active')
+                this.editableTask.contexts = [];
+        },
+        setStatus: function() {
+            if (this.editableTask.contexts.length === 0)
+                this.editableTask.status = 'Active';
         }
     },
     mounted() {
