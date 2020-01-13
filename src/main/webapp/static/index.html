@@ -33,6 +33,18 @@
             </button>
           </li>
         </ul>
+        <button class="btn btn-link"
+                v-bind:class="{ 'btn-outline-primary': selectedListCode == 'Pending' }"
+                v-on:click="showTasks('Pending')">Pending
+        </button>
+        <button class="btn btn-link"
+                v-bind:class="{ 'btn-outline-primary': selectedListCode == 'SomedayMaybe' }"
+                v-on:click="showTasks('SomedayMaybe')">Someday / Maybe
+        </button>
+        <button class="btn btn-link"
+                v-bind:class="{ 'btn-outline-primary': selectedListCode == 'Removed' }"
+                v-on:click="showTasks('Removed')">Trash
+        </button>
       </div>
       <div id="taskList" class="col-sm-5">
         <div id="addTask" class="row">
