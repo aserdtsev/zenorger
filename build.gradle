@@ -43,8 +43,12 @@ compileTestKotlin {
 }
 
 sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
 
 idea {
+    project {
+        jdkName = javaVersion
+    }
     module {
         excludeDirs += files('work', 'log')
     }
