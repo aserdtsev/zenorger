@@ -59,12 +59,12 @@ var vm = new Vue({
         getContextName: function(contextId) {
             return this.contexts.find(item => item.id === contextId).name;
         },
-        setContexts: function(status) {
+        setContextsByStatus: function(status) {
             if (status != 'Active')
                 this.editableTask.contexts = [];
         },
-        setStatus: function() {
-            if (this.editableTask.contexts.length === 0)
+        setStatusByContexts: function(contexts) {
+            if (contexts === undefined || contexts.length === 0)
                 this.editableTask.status = 'Active';
         }
     },

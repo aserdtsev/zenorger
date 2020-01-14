@@ -92,7 +92,7 @@
                 <input type="radio"
                        v-model="editableTask.status"
                        v-bind:value="status"
-                       v-on:click="setContexts(status)"/>&nbsp;{{status}}
+                       v-on:click="setContextsByStatus(status)"/>&nbsp;{{status}}
               </label>
             </div>
           </div>
@@ -112,8 +112,8 @@
                 <input type="checkbox"
                        name="options"
                        v-model="editableTask.contexts"
-                       v-bind:value="context.id",
-                       v-on:click="setStatus()"/>&nbsp;{{context.name}}
+                       v-bind:value="context.id"
+                       v-on:click="setStatusByContexts(context)"/>&nbsp;{{context.name}}
               </label>
             </div>
           </div>
