@@ -11,6 +11,24 @@ var vm = new Vue({
             isTaskEdit: false
         };
     },
+    computed: {
+        editableTaskStatus: function() {
+            return this.editableTask.status;
+        },
+        editableTaskContexts: function() {
+            return this.editableTask.contexts;
+        }
+    },
+    watch: {
+        editableTaskStatus: function(newStatus, oldStatus) {
+            if (newStatus !== 'Active')
+                this.editableTask.contexts = [];
+        },
+        editableTaskContexts: function(newContexts, oldContexts) {
+            if (newContexts === undefined || newContexts.length === 0) this.editableTask.status = 'Inbox';
+            else this.editableTask.status = 'Active';
+        }
+    },
     methods: {
         showTasks: function(code) {
             this.selectedListCode = code;
@@ -58,14 +76,6 @@ var vm = new Vue({
         },
         getContextName: function(contextId) {
             return this.contexts.find(item => item.id === contextId).name;
-        },
-        setContextsByStatus: function(status) {
-            if (status != 'Active')
-                this.editableTask.contexts = [];
-        },
-        setStatusByContexts: function(contexts) {
-            if (contexts === undefined || contexts.length === 0)
-                this.editableTask.status = 'Active';
         }
     },
     mounted() {
