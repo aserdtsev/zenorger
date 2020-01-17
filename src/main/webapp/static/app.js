@@ -9,7 +9,6 @@ var vm = new Vue({
             newTaskName: '',
             editableTask: { },
             editableTaskLastContexts: [],
-            editableTaskChangeIsActive: false,
             isTaskEdit: false
         };
     },
@@ -23,17 +22,21 @@ var vm = new Vue({
     },
     watch: {
         editableTaskStatus: function(newStatus, oldStatus) {
-            if (this.editableTaskChangeIsActive || oldStatus === undefined) return;
-            this.editableTaskChangeIsActive = true;
-            this.conformEditableTask('status', newStatus);
-            this.editableTaskChangeIsActive = false;
+            if (oldStatus === undefined || newStatus === oldStatus) return;
+            if (newStatus === 'Active' && !this.editableTask.contexts.length) {
+                this.editableTask.contexts = this.editableTaskLastContexts;
+            } else if (newStatus !== 'Active' && this.editableTask.contexts.length) {
+                this.editableTask.contexts = [];
+            }
         },
         editableTaskContexts: function(newContexts, oldContexts) {
-            if (this.editableTaskChangeIsActive || oldContexts === undefined) return;
-            this.editableTaskChangeIsActive = true;
-            this.conformEditableTask('contexts', newContexts);
-            this.editableTaskLastContexts = oldContexts;
-            this.editableTaskChangeIsActive = false;
+            if (oldContexts === undefined || JSON.stringify(newContexts) === JSON.stringify(oldContexts)) return;
+            if (!newContexts.length && this.editableTask.status === 'Active') {
+                this.editableTask.status = 'Inbox';
+                this.editableTaskLastContexts = oldContexts;
+            } else if (this.editableTask.status !== 'Active') {
+                this.editableTask.status = 'Active';
+            }
         }
     },
     methods: {
@@ -62,15 +65,6 @@ var vm = new Vue({
         showTask: function(task) {
             this.editableTask = jsonCopy(task);
             this.isTaskEdit = true
-        },
-        conformEditableTask: function(fieldName, fieldValue) {
-            if (fieldName === 'status') {
-                if (fieldValue === 'Active') this.editableTask.contexts = this.editableTaskLastContexts;
-                else this.editableTask.contexts = [];
-            } else if (fieldName === 'contexts') {
-                if (!fieldValue.length) this.editableTask.status = 'Inbox';
-                else this.editableTask.status = 'Active';
-            }
         },
         saveTask: function(task) {
             axiosInst
