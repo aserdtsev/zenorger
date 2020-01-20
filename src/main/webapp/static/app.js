@@ -50,6 +50,7 @@ var vm = new Vue({
                 })
                 .then(response => this.tasks = response.data);
             this.isTaskEdit = false;
+            this.clearEditableTask();
         },
         addTask: function(taskName) {
             let task = { id: createUuid(), createdAt: new Date(), name: taskName };
@@ -74,6 +75,7 @@ var vm = new Vue({
                     this.showTasks(this.selectedListCode);
                 });
             this.isTaskEdit = false;
+            this.clearEditableTask();
         },
         pushTask: function(task) {
             this.tasks.push(task);
@@ -83,6 +85,10 @@ var vm = new Vue({
             this.editableTask = task;
             let idx = this.tasks.findIndex(it => it.id === task.id);
             this.tasks[idx] = task;
+        },
+        clearEditableTask: function() {
+            this.editableTask = { };
+            this.editableTaskLastContexts = [];
         },
         getContextName: function(contextId) {
             return this.contexts.find(item => item.id === contextId).name;

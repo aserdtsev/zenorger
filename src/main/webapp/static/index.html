@@ -106,7 +106,9 @@
                   aria-haspopup="true"
                   aria-expanded="false"
                   v-if="editableTask.status === 'Active'">Change</span>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="contextsDropDown">
+            <div class="dropdown-menu dropdown-menu-right"
+                 aria-labelledby="contextsDropDown"
+                 v-if="editableTask.status === 'Active'">
               <label class="dropdown-item" v-for="context in contexts">
                 <input type="checkbox"
                        name="options"
