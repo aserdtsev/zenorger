@@ -1,0 +1,31 @@
+#app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    margin-top: 60px;
+}
+
+[class*="col-"] {
+    background-color: #eee;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+}
+
+.form {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.form-group {
+    margin-top: 2px;
+}
+
+.form-control {
+    margin-top: 2px;
+}
+
+/*.btn {*/
+/*    margin-top: 5px;*/
+/*}*/
+
