@@ -95,21 +95,7 @@ var vm = new Vue({
         }
     },
     mounted() {
-        axiosInst = axios.create({
-            baseURL: 'http://localhost:8080/api',
-            withCredentials: true,
-            auth: {
-                username: 'andrey.serdtsev@gmail.com',
-                password: '123456'
-            },
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                'X-Organizer-Id': '640021fc-4093-4dd4-84f2-5792a6116cb7',
-                'X-Request-Id': createUuid()
-            }
-        });
-        axiosInst
+        AXIOS
             .get('/context/list')
             .then(response => (this.contexts = response.data));
         this.showTasks('Inbox');
