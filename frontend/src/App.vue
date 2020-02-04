@@ -117,10 +117,10 @@ import HelloWorld from './components/HelloWorld.vue'
 import {AXIOS} from './http-common'
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  },
+    name: 'app',
+    components: {
+        HelloWorld
+    },
     data() {
         return {
             statuses: ['Inbox', 'Active', 'Pending', 'SomedayMaybe'],
@@ -128,21 +128,21 @@ export default {
             selectedListCode: 'Inbox',
             tasks: null,
             newTaskName: '',
-            editableTask: { },
+            editableTask: {},
             editableTaskLastContexts: [],
             isTaskEdit: false
         };
     },
     computed: {
-        editableTaskStatus: function() {
+        editableTaskStatus: function () {
             return this.editableTask.status;
         },
-        editableTaskContexts: function() {
+        editableTaskContexts: function () {
             return this.editableTask.contexts;
         }
     },
     watch: {
-        editableTaskStatus: function(newStatus, oldStatus) {
+        editableTaskStatus: function (newStatus, oldStatus) {
             if (oldStatus === undefined || newStatus === oldStatus) return;
             if (newStatus === 'Active' && !this.editableTask.contexts.length) {
                 this.editableTask.contexts = this.editableTaskLastContexts;
@@ -150,7 +150,7 @@ export default {
                 this.editableTask.contexts = [];
             }
         },
-        editableTaskContexts: function(newContexts, oldContexts) {
+        editableTaskContexts: function (newContexts, oldContexts) {
             if (oldContexts === undefined || JSON.stringify(newContexts) === JSON.stringify(oldContexts)) return;
             if (!newContexts.length && this.editableTask.status === 'Active') {
                 this.editableTask.status = 'Inbox';
@@ -161,19 +161,19 @@ export default {
         }
     },
     methods: {
-        showTasks: function(code) {
+        showTasks: function (code) {
             this.selectedListCode = code;
             AXIOS.get('/task/list', {
-                    params: {
-                        code: code
-                    }
-                })
+                params: {
+                    code: code
+                }
+            })
                 .then(response => this.tasks = response.data);
             this.isTaskEdit = false;
             this.clearEditableTask();
         },
-        addTask: function(taskName) {
-            let task = { id: createUuid(), createdAt: new Date(), name: taskName };
+        addTask: function (taskName) {
+            let task = {id: createUuid(), createdAt: new Date(), name: taskName};
             if (this.selectedListCode !== 'Inbox') {
                 task.contexts = [this.selectedListCode];
                 task.status = 'Active';
@@ -182,11 +182,11 @@ export default {
                 .then(response => this.pushTask(response.data));
             this.newTaskName = ''
         },
-        showTask: function(task) {
+        showTask: function (task) {
             this.editableTask = jsonCopy(task);
             this.isTaskEdit = true
         },
-        saveTask: function(task) {
+        saveTask: function (task) {
             AXIOS.post('/task/update', task)
                 .then(response => {
                     this.updateTask(response.data);
@@ -195,20 +195,20 @@ export default {
             this.isTaskEdit = false;
             this.clearEditableTask();
         },
-        pushTask: function(task) {
+        pushTask: function (task) {
             this.tasks.push(task);
             this.editableTask = task;
         },
-        updateTask: function(task) {
+        updateTask: function (task) {
             this.editableTask = task;
             let idx = this.tasks.findIndex(it => it.id === task.id);
             this.tasks[idx] = task;
         },
-        clearEditableTask: function() {
-            this.editableTask = { };
+        clearEditableTask: function () {
+            this.editableTask = {};
             this.editableTaskLastContexts = [];
         },
-        getContextName: function(contextId) {
+        getContextName: function (contextId) {
             return this.contexts.find(item => item.id === contextId).name;
         }
     },
