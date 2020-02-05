@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="container">
 <!--    <img alt="Vue logo" src="./assets/logo.png">-->
     <div class="row text-center">
       <div id="header" class="col-sm-12">Zenorger</div>
