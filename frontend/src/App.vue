@@ -7,28 +7,28 @@
     <div class="row">
       <div class="col-sm-2">
         <button class="btn btn-link"
-                v-bind:class="{ 'btn-outline-primary': this.selectedListCode === 'Inbox' }"
+                v-bind:class="{ 'btn-outline-primary': selectedListCode === 'Inbox' }"
                 v-on:click="showTasks('Inbox')">Inbox
         </button>
         <div>Contexts</div>
         <ul>
           <li v-for="context in contexts" :key="context.id">
             <button class="btn btn-link"
-                    v-bind:class="{ 'btn-outline-primary': context.id === this.selectedListCode }"
+                    v-bind:class="{ 'btn-outline-primary': context.id === selectedListCode }"
                     v-on:click="showTasks(context.id)">{{context.name}}
             </button>
           </li>
         </ul>
         <button class="btn btn-link"
-                v-bind:class="{ 'btn-outline-primary': this.selectedListCode === 'Pending' }"
+                v-bind:class="{ 'btn-outline-primary': selectedListCode === 'Pending' }"
                 v-on:click="showTasks('Pending')">Pending
         </button>
         <button class="btn btn-link"
-                v-bind:class="{ 'btn-outline-primary': this.selectedListCode === 'SomedayMaybe' }"
+                v-bind:class="{ 'btn-outline-primary': selectedListCode === 'SomedayMaybe' }"
                 v-on:click="showTasks('SomedayMaybe')">Someday / Maybe
         </button>
         <button class="btn btn-link"
-                v-bind:class="{ 'btn-outline-primary': this.selectedListCode === 'Removed' }"
+                v-bind:class="{ 'btn-outline-primary': selectedListCode === 'Removed' }"
                 v-on:click="showTasks('Removed')">Trash
         </button>
       </div>
@@ -37,11 +37,11 @@
           <div class="col-sm-12">
             <div class="form">
               <div>
-                <input type="text" class="form-control" v-model="this.newTaskName" placeholder="Add task..."/>
+                <input type="text" class="form-control" v-model="newTaskName" placeholder="Add task..."/>
               </div>
               <button class="btn btn-primary form-group"
-                      v-bind:disabled="!this.newTaskName"
-                      v-on:click="this.addTask(this.newTaskName)">Add task
+                      v-bind:disabled="!newTaskName"
+                      v-on:click="addTask(newTaskName)">Add task
               </button>
             </div>
           </div>
@@ -49,9 +49,9 @@
         <div class="block">
           <table class="table table-sm table-hover">
             <tbody>
-              <tr v-for="task in this.tasks" :key="task.id">
-                <td v-bind:class="{ 'table-success': task.id === this.editableTask.id }"
-                    v-on:click="this.showTask(task)">
+              <tr v-for="task in tasks" :key="task.id">
+                <td v-bind:class="{ 'table-success': task.id === editableTask.id }"
+                    v-on:click="showTask(task)">
                   <span>{{task.name}}</span>
                   <span class="float-right">{{task.completeDate}}</span>
                 </td>
@@ -61,9 +61,9 @@
         </div>
       </div>
       <div id="taskForm" class="col-sm-5">
-        <div class="form" v-if="this.isTaskEdit">
+        <div class="form" v-if="isTaskEdit">
           <!-- Name -->
-          <input v-model.lazy="this.editableTask.name" type="text" class="form-control" placeholder="Name"/>
+          <input v-model.lazy="editableTask.name" type="text" class="form-control" placeholder="Name"/>
           <!-- Status -->
           <div class="form-control dropdown">
             <span>Status:</span>
@@ -74,9 +74,9 @@
                   aria-haspopup="true"
                   aria-expanded="false"></span>
             <div class="dropdown-menu dropdown-menu-left" aria-labelledby="statusDropDown">
-              <label class="dropdown-item" v-for="status in this.statuses" :key="status">
+              <label class="dropdown-item" v-for="status in statuses" :key="status">
                 <input type="radio"
-                       v-model="this.editableTask.status"
+                       v-model="editableTask.status"
                        v-bind:value="status"/>&nbsp;{{status}}
               </label>
             </div>
@@ -85,26 +85,26 @@
           <div class="form-control dropdown">
             <span>Contexts:</span>
             <span class="mark"
-                  v-for="contextId in this.editableTask.contexts" :key="contextId">{{getContextName(contextId)}}</span>
+                  v-for="contextId in editableTask.contexts" :key="contextId">{{getContextName(contextId)}}</span>
             <span id="contextsDropDown"
                   class="dropdown-toggle float-right"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
-                  v-if="this.editableTask.status === 'Active'">Change</span>
+                  v-if="editableTask.status === 'Active'">Change</span>
             <div class="dropdown-menu dropdown-menu-right"
                  aria-labelledby="contextsDropDown"
-                 v-if="this.editableTask.status === 'Active'">
-              <label class="dropdown-item" v-for="context in this.contexts" :key="context.id">
+                 v-if="editableTask.status === 'Active'">
+              <label class="dropdown-item" v-for="context in contexts" :key="context.id">
                 <input type="checkbox"
                        name="options"
-                       v-model="this.editableTask.contexts"
+                       v-model="editableTask.contexts"
                        v-bind:value="context.id"/>&nbsp;{{context.name}}
               </label>
             </div>
           </div>
           <!-- Save button -->
-          <button v-on:click="this.saveTask(this.editableTask)" class="btn btn-primary form-group" type="button">Save</button>
+          <button v-on:click="saveTask(editableTask)" class="btn btn-primary form-group" type="button">Save</button>
         </div>
       </div>
     </div>
