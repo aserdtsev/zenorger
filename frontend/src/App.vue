@@ -37,7 +37,9 @@
           <div class="col-sm-12">
             <div class="form">
               <div>
-                <input type="text" class="form-control" v-model="newTaskName" placeholder="Add task..."/>
+                <label>
+                  <input type="text" class="form-control" v-model="newTaskName" placeholder="Add task..."/>
+                </label>
               </div>
               <button class="btn btn-primary form-group"
                       v-bind:disabled="!newTaskName"
@@ -63,7 +65,9 @@
       <div id="taskForm" class="col-sm-5">
         <div class="form" v-if="isTaskEdit">
           <!-- Name -->
-          <input v-model.lazy="editableTask.name" type="text" class="form-control" placeholder="Name"/>
+          <label>
+            <input v-model.lazy="editableTask.name" type="text" class="form-control" placeholder="Name"/>
+          </label>
           <!-- Status -->
           <div class="form-control dropdown">
             <span>Status:</span>
@@ -90,11 +94,9 @@
                   class="dropdown-toggle float-right"
                   data-toggle="dropdown"
                   aria-haspopup="true"
-                  aria-expanded="false"
-                  v-if="editableTask.status === 'Active'">Change</span>
+                  aria-expanded="false">Change</span>
             <div class="dropdown-menu dropdown-menu-right"
-                 aria-labelledby="contextsDropDown"
-                 v-if="editableTask.status === 'Active'">
+                 aria-labelledby="contextsDropDown">
               <label class="dropdown-item" v-for="context in contexts" :key="context.id">
                 <input type="checkbox"
                        name="options"
@@ -113,122 +115,117 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import {AXIOS} from './http-common'
+    import 'jquery'
+    import 'popper.js'
+    import 'bootstrap'
+    import HelloWorld from './components/HelloWorld.vue'
+    import {AXIOS} from './http-common'
 
-export default {
-    name: 'app',
-    components: {
-        HelloWorld
-    },
-    data() {
-        return {
-            statuses: ['Inbox', 'Active', 'Pending', 'SomedayMaybe'],
-            contexts: null,
-            selectedListCode: 'Inbox',
-            tasks: null,
-            newTaskName: '',
-            editableTask: {},
-            editableTaskLastContexts: [],
-            isTaskEdit: false
-        };
-    },
-    computed: {
-        editableTaskStatus: function () {
-            return this.editableTask.status;
+    export default {
+        name: 'app',
+        components: {
+            HelloWorld
         },
-        editableTaskContexts: function () {
-            return this.editableTask.contexts;
-        }
-    },
-    watch: {
-        editableTaskStatus: function (newStatus, oldStatus) {
-            if (oldStatus === undefined || newStatus === oldStatus) return;
-            if (newStatus === 'Active' && !this.editableTask.contexts.length) {
-                this.editableTask.contexts = this.editableTaskLastContexts;
-            } else if (newStatus !== 'Active' && this.editableTask.contexts.length) {
-                this.editableTask.contexts = [];
+        data() {
+            return {
+                statuses: ['Inbox', 'Active', 'Pending', 'SomedayMaybe'],
+                contexts: null,
+                selectedListCode: 'Inbox',
+                tasks: null,
+                newTaskName: '',
+                editableTask: {},
+                editableTaskLastContexts: [],
+                isTaskEdit: false
+            };
+        },
+        computed: {
+            editableTaskStatus: function () {
+                return this.editableTask.status;
+            },
+            editableTaskContexts: function () {
+                return this.editableTask.contexts;
             }
         },
-        editableTaskContexts: function (newContexts, oldContexts) {
-            if (oldContexts === undefined || JSON.stringify(newContexts) === JSON.stringify(oldContexts)) return;
-            if (!newContexts.length && this.editableTask.status === 'Active') {
-                this.editableTask.status = 'Inbox';
-                this.editableTaskLastContexts = oldContexts;
-            } else if (this.editableTask.status !== 'Active') {
-                this.editableTask.status = 'Active';
+        watch: {
+            editableTaskStatus: function (newStatus, oldStatus) {
+                if (oldStatus !== undefined && newStatus !== oldStatus && newStatus !== 'Active' &&
+                    this.editableTask.contexts !== undefined && this.editableTask.contexts.length > 0)
+                    this.editableTask.contexts = [];
+            },
+            editableTaskContexts: function (newContexts, oldContexts) {
+                if (newContexts !== undefined && newContexts.length > 0 && oldContexts !== undefined &&
+                    JSON.stringify(newContexts) !== JSON.stringify(oldContexts))
+                    this.editableTask.status = 'Active';
             }
-        }
-    },
-    methods: {
-        showTasks: function (code) {
-            this.selectedListCode = code;
-            AXIOS.get('/task/list', {
-                params: {
-                    code: code
+        },
+        methods: {
+            showTasks: function (code) {
+                this.selectedListCode = code;
+                AXIOS.get('/task/list', {
+                    params: {
+                        code: code
+                    }
+                })
+                    .then(response => this.tasks = response.data);
+                this.isTaskEdit = false;
+                this.clearEditableTask();
+            },
+            addTask: function (taskName) {
+                let task = {id: createUuid(), createdAt: new Date(), name: taskName};
+                if (this.selectedListCode !== 'Inbox') {
+                    task.contexts = [this.selectedListCode];
+                    task.status = 'Active';
                 }
-            })
-                .then(response => this.tasks = response.data);
-            this.isTaskEdit = false;
-            this.clearEditableTask();
-        },
-        addTask: function (taskName) {
-            let task = {id: createUuid(), createdAt: new Date(), name: taskName};
-            if (this.selectedListCode !== 'Inbox') {
-                task.contexts = [this.selectedListCode];
-                task.status = 'Active';
+                AXIOS.post('/task/add', task)
+                    .then(response => this.pushTask(response.data));
+                this.newTaskName = ''
+            },
+            showTask: function (task) {
+                this.editableTask = jsonCopy(task);
+                this.isTaskEdit = true
+            },
+            saveTask: function (task) {
+                AXIOS.post('/task/update', task)
+                    .then(response => {
+                        this.updateTask(response.data);
+                        this.showTasks(this.selectedListCode);
+                    });
+                this.isTaskEdit = false;
+                this.clearEditableTask();
+            },
+            pushTask: function (task) {
+                this.tasks.push(task);
+                this.editableTask = task;
+            },
+            updateTask: function (task) {
+                this.editableTask = task;
+                let idx = this.tasks.findIndex(it => it.id === task.id);
+                this.tasks[idx] = task;
+            },
+            clearEditableTask: function () {
+                this.editableTask = {};
+                this.editableTaskLastContexts = [];
+            },
+            getContextName: function (contextId) {
+                return this.contexts.find(item => item.id === contextId).name;
             }
-            AXIOS.post('/task/add', task)
-                .then(response => this.pushTask(response.data));
-            this.newTaskName = ''
         },
-        showTask: function (task) {
-            this.editableTask = jsonCopy(task);
-            this.isTaskEdit = true
-        },
-        saveTask: function (task) {
-            AXIOS.post('/task/update', task)
-                .then(response => {
-                    this.updateTask(response.data);
-                    this.showTasks(this.selectedListCode);
-                });
-            this.isTaskEdit = false;
-            this.clearEditableTask();
-        },
-        pushTask: function (task) {
-            this.tasks.push(task);
-            this.editableTask = task;
-        },
-        updateTask: function (task) {
-            this.editableTask = task;
-            let idx = this.tasks.findIndex(it => it.id === task.id);
-            this.tasks[idx] = task;
-        },
-        clearEditableTask: function () {
-            this.editableTask = {};
-            this.editableTaskLastContexts = [];
-        },
-        getContextName: function (contextId) {
-            return this.contexts.find(item => item.id === contextId).name;
+        mounted() {
+            AXIOS.get('/context/list')
+                .then(response => (this.contexts = response.data));
+            this.showTasks('Inbox');
         }
-    },
-    mounted() {
-        AXIOS.get('/context/list')
-            .then(response => (this.contexts = response.data));
-        this.showTasks('Inbox');
     }
-}
 
-export function createUuid() {
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    )
-}
+    export function createUuid() {
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        )
+    }
 
-function jsonCopy(src) {
-    return JSON.parse(JSON.stringify(src));
-}
-
+    function jsonCopy(src) {
+        return JSON.parse(JSON.stringify(src));
+    }
 </script>
 
 <style>
