@@ -1,6 +1,5 @@
 <template>
-  <div id="app" class="container">
-<!--    <img alt="Vue logo" src="./assets/logo.png">-->
+  <div id="app" class="container" v-on:task-edit-completed="onTaskEditCompleted($event)">
     <div class="row text-center">
       <div id="header" class="col-sm-12">Zenorger</div>
     </div>
@@ -51,7 +50,7 @@
         <div class="block">
           <table class="table table-sm table-hover">
             <tbody>
-              <tr v-for="task in tasks" :key="task.id">
+              <tr v-for="(task, i) in tasks" :key="i">
                 <td v-bind:class="{ 'table-success': task.id === editableTask.id }"
                     v-on:click="showTask(task)">
                   <span>{{task.name}}</span>
@@ -63,7 +62,12 @@
         </div>
       </div>
       <div id="taskForm" class="col-sm-5">
-        <TaskEdit v-if="isTaskEdit" editableTask="jsonCopy(task)" tasks="tasks"/>
+        <TaskEdit v-if="isTaskEdit"
+                  editableTask="editableTask"
+                  tasks="tasks"
+                  statuses="statuses"
+                  contexts="contexts"
+                  v-on:clear-edit-task="this.clearEditableTask()"/>
       </div>
     </div>
     <HelloWorld msg="Welcome to Your Vue.js App"/>
@@ -88,11 +92,12 @@
         data() {
             return {
                 statuses: ['Inbox', 'Active', 'Pending', 'SomedayMaybe'],
-                contexts: null,
+                contexts: [],
                 selectedListCode: 'Inbox',
-                tasks: null,
+                tasks: [],
                 newTaskName: '',
-                isTaskEdit: false
+                isTaskEdit: false,
+                editableTask: {}
             };
         },
         methods: {
@@ -105,7 +110,7 @@
                 })
                     .then(response => this.tasks = response.data);
                 this.isTaskEdit = false;
-                this.clearEditableTask();
+                this.$emit("clear-task-edit");
             },
             addTask: function (taskName) {
                 let task = {id: createUuid(), createdAt: new Date(), name: taskName};
@@ -115,13 +120,31 @@
                 }
                 AXIOS.post('/task/add', task)
                     .then(response => this.pushTask(response.data));
-                this.newTaskName = ''
+                this.newTaskName = '';
             },
-            showTask: function () {
-                this.isTaskEdit = true
+            pushTask: function (task) {
+                this.tasks.push(task);
+                this.editableTask = task;
             },
-            getContextName: function (contextId) {
-                return this.contexts.find(item => item.id === contextId).name;
+            showTask: function (task) {
+                this.editableTask = jsonCopy(task);
+                this.isTaskEdit = true;
+            },
+            onTaskEditCompleted: function(task) {
+                this.saveTask(task);
+                this.isTaskEdit = false;
+            },
+            saveTask: function (task) {
+                AXIOS.post('/task/update', task)
+                    .then(response => {
+                        this.updateTask(response.data);
+                        this.showTasks(this.selectedListCode);
+                    });
+            },
+            updateTask: function (task) {
+                this.editableTask = task;
+                const idx = this.tasks.findIndex(it => it.id === task.id);
+                this.tasks[idx] = task;
             }
         },
         mounted() {

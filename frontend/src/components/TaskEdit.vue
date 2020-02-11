@@ -47,14 +47,10 @@
 </template>
 
 <script>
-import {AXIOS} from "@/http-common";
 
 export default {
     name: 'TaskEdit',
-    props: {
-        editableTask: Object,
-        tasks: Array
-    },
+    props: ['editableTask', 'statuses', 'contexts'],
     data() {
         return {
             editableTaskLastContexts: []
@@ -81,23 +77,12 @@ export default {
         }
     },
     methods: {
+        getContextName: function (contextId) {
+            return this.contexts.find(item => item.id === contextId).name;
+        },
         saveTask: function (task) {
-            AXIOS.post('/task/update', task)
-                .then(response => {
-                    this.updateTask(response.data);
-                    this.showTasks(this.selectedListCode);
-                });
-            this.isTaskEdit = false;
+            this.$emit('task-edit-completed', task);
             this.clearEditableTask();
-        },
-        pushTask: function (task) {
-            this.tasks.push(task);
-            this.editableTask = task;
-        },
-        updateTask: function (task) {
-            this.editableTask = task;
-            const idx = this.tasks.findIndex(it => it.id === task.id);
-            this.tasks[idx] = task;
         },
         clearEditableTask: function () {
             this.editableTask = {};
@@ -105,4 +90,5 @@ export default {
         }
     }
 }
+
 </script>
