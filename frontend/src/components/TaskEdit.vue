@@ -49,8 +49,12 @@
 <script>
 
 export default {
-    name: 'TaskEdit',
-    props: ['editableTask', 'statuses', 'contexts'],
+    name: 'task-edit',
+    props: {
+        editableTask: Object,
+        statuses: Array,
+        contexts: Array
+    },
     data() {
         return {
             editableTaskLastContexts: []

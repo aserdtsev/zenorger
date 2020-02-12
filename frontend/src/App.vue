@@ -50,7 +50,7 @@
         <div class="block">
           <table class="table table-sm table-hover">
             <tbody>
-              <tr v-for="(task, i) in tasks" :key="i">
+              <tr v-for="task in tasks" :key="task.id">
                 <td v-bind:class="{ 'table-success': task.id === editableTask.id }"
                     v-on:click="showTask(task)">
                   <span>{{task.name}}</span>
@@ -62,15 +62,13 @@
         </div>
       </div>
       <div id="taskForm" class="col-sm-5">
-        <TaskEdit v-if="isTaskEdit"
-                  editableTask="editableTask"
-                  tasks="tasks"
-                  statuses="statuses"
-                  contexts="contexts"
+        <task-edit v-if="isTaskEdit"
+                  v-bind:editable-task="editableTask"
+                  v-bind:statuses="statuses"
+                  v-bind:contexts="contexts"
                   v-on:clear-edit-task="this.clearEditableTask()"/>
       </div>
     </div>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
@@ -79,15 +77,13 @@
     import 'popper.js'
     import 'bootstrap'
     import TaskEdit from './components/TaskEdit.vue'
-    import HelloWorld from './components/HelloWorld.vue'
     import {AXIOS} from './http-common'
     import {createUuid, jsonCopy} from "@/main";
 
     export default {
         name: 'app',
         components: {
-            TaskEdit,
-            HelloWorld
+            TaskEdit
         },
         data() {
             return {
@@ -119,12 +115,8 @@
                     task.status = 'Active';
                 }
                 AXIOS.post('/task/add', task)
-                    .then(response => this.pushTask(response.data));
+                    .then(response => this.tasks.push(response.data));
                 this.newTaskName = '';
-            },
-            pushTask: function (task) {
-                this.tasks.push(task);
-                this.editableTask = task;
             },
             showTask: function (task) {
                 this.editableTask = jsonCopy(task);
@@ -142,7 +134,6 @@
                     });
             },
             updateTask: function (task) {
-                this.editableTask = task;
                 const idx = this.tasks.findIndex(it => it.id === task.id);
                 this.tasks[idx] = task;
             }
