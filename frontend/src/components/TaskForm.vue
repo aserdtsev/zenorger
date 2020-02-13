@@ -2,12 +2,12 @@
   <div class="form">
     <!-- Name -->
     <label>
-      <input v-model.lazy="editableTask.name" type="text" class="form-control" placeholder="Name"/>
+      <input v-model.lazy="task.name" type="text" class="form-control" placeholder="Name"/>
     </label>
     <!-- Status -->
     <div class="form-control dropdown">
       <span>Status:</span>
-      <span>{{editableTask.status}}</span>
+      <span>{{task.status}}</span>
       <span id="statusDropDown"
             class="dropdown-toggle"
             data-toggle="dropdown"
@@ -16,7 +16,7 @@
       <div class="dropdown-menu dropdown-menu-left" aria-labelledby="statusDropDown">
         <label class="dropdown-item" v-for="status in statuses" :key="status">
           <input type="radio"
-                 v-model="editableTask.status"
+                 v-model="task.status"
                  v-bind:value="status"/>&nbsp;{{status}}
         </label>
       </div>
@@ -25,7 +25,7 @@
     <div class="form-control dropdown">
       <span>Contexts:</span>
       <span class="mark"
-            v-for="contextId in editableTask.contexts" :key="contextId">{{getContextName(contextId)}}</span>
+            v-for="contextId in task.contexts" :key="contextId">{{getContextName(contextId)}}</span>
       <span id="contextsDropDown"
             class="dropdown-toggle float-right"
             data-toggle="dropdown"
@@ -36,48 +36,50 @@
         <label class="dropdown-item" v-for="context in contexts" :key="context.id">
           <input type="checkbox"
                  name="options"
-                 v-model="editableTask.contexts"
+                 v-model="task.contexts"
                  v-bind:value="context.id"/>&nbsp;{{context.name}}
         </label>
       </div>
     </div>
     <!-- Save button -->
-    <button v-on:click="saveTask(editableTask)" class="btn btn-primary form-group" type="button">Save</button>
+    <button v-on:click="saveTask(task)" class="btn btn-primary form-group" type="button">Save</button>
   </div>
 </template>
 
 <script>
 
+import {jsonCopy} from "@/main";
+
 export default {
-    name: 'task-edit',
+    name: 'task-form',
     props: {
-        editableTask: Object,
+        initialTask: Object,
         statuses: Array,
         contexts: Array
     },
     data() {
         return {
-            editableTaskLastContexts: []
+            task: jsonCopy(this.initialTask)
         };
     },
     computed: {
-        editableTaskStatus: function () {
-            return this.editableTask.status;
+        taskStatus: function () {
+            return this.task.status;
         },
-        editableTaskContexts: function () {
-            return this.editableTask.contexts;
+        taskContexts: function () {
+            return this.task.contexts;
         }
     },
     watch: {
-        editableTaskStatus: function (newStatus, oldStatus) {
+        taskStatus: function (newStatus, oldStatus) {
             if (oldStatus !== undefined && newStatus !== oldStatus && newStatus !== 'Active' &&
-                this.editableTask.contexts !== undefined && this.editableTask.contexts.length > 0)
-                this.editableTask.contexts = [];
+                this.task.contexts !== undefined && this.task.contexts.length > 0)
+                this.task.contexts = [];
         },
-        editableTaskContexts: function (newContexts, oldContexts) {
+        taskContexts: function (newContexts, oldContexts) {
             if (newContexts !== undefined && newContexts.length > 0 && oldContexts !== undefined &&
                 JSON.stringify(newContexts) !== JSON.stringify(oldContexts))
-                this.editableTask.status = 'Active';
+                this.task.status = 'Active';
         }
     },
     methods: {
@@ -86,13 +88,12 @@ export default {
         },
         saveTask: function (task) {
             this.$emit('task-edit-completed', task);
-            this.clearEditableTask();
-        },
-        clearEditableTask: function () {
-            this.editableTask = {};
-            this.editableTaskLastContexts = [];
         }
     }
 }
 
 </script>
+
+<style scoped>
+  @import '../assets/app.css';
+</style>

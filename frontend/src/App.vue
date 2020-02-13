@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container" v-on:task-edit-completed="onTaskEditCompleted($event)">
+  <div id="app" class="container">
     <div class="row text-center">
       <div id="header" class="col-sm-12">Zenorger</div>
     </div>
@@ -62,11 +62,11 @@
         </div>
       </div>
       <div id="taskForm" class="col-sm-5">
-        <task-edit v-if="isTaskEdit"
-                  v-bind:editable-task="editableTask"
-                  v-bind:statuses="statuses"
-                  v-bind:contexts="contexts"
-                  v-on:clear-edit-task="this.clearEditableTask()"/>
+        <task-form v-if="isTaskEdit"
+                   v-bind:initial-task="editableTask"
+                   v-bind:statuses="statuses"
+                   v-bind:contexts="contexts"
+                   v-on:task-edit-completed="onTaskEditCompleted($event)"/>
       </div>
     </div>
   </div>
@@ -76,14 +76,14 @@
     import 'jquery'
     import 'popper.js'
     import 'bootstrap'
-    import TaskEdit from './components/TaskEdit.vue'
+    import TaskForm from './components/TaskForm.vue'
     import {AXIOS} from './http-common'
-    import {createUuid, jsonCopy} from "@/main";
+    import {createUuid} from "@/main";
 
     export default {
         name: 'app',
         components: {
-            TaskEdit
+            TaskForm
         },
         data() {
             return {
@@ -106,7 +106,6 @@
                 })
                     .then(response => this.tasks = response.data);
                 this.isTaskEdit = false;
-                this.$emit("clear-task-edit");
             },
             addTask: function (taskName) {
                 let task = {id: createUuid(), createdAt: new Date(), name: taskName};
@@ -119,7 +118,7 @@
                 this.newTaskName = '';
             },
             showTask: function (task) {
-                this.editableTask = jsonCopy(task);
+                this.editableTask = task;
                 this.isTaskEdit = true;
             },
             onTaskEditCompleted: function(task) {
@@ -146,31 +145,6 @@
     }
 </script>
 
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
-
-  [class*="col-"] {
-    background-color: #eee;
-    border-right: 2px solid #fff;
-    border-bottom: 2px solid #fff;
-  }
-
-  .form {
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-
-  .form-group {
-    margin-top: 2px;
-  }
-
-  .form-control {
-    margin-top: 2px;
-  }
+<style scoped>
+  @import 'assets/app.css';
 </style>
