@@ -1,11 +1,7 @@
 <template>
   <div class="form">
-    <!-- Name -->
-    <label>
-      <input v-model.lazy="task.name" type="text" class="form-control" placeholder="Name"/>
-    </label>
-    <!-- Status -->
-    <div class="form-control dropdown">
+    <input class="form-control" v-model.lazy="task.name" type="text" placeholder="Name"/>
+    <div id="status" class="form-control dropdown">
       <span>Status:</span>
       <span>{{task.status}}</span>
       <span id="statusDropDown"
@@ -21,8 +17,7 @@
         </label>
       </div>
     </div>
-    <!-- Contexts -->
-    <div class="form-control dropdown">
+    <div id="contexts" class="form-control dropdown">
       <span>Contexts:</span>
       <span class="mark"
             v-for="contextId in task.contexts" :key="contextId">{{getContextName(contextId)}}</span>
@@ -41,8 +36,7 @@
         </label>
       </div>
     </div>
-    <!-- Save button -->
-    <button v-on:click="saveTask(task)" class="btn btn-primary form-group" type="button">Save</button>
+    <button id="save" v-on:click="saveTask(task)" class="btn btn-primary form-group" type="button">Save</button>
   </div>
 </template>
 
