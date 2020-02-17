@@ -31,41 +31,16 @@
                 v-on:click="showTasks('Removed')">Trash
         </button>
       </div>
-      <div id="taskList" class="col-sm-5">
-        <div id="addTask" class="row">
-          <div class="col-sm-12">
-            <div class="form">
-              <div>
-                <!--suppress HtmlFormInputWithoutLabel -->
-                <input type="text" class="form-control" v-model="newTaskName" placeholder="Add task..."/>
-              </div>
-              <button class="btn btn-primary form-group"
-                      v-bind:disabled="!newTaskName"
-                      v-on:click="addTask(newTaskName)">Add task
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="block">
-          <table class="table table-sm table-hover">
-            <tbody>
-              <tr v-for="task in tasks" :key="task.id">
-                <td v-bind:class="{ 'table-success': task.id === editableTask.id }"
-                    v-on:click="showTask(task)">
-                  <span>{{task.name}}</span>
-                  <span class="float-right">{{task.completeDate}}</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="col-sm-5">
+        <task-list v-bind:list-code="selectedListCode" v-bind:task-edit-completed="taskEditCompleted"/>
       </div>
-      <div id="taskForm" class="col-sm-5">
+      <div class="col-sm-5">
         <task-form v-if="isTaskEdit"
                    v-bind:initial-task="editableTask"
                    v-bind:statuses="statuses"
                    v-bind:contexts="contexts"
-                   v-on:task-edit-completed="onTaskEditCompleted($event)"/>
+                   v-on:task-edit-completed="onTaskEditCompleted($event)"
+                   v-on:is-task-edit-changed="onIsTaskEditChanged"/>
       </div>
     </div>
   </div>
@@ -75,13 +50,14 @@
     import 'jquery'
     import 'popper.js'
     import 'bootstrap'
-    import TaskForm from './components/TaskForm.vue'
-    import {AXIOS} from './http-common'
-    import {createUuid} from "@/main";
+    import TaskList from '@/components/TaskList'
+    import TaskForm from '@/components/TaskForm'
+    import {AXIOS} from '@/http-common'
 
     export default {
         name: 'app',
         components: {
+            TaskList,
             TaskForm
         },
         data() {
@@ -89,51 +65,20 @@
                 statuses: ['Inbox', 'Active', 'Pending', 'SomedayMaybe'],
                 contexts: [],
                 selectedListCode: 'Inbox',
-                tasks: [],
-                newTaskName: '',
                 isTaskEdit: false,
-                editableTask: {}
+                taskEditCompleted: {}
             };
         },
         methods: {
             showTasks: function (code) {
                 this.selectedListCode = code;
-                AXIOS.get('/task/list', {
-                    params: {
-                        code: code
-                    }
-                })
-                    .then(response => this.tasks = response.data);
-                this.isTaskEdit = false;
-            },
-            addTask: function (taskName) {
-                let task = {id: createUuid(), createdAt: new Date(), name: taskName};
-                if (this.selectedListCode !== 'Inbox') {
-                    task.contexts = [this.selectedListCode];
-                    task.status = 'Active';
-                }
-                AXIOS.post('/task/add', task)
-                    .then(response => this.tasks.push(response.data));
-                this.newTaskName = '';
-            },
-            showTask: function (task) {
-                this.editableTask = task;
-                this.isTaskEdit = true;
             },
             onTaskEditCompleted: function(task) {
-                this.saveTask(task);
+                this.taskEditCompleted = task;
                 this.isTaskEdit = false;
             },
-            saveTask: function (task) {
-                AXIOS.post('/task/update', task)
-                    .then(response => {
-                        this.updateTask(response.data);
-                        this.showTasks(this.selectedListCode);
-                    });
-            },
-            updateTask: function (task) {
-                const idx = this.tasks.findIndex(it => it.id === task.id);
-                this.tasks[idx] = task;
+            onIsTaskEditChanged: function(value) {
+                this.isTaskEdit = value;
             }
         },
         mounted() {
