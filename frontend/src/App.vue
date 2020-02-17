@@ -36,6 +36,7 @@
           <div class="col-sm-12">
             <div class="form">
               <div>
+                <!--suppress HtmlFormInputWithoutLabel -->
                 <input type="text" class="form-control" v-model="newTaskName" placeholder="Add task..."/>
               </div>
               <button class="btn btn-primary form-group"

@@ -1,5 +1,6 @@
 <template>
   <div class="form">
+    <!--suppress HtmlFormInputWithoutLabel -->
     <input class="form-control" v-model.lazy="task.name" type="text" placeholder="Name"/>
     <div id="status" class="form-control dropdown">
       <span>Status:</span>
@@ -53,10 +54,13 @@ export default {
     },
     data() {
         return {
-            task: jsonCopy(this.initialTask)
+
         };
     },
     computed: {
+        task: function() {
+            return jsonCopy(this.initialTask);
+        },
         taskStatus: function () {
             return this.task.status;
         },
