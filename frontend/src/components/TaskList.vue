@@ -18,7 +18,7 @@
             <table class="table table-sm table-hover">
                 <tbody>
                 <tr v-for="task in tasks" :key="task.id">
-                    <td v-bind:class="{ 'table-success': task.id === editableTask.id }"
+                    <td v-bind:class="{ 'table-success': task.id === selectedTask.id }"
                         v-on:click="showTask(task)">
                         <span>{{task.name}}</span>
                         <span class="float-right">{{task.completeDate}}</span>
@@ -37,13 +37,13 @@
     export default {
         name: 'task-list',
         props: {
-            listCode: Object
+            listCode: String
         },
         data() {
             return {
                 tasks: [],
                 newTaskName: '',
-                editableTask: {}
+                selectedTask: {}
             };
         },
         watch: {
@@ -51,11 +51,11 @@
                 if (newValue !== undefined && newValue !== oldValue) {
                     AXIOS.get('/task/list', {
                         params: {
-                            code: this.listCode
+                            code: newValue
                         }
                     })
                         .then(response => this.tasks = response.data);
-                    this.sendIsTaskEditChanged(false);
+                    this.sendIsTaskSelectedChanged(false);
                 }
             }
         },
@@ -71,15 +71,15 @@
                 this.newTaskName = '';
             },
             showTask: function (task) {
-                this.editableTask = task;
-                this.sendIsTaskEditChanged(true);
+                this.selectedTask = task;
+                this.sendTaskSelected(task);
             },
             onTaskEditCompleted: function(task) {
                 this.saveTask(task);
-                this.sendIsTaskEditChanged(false);
+                this.sendTaskSelected(null);
             },
-            sendIsTaskEditChanged: function(value) {
-                this.$emit('is-task-edit-changed', value);
+            sendTaskSelected: function(task) {
+                this.$emit('task-selected', task);
             },
             saveTask: function (task) {
                 AXIOS.post('/task/update', task)

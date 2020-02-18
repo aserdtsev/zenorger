@@ -32,15 +32,16 @@
         </button>
       </div>
       <div class="col-sm-5">
-        <task-list v-bind:list-code="selectedListCode" v-bind:task-edit-completed="taskEditCompleted"/>
+        <task-list v-bind:list-code="selectedListCode"
+                   v-bind:task-edit-completed="taskEditCompleted"
+                   v-on:task-selected="onTaskSelected($event)"/>
       </div>
       <div class="col-sm-5">
-        <task-form v-if="isTaskEdit"
-                   v-bind:initial-task="editableTask"
+        <task-form v-if="selectedTask !== null"
+                   v-bind:initial-task="selectedTask"
                    v-bind:statuses="statuses"
                    v-bind:contexts="contexts"
-                   v-on:task-edit-completed="onTaskEditCompleted($event)"
-                   v-on:is-task-edit-changed="onIsTaskEditChanged"/>
+                   v-on:task-edit-completed="onTaskEditCompleted($event)"/>
       </div>
     </div>
   </div>
@@ -65,7 +66,7 @@
                 statuses: ['Inbox', 'Active', 'Pending', 'SomedayMaybe'],
                 contexts: [],
                 selectedListCode: 'Inbox',
-                isTaskEdit: false,
+                selectedTask: null,
                 taskEditCompleted: {}
             };
         },
@@ -75,10 +76,10 @@
             },
             onTaskEditCompleted: function(task) {
                 this.taskEditCompleted = task;
-                this.isTaskEdit = false;
+                this.selectedTask = null;
             },
-            onIsTaskEditChanged: function(value) {
-                this.isTaskEdit = value;
+            onTaskSelected: function(task) {
+                this.selectedTask = task;
             }
         },
         mounted() {
