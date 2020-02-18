@@ -37,7 +37,8 @@
     export default {
         name: 'task-list',
         props: {
-            listCode: String
+            listCode: String,
+            taskEditCompleted: Object
         },
         data() {
             return {
@@ -49,17 +50,24 @@
         watch: {
             listCode: function(newValue, oldValue) {
                 if (newValue !== undefined && newValue !== oldValue) {
-                    AXIOS.get('/task/list', {
-                        params: {
-                            code: newValue
-                        }
-                    })
-                        .then(response => this.tasks = response.data);
-                    this.sendIsTaskSelectedChanged(false);
+                    this.refreshTasks(newValue);
                 }
+            },
+            taskEditCompleted: function(newValue) {
+                this.saveTask(newValue);
+                this.sendTaskSelected(null);
             }
         },
         methods: {
+            refreshTasks: function(listCode) {
+                AXIOS.get('/task/list', {
+                    params: {
+                        code: listCode
+                    }
+                })
+                    .then(response => this.tasks = response.data);
+                this.sendTaskSelected(null);
+            },
             addTask: function (taskName) {
                 let task = {id: createUuid(), createdAt: new Date(), name: taskName};
                 if (this.selectedListCode !== 'Inbox') {
@@ -74,10 +82,6 @@
                 this.selectedTask = task;
                 this.sendTaskSelected(task);
             },
-            onTaskEditCompleted: function(task) {
-                this.saveTask(task);
-                this.sendTaskSelected(null);
-            },
             sendTaskSelected: function(task) {
                 this.$emit('task-selected', task);
             },
@@ -85,7 +89,7 @@
                 AXIOS.post('/task/update', task)
                     .then(response => {
                         this.updateTask(response.data);
-                        this.showTasks(this.selectedListCode);
+                        this.refreshTasks(this.selectedListCode);
                     });
             },
             updateTask: function (task) {

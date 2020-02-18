@@ -74,12 +74,12 @@
             showTasks: function (code) {
                 this.selectedListCode = code;
             },
+            onTaskSelected: function(task) {
+                this.selectedTask = task;
+            },
             onTaskEditCompleted: function(task) {
                 this.taskEditCompleted = task;
                 this.selectedTask = null;
-            },
-            onTaskSelected: function(task) {
-                this.selectedTask = task;
             }
         },
         mounted() {
