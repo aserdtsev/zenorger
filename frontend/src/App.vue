@@ -4,18 +4,15 @@
       <div id="header" class="col-sm-12">Zenorger</div>
     </div>
     <div class="row">
-      <div class="col-sm-2">
-        <navigate-bar v-bind:contexts="contexts"
-                      v-bind:selectedListCode="selectedListCode"
-                      v-on:list-selected="onListSelected($event)"/>
-      </div>
+      <navigate-bar class="col-sm-2"
+                    v-bind:contexts="contexts"
+                    v-bind:selectedListCode="selectedListCode"
+                    v-on:list-selected="onListSelected($event)"/>
+      <task-list class="col-sm-5" v-bind:list-code="selectedListCode"
+                 v-bind:task-edit-completed="taskEditCompleted"
+                 v-on:task-selected="onTaskSelected($event)"/>
       <div class="col-sm-5">
-        <task-list v-bind:list-code="selectedListCode"
-                   v-bind:task-edit-completed="taskEditCompleted"
-                   v-on:task-selected="onTaskSelected($event)"/>
-      </div>
-      <div class="col-sm-5">
-        <task-form v-if="selectedTask !== null"
+        <task-form v-if="selectedTask"
                    v-bind:initial-task="selectedTask"
                    v-bind:statuses="statuses"
                    v-bind:contexts="contexts"
