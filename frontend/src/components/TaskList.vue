@@ -89,7 +89,7 @@
                 AXIOS.post('/task/update', task)
                     .then(response => {
                         this.updateTask(response.data);
-                        this.refreshTasks(this.selectedListCode);
+                        this.refreshTasks(this.listCode);
                     });
             },
             updateTask: function (task) {
