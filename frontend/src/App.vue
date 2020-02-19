@@ -5,31 +5,9 @@
     </div>
     <div class="row">
       <div class="col-sm-2">
-        <button class="btn btn-link"
-                v-bind:class="{ 'btn-outline-primary': selectedListCode === 'Inbox' }"
-                v-on:click="showTasks('Inbox')">Inbox
-        </button>
-        <div>Contexts</div>
-        <ul>
-          <li v-for="context in contexts" :key="context.id">
-            <button class="btn btn-link"
-                    v-bind:class="{ 'btn-outline-primary': context.id === selectedListCode }"
-                    v-on:click="showTasks(context.id)">{{context.name}}
-            </button>
-          </li>
-        </ul>
-        <button class="btn btn-link"
-                v-bind:class="{ 'btn-outline-primary': selectedListCode === 'Pending' }"
-                v-on:click="showTasks('Pending')">Pending
-        </button>
-        <button class="btn btn-link"
-                v-bind:class="{ 'btn-outline-primary': selectedListCode === 'SomedayMaybe' }"
-                v-on:click="showTasks('SomedayMaybe')">Someday / Maybe
-        </button>
-        <button class="btn btn-link"
-                v-bind:class="{ 'btn-outline-primary': selectedListCode === 'Removed' }"
-                v-on:click="showTasks('Removed')">Trash
-        </button>
+        <navigate-bar v-bind:contexts="contexts"
+                      v-bind:selectedListCode="selectedListCode"
+                      v-on:list-selected="onListSelected($event)"/>
       </div>
       <div class="col-sm-5">
         <task-list v-bind:list-code="selectedListCode"
@@ -53,11 +31,13 @@
     import 'bootstrap'
     import TaskList from '@/components/TaskList'
     import TaskForm from '@/components/TaskForm'
+    import NavigateBar from "@/components/NavigateBar";
     import {AXIOS} from '@/http-common'
 
     export default {
         name: 'app',
         components: {
+            NavigateBar,
             TaskList,
             TaskForm
         },
@@ -71,7 +51,7 @@
             };
         },
         methods: {
-            showTasks: function (code) {
+            onListSelected: function (code) {
                 this.selectedListCode = code;
             },
             onTaskSelected: function(task) {
@@ -85,7 +65,6 @@
         mounted() {
             AXIOS.get('/context/list')
                 .then(response => (this.contexts = response.data));
-            this.showTasks('Inbox');
         }
     }
 </script>
