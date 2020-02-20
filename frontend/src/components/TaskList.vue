@@ -70,8 +70,8 @@
             },
             addTask: function (taskName) {
                 let task = {id: createUuid(), createdAt: new Date(), name: taskName};
-                if (this.selectedListCode !== 'Inbox') {
-                    task.contexts = [this.selectedListCode];
+                if (this.listCode !== 'Inbox') {
+                    task.contexts = [this.listCode];
                     task.status = 'Active';
                 }
                 AXIOS.post('/task/add', task)
