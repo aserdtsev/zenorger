@@ -37,13 +37,14 @@
         </label>
       </div>
     </div>
-    <button id="save" v-on:click="saveTask(task)" class="btn btn-primary form-group" type="button">Save</button>
+    <button id="save" v-show="isModified" v-on:click="save()" class="btn btn-primary form-group" type="button">Save</button>
+    <button id="cancel" v-on:click="cancel()" class="btn btn-link form-group" type="button">Cancel</button>
   </div>
 </template>
 
 <script>
 
-import {jsonCopy} from "@/main";
+import {jsonCopy, equals} from "@/main";
 
 export default {
     name: 'task-form',
@@ -54,21 +55,24 @@ export default {
     },
     data() {
         return {
-
+            task: jsonCopy(this.initialTask)
         };
     },
     computed: {
-        task: function() {
-            return jsonCopy(this.initialTask);
-        },
         taskStatus: function () {
             return this.task.status;
         },
         taskContexts: function () {
             return this.task.contexts;
+        },
+        isModified: function () {
+            return equals(this.task, this.initialTask);
         }
     },
     watch: {
+        initialTask: function(newValue) {
+            this.task = jsonCopy(newValue);
+        },
         taskStatus: function (newStatus, oldStatus) {
             if (oldStatus !== undefined && newStatus !== oldStatus && newStatus !== 'Active' &&
                 this.task.contexts !== undefined && this.task.contexts.length > 0)
@@ -84,8 +88,11 @@ export default {
         getContextName: function (contextId) {
             return this.contexts.find(item => item.id === contextId).name;
         },
-        saveTask: function (task) {
-            this.$emit('task-edit-completed', task);
+        save: function () {
+            this.$emit('task-edit-completed', this.task);
+        },
+        cancel: function() {
+            this.task = jsonCopy(this.initialTask);
         }
     }
 }
