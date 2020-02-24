@@ -56,7 +56,6 @@
             },
             onTaskEditCompleted: function(task) {
                 this.taskEditCompleted = task;
-                this.selectedTask = null;
             }
         },
         mounted() {

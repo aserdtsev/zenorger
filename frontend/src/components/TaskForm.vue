@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <!--suppress HtmlFormInputWithoutLabel -->
-    <input class="form-control" v-model.lazy="task.name" type="text" placeholder="Name"/>
+    <input class="form-control" v-model="task.name" type="text" placeholder="Name"/>
     <div id="status" class="form-control dropdown">
       <span>Status:</span>
       <span>{{task.status}}</span>
@@ -37,8 +37,16 @@
         </label>
       </div>
     </div>
-    <button id="save" v-show="isModified" v-on:click="save()" class="btn btn-primary form-group" type="button">Save</button>
-    <button id="cancel" v-on:click="cancel()" class="btn btn-link form-group" type="button">Cancel</button>
+    <button id="save"
+            v-on:click="save()"
+            v-bind:disabled="!isModified"
+            class="btn btn-primary form-group"
+            type="button">Save</button>
+    <button id="cancel"
+            v-on:click="cancel()"
+            v-bind:disabled="!isModified"
+            class="btn btn-link form-group"
+            type="button">Cancel</button>
   </div>
 </template>
 
@@ -66,7 +74,7 @@ export default {
             return this.task.contexts;
         },
         isModified: function () {
-            return equals(this.task, this.initialTask);
+            return !equals(this.task, this.initialTask);
         }
     },
     watch: {
@@ -89,6 +97,7 @@ export default {
             return this.contexts.find(item => item.id === contextId).name;
         },
         save: function () {
+            this.initialTask = this.task;
             this.$emit('task-edit-completed', this.task);
         },
         cancel: function() {

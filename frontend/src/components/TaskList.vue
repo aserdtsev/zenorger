@@ -55,7 +55,6 @@
             },
             taskEditCompleted: function(newValue) {
                 this.saveTask(newValue);
-                this.sendTaskSelected(null);
             }
         },
         methods: {
@@ -66,7 +65,6 @@
                     }
                 })
                     .then(response => this.tasks = response.data);
-                this.sendTaskSelected(null);
             },
             addTask: function (taskName) {
                 let task = {id: createUuid(), createdAt: new Date(), name: taskName};
