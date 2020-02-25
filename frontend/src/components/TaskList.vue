@@ -17,7 +17,7 @@
         <div class="block">
             <table class="table table-sm table-hover">
                 <tbody>
-                <tr v-for="task in tasks" :key="task.id">
+                <tr v-for="task in tasks" v-bind:key="task.id">
                     <td v-bind:class="{ 'table-success': task.id === selectedTask.id }"
                         v-on:click="showTask(task)">
                         <span>{{task.name}}</span>
@@ -86,13 +86,14 @@
             saveTask: function (task) {
                 AXIOS.post('/task/update', task)
                     .then(response => {
-                        this.updateTask(response.data);
-                        this.refreshTasks(this.listCode);
+                        let updatedTask = response.data;
+                        this.updateTask(updatedTask);
+                        this.sendTaskSelected(updatedTask);
                     });
             },
             updateTask: function (task) {
                 const idx = this.tasks.findIndex(it => it.id === task.id);
-                this.tasks[idx] = task;
+                this.tasks.splice(idx, 1, task);
             }
         }
     };

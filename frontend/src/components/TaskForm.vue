@@ -97,7 +97,6 @@ export default {
             return this.contexts.find(item => item.id === contextId).name;
         },
         save: function () {
-            this.initialTask = this.task;
             this.$emit('task-edit-completed', this.task);
         },
         cancel: function() {
