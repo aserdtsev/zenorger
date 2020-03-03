@@ -93,7 +93,12 @@
             },
             updateTask: function (task) {
                 const idx = this.tasks.findIndex(it => it.id === task.id);
-                this.tasks.splice(idx, 1, task);
+                if (idx > -1) {
+                    if (task.status === 'Active' && task.contexts.includes(this.listCode) || task.status === this.listCode)
+                        this.tasks.splice(idx, 1, task);
+                    else
+                        this.tasks.splice(idx, 1);
+                }
             }
         }
     };
