@@ -89,8 +89,17 @@ data class Periodicity (
 @Table(name = "context")
 data class TaskContext (
         @Id val id: UUID,
+
         @ManyToOne val organizer: Organizer,
-        var name: String
+        var name: String,
+
+        @OneToMany
+        @JoinTable(
+                name = "list_task",
+                joinColumns = [JoinColumn(name = "list_id")],
+                inverseJoinColumns = [JoinColumn(name = "task_id")])
+        @OrderColumn(name = "index", nullable = false)
+        var tasks: List<Task>
 )
 
 @Entity
