@@ -2,6 +2,7 @@ set search_path to zenorger;
 
 drop table project_task;
 drop table task_context;
+drop table context_task;
 drop table task_tag;
 drop table comment;
 drop table task;

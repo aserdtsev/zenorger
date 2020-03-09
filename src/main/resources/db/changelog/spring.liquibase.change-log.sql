@@ -82,6 +82,14 @@ create table task_context (
         primary key (task_id, context_id)
 );
 
+create table context_task (
+    context_id uuid not null references context,
+    task_id uuid not null references task,
+    index numeric not null,
+    constraint context_task_context_id_task_id_pk
+        primary key (context_id, task_id)
+);
+
 create table task_tag (
     task_id uuid not null references task,
     tag_id uuid not null references tag,

@@ -95,11 +95,11 @@ data class TaskContext (
 
         @OneToMany
         @JoinTable(
-                name = "list_task",
-                joinColumns = [JoinColumn(name = "list_id")],
+                name = "context_task",
+                joinColumns = [JoinColumn(name = "context_id")],
                 inverseJoinColumns = [JoinColumn(name = "task_id")])
         @OrderColumn(name = "index", nullable = false)
-        var tasks: List<Task>
+        var tasks: List<Task>? = emptyList()
 )
 
 @Entity
