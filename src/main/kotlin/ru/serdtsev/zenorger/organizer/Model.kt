@@ -39,10 +39,10 @@ data class Task (
                 joinColumns = [JoinColumn(name = "project_id")],
                 inverseJoinColumns = [JoinColumn(name = "task_id")])
         @OrderColumn(name = "index", nullable = false)
-        var projectTasks: List<Task>? = null,
+        var projectTasks: MutableList<Task>? = null,
 
         @ManyToMany(mappedBy = "projectTasks")
-        val projects: List<Task>? = null,
+        val projects: MutableList<Task>? = null,
 
         @ManyToMany
         @JoinTable(
@@ -50,7 +50,7 @@ data class Task (
                 joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "context_id")])
         @OrderColumn(name = "index", nullable = false)
-        var contexts: List<TaskContext>? = null,
+        var contexts: MutableList<TaskContext>? = null,
 
         @ManyToMany
         @JoinTable(
@@ -58,13 +58,13 @@ data class Task (
                 joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "tag_id")])
         @OrderColumn(name = "index", nullable = false)
-        val tags: List<Tag>? = null,
+        val tags: MutableList<Tag>? = null,
 
         @OneToMany
         @JoinTable(
                 name = "comment",
                 inverseJoinColumns = [JoinColumn(name = "id")])
-        val comments: List<Comment>? = null
+        val comments: MutableList<Comment>? = null
 )
 
 enum class TaskStatus { Inbox, Active, Pending, SomedayMaybe, Done, Removed }
@@ -87,20 +87,39 @@ data class Periodicity (
 
 @Entity
 @Table(name = "context")
-data class TaskContext (
+class TaskContext (
         @Id val id: UUID,
 
         @ManyToOne val organizer: Organizer,
         var name: String,
 
-        @OneToMany
+        @OneToMany(fetch = FetchType.LAZY)
         @JoinTable(
                 name = "context_task",
                 joinColumns = [JoinColumn(name = "context_id")],
                 inverseJoinColumns = [JoinColumn(name = "task_id")])
         @OrderColumn(name = "index", nullable = false)
-        var tasks: List<Task>? = emptyList()
-)
+        var tasks: MutableList<Task>?
+
+
+) {
+        override fun toString(): String {
+                return "TaskContext(id=$id, organizer=$organizer, name='$name')"
+        }
+
+        override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (other !is TaskContext) return false
+
+                if (id != other.id) return false
+
+                return true
+        }
+
+        override fun hashCode(): Int {
+                return id.hashCode()
+        }
+}
 
 @Entity
 @Table(name = "tag")

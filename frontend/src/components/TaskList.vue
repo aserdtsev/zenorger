@@ -99,6 +99,9 @@
                     else
                         this.tasks.splice(idx, 1);
                 }
+            },
+            saveContext: function (context) {
+                AXIOS.post('/context/update', context);
             }
         }
     };
