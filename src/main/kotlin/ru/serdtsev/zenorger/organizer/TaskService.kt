@@ -22,8 +22,7 @@ class TaskService(val taskRepo: TaskRepo, val taskContextRepo: TaskContextRepo) 
         } else {
             val contextId = UUID.fromString(code)
             val context = taskContextRepo.findByOrganizerIdAndId(organizerId, contextId)
-            val contexts = if (context != null) listOf(context) else emptyList()
-            taskRepo.findByOrganizerIdAndContextsOrderByCreatedAt(organizerId, contexts)
+            context?.tasks?.toList() ?: emptyList()
         }
     }
 
