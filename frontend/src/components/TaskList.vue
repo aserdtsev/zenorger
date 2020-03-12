@@ -17,6 +17,7 @@
         <div class="block">
             <table class="table table-sm table-hover">
                 <tbody>
+                <draggable v-model="tasks">
                 <tr v-for="task in tasks" v-bind:key="task.id">
                     <td v-bind:class="{ 'table-success': task.id === selectedTask.id }"
                         v-on:click="showTask(task)">
@@ -24,6 +25,7 @@
                         <span class="float-right">{{task.completeDate}}</span>
                     </td>
                 </tr>
+                </draggable>
                 </tbody>
             </table>
         </div>
@@ -31,6 +33,7 @@
 </template>
 
 <script>
+    import draggable from 'vuedraggable';
     import {AXIOS} from "@/http-common";
     import {createUuid} from "@/main";
 
@@ -39,6 +42,9 @@
         props: {
             listCode: String,
             taskEditCompleted: Object
+        },
+        components: {
+            draggable,
         },
         data() {
             return {
