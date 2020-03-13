@@ -10,6 +10,7 @@
                     v-on:list-selected="onListSelected($event)"/>
       <task-list class="col-sm-5" v-bind:list-code="selectedListCode"
                  v-bind:task-edit-completed="taskEditCompleted"
+                 v-bind:contexts="contexts"
                  v-on:task-selected="onTaskSelected($event)"/>
       <div class="col-sm-5">
         <task-form v-if="selectedTask"

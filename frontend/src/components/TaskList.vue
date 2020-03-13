@@ -17,14 +17,14 @@
         <div class="block">
             <table class="table table-sm table-hover">
                 <tbody>
-                <draggable v-model="tasks">
-                <tr v-for="task in tasks" v-bind:key="task.id">
-                    <td v-bind:class="{ 'table-success': task.id === selectedTask.id }"
-                        v-on:click="showTask(task)">
-                        <span>{{task.name}}</span>
-                        <span class="float-right">{{task.completeDate}}</span>
-                    </td>
-                </tr>
+                <draggable v-model="tasks" @update="onEnd">
+                    <tr v-for="task in tasks" v-bind:key="task.id">
+                        <td v-bind:class="{ 'table-success': task.id === selectedTask.id }"
+                            v-on:click="showTask(task)">
+                            <span>{{task.name}}</span>
+                            <span class="float-right">{{task.completeDate}}</span>
+                        </td>
+                    </tr>
                 </draggable>
                 </tbody>
             </table>
@@ -41,7 +41,8 @@
         name: 'task-list',
         props: {
             listCode: String,
-            taskEditCompleted: Object
+            taskEditCompleted: Object,
+            contexts: Array
         },
         components: {
             draggable,
@@ -105,6 +106,11 @@
                     else
                         this.tasks.splice(idx, 1);
                 }
+            },
+            onEnd: function() {
+                const context = this.contexts.find(item => item.id === this.listCode);
+                context.tasks = this.tasks.map(item => item.id);
+                this.saveContext(context);
             },
             saveContext: function (context) {
                 AXIOS.post('/context/update', context);
