@@ -7,6 +7,7 @@ spring:
     url: jdbc:postgresql://localhost:5433/serdtsev
     username: serdtsev
     password: serdtsev
+    default-auto-commit: false
   jpa:
     properties:
       hibernate:
@@ -19,7 +20,9 @@ spring:
         javax.cache.provider: org.ehcache.jsr107.EhcacheCachingProvider
         use_query_cache: true
         jdbc.lob.non_contextual_creation: true
+        format_sql: false
     open-in-view: true
+    show-sql: false
   liquibase:
     default-schema: zenorger
     change-log: classpath:db/changelog/spring.liquibase.change-log.sql
