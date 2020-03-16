@@ -17,7 +17,7 @@
         <div class="block">
             <table class="table table-sm table-hover">
                 <tbody>
-                <draggable v-model="tasks" @update="onEnd">
+                <draggable v-model="tasks" :move="checkMove"  @update="onDragAndDropEnd">
                     <tr v-for="task in tasks" v-bind:key="task.id">
                         <td v-bind:class="{ 'table-success': task.id === selectedTask.id }"
                             v-on:click="showTask(task)">
@@ -107,7 +107,10 @@
                         this.tasks.splice(idx, 1);
                 }
             },
-            onEnd: function() {
+            checkMove: function() {
+                return this.contexts.map(item => item.id).includes(this.listCode);
+            },
+            onDragAndDropEnd: function() {
                 const context = this.contexts.find(item => item.id === this.listCode);
                 context.tasks = this.tasks.map(item => item.id);
                 this.saveContext(context);
