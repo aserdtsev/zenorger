@@ -51,6 +51,7 @@
         methods: {
             onListSelected: function (code) {
                 this.selectedListCode = code;
+                this.onTaskSelected(null);
             },
             onTaskSelected: function(task) {
                 this.selectedTask = task;

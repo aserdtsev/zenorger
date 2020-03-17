@@ -19,7 +19,7 @@
                 <tbody>
                 <draggable v-model="tasks" :move="checkMove"  @update="onDragAndDropEnd">
                     <tr v-for="task in tasks" v-bind:key="task.id">
-                        <td v-bind:class="{ 'table-success': task.id === selectedTask.id }"
+                        <td v-bind:class="{ 'table-success': selectedTask != null && task.id === selectedTask.id }"
                             v-on:click="showTask(task)">
                             <span>{{task.name}}</span>
                             <span class="float-right">{{task.completeDate}}</span>
@@ -85,17 +85,23 @@
             },
             showTask: function (task) {
                 this.selectedTask = task;
-                this.sendTaskSelected(task);
+                this.sendTaskSelected();
             },
-            sendTaskSelected: function(task) {
-                this.$emit('task-selected', task);
+            sendTaskSelected: function() {
+                this.$emit('task-selected', this.selectedTask);
             },
             saveTask: function (task) {
                 AXIOS.post('/task/update', task)
                     .then(response => {
                         let updatedTask = response.data;
                         this.updateTask(updatedTask);
-                        this.sendTaskSelected(updatedTask);
+                        let selectedTask;
+                        if (this.tasks.includes(updatedTask))
+                            selectedTask = updatedTask;
+                        else
+                            selectedTask = null;
+                        this.selectedTask = selectedTask;
+                        this.sendTaskSelected();
                     });
             },
             updateTask: function (task) {
