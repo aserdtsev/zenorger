@@ -25,7 +25,7 @@ spring:
     show-sql: false
   liquibase:
     default-schema: zenorger
-    change-log: classpath:db/changelog/spring.liquibase.change-log.sql
+    change-log: classpath:db/changelog/db.change-log.xml
 
 logging.config: ./config/logback-spring.xml
 
