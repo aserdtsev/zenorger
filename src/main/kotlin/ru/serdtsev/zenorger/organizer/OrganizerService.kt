@@ -10,7 +10,7 @@ import ru.serdtsev.zenorger.user.User
 import java.util.*
 
 @Service
-class OrganizerService(val organizerRepo: OrganizerRepo) {
+class OrganizerService(val apiRequestContextHolder: ApiRequestContextHolder, val organizerRepo: OrganizerRepo) {
     @Transactional
     fun createOrganizer(id: UUID, user: User): Organizer {
         val organizer = Organizer(id, user, "Default organizer")
@@ -20,6 +20,9 @@ class OrganizerService(val organizerRepo: OrganizerRepo) {
 
     fun getDefaultOrganizerByUser(user: User): Organizer = organizerRepo.findByUser(user).firstOrNull()!!
 
-    fun getOrganizer(): Organizer = organizerRepo.findByIdOrNull(ApiRequestContextHolder.organizerId!!)
-            ?: throw ZenorgerException(HttpStatus.BAD_REQUEST, "Organizer not found", "${ApiRequestContextHolder.organizerId}")
+    fun getOrganizer(): Organizer {
+        val organizerId = apiRequestContextHolder.getOrganizerId()!!
+        return organizerRepo.findByIdOrNull(organizerId)
+                ?: throw ZenorgerException(HttpStatus.BAD_REQUEST, "Organizer not found", "${apiRequestContextHolder.getOrganizerId()}")
+    }
 }

@@ -28,6 +28,8 @@ class ApiRequestContextHolder {
             requestContextTls.remove()
         }
     }
+
+    fun getOrganizerId(): UUID? = organizerId
 }
 
 data class ApiRequestContext(

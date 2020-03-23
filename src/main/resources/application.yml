@@ -4,14 +4,11 @@ spring:
   main.banner-mode: console
   jackson.default-property-inclusion: non_null
   datasource:
-    url: jdbc:postgresql://localhost:5433/serdtsev
-    username: serdtsev
-    password: serdtsev
-    default-auto-commit: false
+    driver-class-name: org.postgresql.Driver
+    hikari.auto-commit: false
   jpa:
     properties:
       hibernate:
-        default_schema: zenorger
         ddl-auto: validate
         cache:
           use_second_level_cache: true
@@ -23,9 +20,6 @@ spring:
         format_sql: false
     open-in-view: true
     show-sql: false
-  liquibase:
-    default-schema: zenorger
-    change-log: classpath:db/changelog/db.change-log.xml
 
 logging.config: ./config/logback-spring.xml
 

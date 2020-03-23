@@ -1,5 +1,3 @@
-set search_path to zenorger;
-
 create table service_user (
     id uuid not null
         constraint service_user_id_pk primary key,

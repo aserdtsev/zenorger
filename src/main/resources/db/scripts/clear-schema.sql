@@ -11,5 +11,4 @@ drop table context;
 drop table periodicity;
 drop table organizer;
 drop table service_user;
-drop table databasechangelog;
-drop table databasechangeloglock;
+drop table flyway_schema_history;

@@ -8,11 +8,11 @@ import java.util.*
 
 @Service
 @Transactional(readOnly = true)
-class TaskContextService(val taskContextRepo: TaskContextRepo) {
+class TaskContextService(val apiRequestContextHolder: ApiRequestContextHolder, val taskContextRepo: TaskContextRepo) {
     fun getTaskContext(id: UUID): TaskContext? = taskContextRepo.findByIdOrNull(id)
 
     fun getList(): List<TaskContext> {
-        val organizerId = ApiRequestContextHolder.organizerId!!
+        val organizerId = apiRequestContextHolder.getOrganizerId()!!
         return taskContextRepo.findByOrganizerId(organizerId)
     }
 

@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/serdtsev
+    url: jdbc:postgresql://localhost:5433/serdtsev?currentSchema=zenorger
     username: serdtsev
     password: serdtsev

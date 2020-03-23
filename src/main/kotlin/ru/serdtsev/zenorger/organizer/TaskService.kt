@@ -9,13 +9,14 @@ import java.util.*
 
 @Service
 @Transactional(readOnly = true)
-class TaskService(val taskRepo: TaskRepo, val taskContextRepo: TaskContextRepo) {
+class TaskService(val apiRequestContextHolder: ApiRequestContextHolder, val taskRepo: TaskRepo,
+        val taskContextRepo: TaskContextRepo) {
     private val log = KotlinLogging.logger {}
 
     fun getTask(id: UUID): Task? = taskRepo.findByIdOrNull(id)
 
     fun getList(code: String): List<Task> {
-        val organizerId = ApiRequestContextHolder.organizerId!!
+        val organizerId = apiRequestContextHolder.getOrganizerId()!!
         return if (TaskStatus.values().any { it.name == code }) {
             val status = TaskStatus.valueOf(code)
             taskRepo.findByOrganizerIdAndStatusOrderByCreatedAt(organizerId, status)
