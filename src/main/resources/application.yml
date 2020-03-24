@@ -18,7 +18,7 @@ spring:
         use_query_cache: true
         jdbc.lob.non_contextual_creation: true
         format_sql: false
-    open-in-view: true
+    open-in-view: false
     show-sql: false
 
 logging.config: ./config/logback-spring.xml

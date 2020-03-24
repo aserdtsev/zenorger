@@ -33,7 +33,7 @@ data class Task (
         var isProject: Boolean? = null,
         var projectTasksInOrder: Boolean? = null,
 
-        @ManyToMany
+        @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "project_task",
                 joinColumns = [JoinColumn(name = "project_id")],
@@ -41,10 +41,10 @@ data class Task (
         @OrderColumn(name = "index", nullable = false)
         var projectTasks: MutableList<Task>? = null,
 
-        @ManyToMany(mappedBy = "projectTasks")
+        @ManyToMany(mappedBy = "projectTasks", fetch = FetchType.EAGER)
         val projects: MutableList<Task>? = null,
 
-        @ManyToMany
+        @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "task_context",
                 joinColumns = [JoinColumn(name = "task_id")],
@@ -52,7 +52,7 @@ data class Task (
         @OrderColumn(name = "index", nullable = false)
         var contexts: MutableList<TaskContext>? = null,
 
-        @ManyToMany
+        @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "task_tag",
                 joinColumns = [JoinColumn(name = "task_id")],
@@ -60,7 +60,7 @@ data class Task (
         @OrderColumn(name = "index", nullable = false)
         val tags: MutableList<Tag>? = null,
 
-        @OneToMany
+        @OneToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "comment",
                 inverseJoinColumns = [JoinColumn(name = "id")])
@@ -93,15 +93,13 @@ class TaskContext (
         @ManyToOne val organizer: Organizer,
         var name: String,
 
-        @OneToMany(fetch = FetchType.LAZY)
+        @OneToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "context_task",
                 joinColumns = [JoinColumn(name = "context_id")],
                 inverseJoinColumns = [JoinColumn(name = "task_id")])
         @OrderColumn(name = "index", nullable = false)
         var tasks: MutableList<Task>?
-
-
 ) {
         override fun toString(): String {
                 return "TaskContext(id=$id, organizer=$organizer, name='$name')"
