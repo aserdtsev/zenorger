@@ -99,7 +99,7 @@ class TaskContext (
                 joinColumns = [JoinColumn(name = "context_id")],
                 inverseJoinColumns = [JoinColumn(name = "task_id")])
         @OrderColumn(name = "index", nullable = false)
-        var tasks: MutableList<Task>?
+        var tasks: MutableList<Task>
 ) {
         override fun toString(): String {
                 return "TaskContext(id=$id, organizer=$organizer, name='$name')"

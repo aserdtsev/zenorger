@@ -4,8 +4,7 @@ import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.flywaydb.test.annotation.FlywayTest
 import org.junit.Before
 import org.junit.Test
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.*
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -14,6 +13,7 @@ import ru.serdtsev.zenorger.common.ApiRequestContextHolder
 import ru.serdtsev.zenorger.common.LoginExistsException
 import ru.serdtsev.zenorger.organizer.OrganizerController
 import ru.serdtsev.zenorger.organizer.TaskContextController
+import ru.serdtsev.zenorger.organizer.TaskContextDto
 import ru.serdtsev.zenorger.user.UserController
 import java.util.*
 
@@ -30,7 +30,6 @@ class ZenorgerApplicationTests {
 
 	@Before
 	fun setUp() {
-		ApiRequestContextHolder.organizerId = organizerId
 	}
 
 	@Test
@@ -43,13 +42,28 @@ class ZenorgerApplicationTests {
 
 	@Test
 	fun getDefaultOrganizerId() {
+		ApiRequestContextHolder.organizerId = organizerId
 		val authorization = getAuthorization("andrey.serdtsev@gmail.com","123456")
 		assertEquals(organizerId, organizerController.getDefaultOrganizerId(authorization))
 	}
 
 	@Test
-	fun `api context list`() {
-		taskContextController.list()
+	fun `TaskContext management`() {
+		ApiRequestContextHolder.organizerId = createNewOrganizerAndGetId()
+		var dto = TaskContextDto(UUID.randomUUID(), "Shop", emptyList())
+		taskContextController.addOrUpdateTaskContext(dto)
+		assertTrue(taskContextController.list().any { it == dto })
+
+		dto = TaskContextDto(dto.id, "Work", dto.tasks)
+		taskContextController.addOrUpdateTaskContext(dto)
+		assertTrue(taskContextController.list().any { it == dto })
+	}
+
+	private fun createNewOrganizerAndGetId(): UUID {
+		val user = UUID.randomUUID().toString()
+		val authorization = getAuthorization(user,"123456")
+		userController.signUp(authorization)
+		return organizerController.getDefaultOrganizerId(authorization)
 	}
 
 	@Suppress("SameParameterValue")
