@@ -39,12 +39,12 @@ class TaskService(val apiRequestContextHolder: ApiRequestContextHolder, val task
 
         oldTaskContexts?.minus(savedTask.contexts?.iterator())?.forEach {
             val context = it as TaskContext
-            context.tasks?.remove(task)
+            context.tasks.remove(task)
             taskContextRepo.save(context)
         }
         savedTask.contexts?.minus(oldTaskContexts?.iterator())?.forEach {
             val context = it as TaskContext
-            context.tasks?.add(savedTask)
+            context.tasks.add(savedTask)
             taskContextRepo.save(context)
         }
         return savedTask

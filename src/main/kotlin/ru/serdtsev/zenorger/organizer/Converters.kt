@@ -55,7 +55,7 @@ class PeriodicityToPeriodicityDtoConverter: Converter<Periodicity, PeriodicityDt
 @Component
 class TaskContextToTaskContextDtoConverter: Converter<TaskContext, TaskContextDto> {
     override fun convert(src: TaskContext): TaskContextDto? {
-        val tasks = src.tasks?.map { it.id }
+        val tasks = src.tasks.map { it.id }
         return TaskContextDto(src.id, src.name, tasks)
     }
 }
@@ -66,7 +66,7 @@ class TaskContextDtoToTaskContextConverter(val appCtx: ApplicationContext): Conv
         val organizerService = appCtx.getBean(OrganizerService::class.java)
         val organizer = organizerService.getOrganizer()
         val taskRepo = appCtx.getBean(TaskRepo::class.java)
-        val tasks = src.tasks?.map { taskRepo.findByIdOrNull(it)!! }?.toMutableList()
+        val tasks = src.tasks.map { taskRepo.findByIdOrNull(it)!! }.toMutableList()
         return TaskContext(src.id, organizer, src.name, tasks)
     }
 }
