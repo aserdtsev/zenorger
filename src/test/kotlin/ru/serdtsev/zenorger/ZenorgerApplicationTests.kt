@@ -49,8 +49,8 @@ class ZenorgerApplicationTests {
 
 	@Test
 	fun `TaskContext management`() {
-		ApiRequestContextHolder.organizerId = createNewOrganizerAndGetId()
-		var dto = TaskContextDto(UUID.randomUUID(), "Shop", emptyList())
+		createNewOrganizerAndSetItAsDefault()
+		var dto = TaskContextDto(UUID.randomUUID(), "Shop")
 		taskContextController.addOrUpdateTaskContext(dto)
 		assertTrue(taskContextController.list().any { it == dto })
 
@@ -59,11 +59,21 @@ class ZenorgerApplicationTests {
 		assertTrue(taskContextController.list().any { it == dto })
 	}
 
-	private fun createNewOrganizerAndGetId(): UUID {
+	@Test
+	fun `Task management`() {
+		createNewOrganizerAndSetItAsDefault(listOf("Home", "Shop"))
+
+	}
+
+	private fun createNewOrganizerAndSetItAsDefault(contextNames: List<String> = emptyList()) {
 		val user = UUID.randomUUID().toString()
 		val authorization = getAuthorization(user,"123456")
 		userController.signUp(authorization)
-		return organizerController.getDefaultOrganizerId(authorization)
+		ApiRequestContextHolder.organizerId = organizerController.getDefaultOrganizerId(authorization)
+		contextNames.forEach {
+			val dto = TaskContextDto(UUID.randomUUID(), it)
+			taskContextController.addOrUpdateTaskContext(dto)
+		}
 	}
 
 	@Suppress("SameParameterValue")

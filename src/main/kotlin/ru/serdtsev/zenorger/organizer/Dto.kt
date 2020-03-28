@@ -40,5 +40,5 @@ data class PeriodicityDto(
 data class TaskContextDto(
         val id: UUID,
         val name: String,
-        val tasks: List<UUID>
+        val tasks: List<UUID> = emptyList()
 )
