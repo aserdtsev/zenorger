@@ -11,10 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 import ru.serdtsev.zenorger.common.ApiRequestContextHolder
 import ru.serdtsev.zenorger.common.LoginExistsException
-import ru.serdtsev.zenorger.organizer.OrganizerController
-import ru.serdtsev.zenorger.organizer.TaskContextController
-import ru.serdtsev.zenorger.organizer.TaskContextDto
+import ru.serdtsev.zenorger.organizer.*
 import ru.serdtsev.zenorger.user.UserController
+import java.time.ZonedDateTime
 import java.util.*
 
 @RunWith(SpringRunner::class)
@@ -22,11 +21,18 @@ import java.util.*
 @AutoConfigureEmbeddedDatabase
 @FlywayTest
 class ZenorgerApplicationTests {
-	val organizerId = UUID.fromString("640021fc-4093-4dd4-84f2-5792a6116cb7")!!
+	companion object {
+		const val homeContextName = "Home"
+		const val shopContextName = "Shop"
+		val organizerId = UUID.fromString("640021fc-4093-4dd4-84f2-5792a6116cb7")!!
+	}
 
 	@Autowired lateinit var userController: UserController
 	@Autowired lateinit var organizerController: OrganizerController
+	@Autowired lateinit var organizerService: OrganizerService
 	@Autowired lateinit var taskContextController: TaskContextController
+	@Autowired lateinit var taskContextRepo: TaskContextRepo
+	@Autowired lateinit var taskController: TaskController
 
 	@Before
 	fun setUp() {
@@ -50,19 +56,28 @@ class ZenorgerApplicationTests {
 	@Test
 	fun `TaskContext management`() {
 		createNewOrganizerAndSetItAsDefault()
-		var dto = TaskContextDto(UUID.randomUUID(), "Shop")
-		taskContextController.addOrUpdateTaskContext(dto)
-		assertTrue(taskContextController.list().any { it == dto })
+		var taskContextDto = TaskContextDto(UUID.randomUUID(), "Shop")
+		taskContextController.addOrUpdateTaskContext(taskContextDto)
+		assertTrue(taskContextController.list().any { it == taskContextDto })
 
-		dto = TaskContextDto(dto.id, "Work", dto.tasks)
-		taskContextController.addOrUpdateTaskContext(dto)
-		assertTrue(taskContextController.list().any { it == dto })
+		taskContextDto = TaskContextDto(taskContextDto.id, "Work", taskContextDto.tasks)
+		taskContextController.addOrUpdateTaskContext(taskContextDto)
+		assertTrue(taskContextController.list().any { it == taskContextDto })
 	}
 
 	@Test
 	fun `Task management`() {
-		createNewOrganizerAndSetItAsDefault(listOf("Home", "Shop"))
+		createNewOrganizerAndSetItAsDefault(listOf(homeContextName, shopContextName))
+		val organizer = organizerService.getOrganizer()
+		val homeTaskContext = taskContextRepo.findByNameAndOrganizer(homeContextName, organizer)!!
+		var taskDto = TaskDto(UUID.randomUUID(), ZonedDateTime.now(), "Buy bread")
+		taskDto = taskController.addOrUpdateTask(taskDto)
+		assertEquals(1, taskController.list(TaskStatus.Inbox.toString()).count())
 
+		taskDto.contexts = listOf(homeTaskContext.id)
+		taskController.addOrUpdateTask(taskDto)
+		assertEquals(0, taskController.list(TaskStatus.Inbox.toString()).count())
+		assertEquals(1, taskController.list(homeTaskContext.id.toString()).count())
 	}
 
 	private fun createNewOrganizerAndSetItAsDefault(contextNames: List<String> = emptyList()) {

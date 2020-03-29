@@ -15,4 +15,5 @@ interface TaskRepo: JpaRepository<Task, UUID> {
 interface TaskContextRepo: JpaRepository<TaskContext, UUID> {
     fun findByOrganizerId(organizerId: UUID): List<TaskContext>
     fun findByOrganizerIdAndId(organizerId: UUID, id: UUID?): TaskContext?
+    fun findByNameAndOrganizer(name: String, organizer: Organizer): TaskContext?
 }

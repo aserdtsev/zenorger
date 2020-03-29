@@ -15,7 +15,7 @@ class TaskDtoToTaskConverter(val appCtx: ApplicationContext) : Converter<TaskDto
         val taskService = appCtx.getBean(TaskService::class.java)
         val taskContextService = appCtx.getBean(TaskContextService::class.java)
         val organizer = organizerService.getOrganizer()
-        val status = src.status?.let { TaskStatus.valueOf(src.status) } ?: TaskStatus.Inbox
+        val status = src.status?.let { TaskStatus.valueOf(src.status!!) } ?: TaskStatus.Inbox
         val startDate = src.startDate?.let { LocalDate.parse(it) }
         val startTime = src.startTime?.let { LocalTime.parse(it) }
         val completeDate = src.completeDate?.let { LocalDate.parse(it) }
