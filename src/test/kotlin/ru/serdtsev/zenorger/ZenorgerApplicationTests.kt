@@ -56,13 +56,25 @@ class ZenorgerApplicationTests {
 	@Test
 	fun `TaskContext management`() {
 		createNewOrganizerAndSetItAsDefault()
-		var taskContextDto = TaskContextDto(UUID.randomUUID(), "Shop")
+		val taskContextDto = TaskContextDto(UUID.randomUUID(), "Shop")
 		taskContextController.addOrUpdateTaskContext(taskContextDto)
 		assertTrue(taskContextController.list().any { it == taskContextDto })
 
-		taskContextDto = TaskContextDto(taskContextDto.id, "Work", taskContextDto.tasks)
+		taskContextDto.name = "Work"
 		taskContextController.addOrUpdateTaskContext(taskContextDto)
 		assertTrue(taskContextController.list().any { it == taskContextDto })
+
+		val taskDto1 = createTaskDto(contexts = listOf(taskContextDto.id))
+		taskContextDto.tasks.add(taskDto1.id)
+		taskController.addOrUpdateTask(taskDto1)
+		val taskDto2 = createTaskDto(contexts = listOf(taskContextDto.id))
+		taskContextDto.tasks.add(taskDto2.id)
+		taskController.addOrUpdateTask(taskDto2)
+		taskContextController.addOrUpdateTaskContext(taskContextDto)
+		taskContextDto.tasks.reverse()
+		taskContextController.addOrUpdateTaskContext(taskContextDto)
+		val taskContext = taskContextController.list().first { it.id == taskContextDto.id }
+		assertEquals(mutableListOf(taskDto2.id, taskDto1.id), taskContext.tasks)
 	}
 
 	@Test
@@ -70,7 +82,7 @@ class ZenorgerApplicationTests {
 		createNewOrganizerAndSetItAsDefault(listOf(homeContextName, shopContextName))
 		val organizer = organizerService.getOrganizer()
 		val homeTaskContext = taskContextRepo.findByNameAndOrganizer(homeContextName, organizer)!!
-		var taskDto = TaskDto(UUID.randomUUID(), ZonedDateTime.now(), "Buy bread")
+		var taskDto = createTaskDto("Buy bread")
 		taskDto = taskController.addOrUpdateTask(taskDto)
 		assertEquals(1, taskController.list(TaskStatus.Inbox.toString()).count())
 
@@ -78,6 +90,11 @@ class ZenorgerApplicationTests {
 		taskController.addOrUpdateTask(taskDto)
 		assertEquals(0, taskController.list(TaskStatus.Inbox.toString()).count())
 		assertEquals(1, taskController.list(homeTaskContext.id.toString()).count())
+	}
+
+	private fun createTaskDto(name: String? = null, contexts: List<UUID> = emptyList()): TaskDto {
+		val id = UUID.randomUUID()
+		return TaskDto(id, ZonedDateTime.now(), name ?: id.toString(), contexts = contexts)
 	}
 
 	private fun createNewOrganizerAndSetItAsDefault(contextNames: List<String> = emptyList()) {

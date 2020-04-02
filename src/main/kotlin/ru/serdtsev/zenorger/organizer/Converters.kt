@@ -55,7 +55,7 @@ class PeriodicityToPeriodicityDtoConverter: Converter<Periodicity, PeriodicityDt
 @Component
 class TaskContextToTaskContextDtoConverter: Converter<TaskContext, TaskContextDto> {
     override fun convert(src: TaskContext): TaskContextDto? {
-        val tasks = src.tasks.map { it.id }
+        val tasks = src.tasks.map { it.id }.toMutableList()
         return TaskContextDto(src.id, src.name, tasks)
     }
 }

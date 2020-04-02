@@ -39,6 +39,6 @@ data class PeriodicityDto(
 
 data class TaskContextDto(
         val id: UUID,
-        val name: String,
-        val tasks: List<UUID> = emptyList()
+        var name: String,
+        val tasks: MutableList<UUID> = mutableListOf()
 )
