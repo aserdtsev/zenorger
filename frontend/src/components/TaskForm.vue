@@ -37,6 +37,10 @@
         </label>
       </div>
     </div>
+    <textarea id="description"
+              class="form-control"
+              v-model="task.description"
+              placeholder="Description"/>
     <button id="save"
             v-on:click="save()"
             v-bind:disabled="!isModified"
