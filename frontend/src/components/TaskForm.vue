@@ -1,8 +1,10 @@
 <template>
   <div class="form">
-    <!--suppress HtmlFormInputWithoutLabel -->
-    <input class="form-control" v-model="task.name" type="text" placeholder="Name"/>
-    <div id="status" class="form-control dropdown">
+    <fieldset>
+      <!--suppress HtmlFormInputWithoutLabel -->
+      <input class="form-control" v-model="task.name" type="text" placeholder="Name"/>
+    </fieldset>
+    <fieldset id="status" class="form-control dropdown">
       <span>Status:</span>
       <span>{{task.status}}</span>
       <span id="statusDropDown"
@@ -17,8 +19,8 @@
                  v-bind:value="status"/>&nbsp;{{status}}
         </label>
       </div>
-    </div>
-    <div id="contexts" class="form-control dropdown">
+    </fieldset>
+    <fieldset id="contexts" class="form-control dropdown">
       <span>Contexts:</span>
       <span class="mark"
             v-for="contextId in task.contexts" :key="contextId">{{getContextName(contextId)}}</span>
@@ -36,11 +38,31 @@
                  v-bind:value="context.id"/>&nbsp;{{context.name}}
         </label>
       </div>
-    </div>
-    <textarea id="description"
-              class="form-control"
-              v-model="task.description"
-              placeholder="Description"/>
+    </fieldset>
+    <fieldset id="description">
+      <label>Description</label>
+      <button v-bind:disabled="descriptionMode === 'edit'"
+              v-on:click="setDescriptionMode('edit')"
+              class="btn btn-link btn-sm">Edit
+      </button>
+      <div v-if="descriptionMode === 'view'"
+           class="white-space-pre"
+           v-linkified>{{task.description}}
+      </div>
+      <div v-show="descriptionMode === 'edit'">
+        <textarea v-model="task.description"
+                  class="form-control"/>
+        <div class="btn-group" role="group">
+          <button v-if="descriptionMode === 'edit'"
+                  v-on:click="saveDescription()"
+                  class="btn btn-primary btn-sm"
+                  type="button">Save</button>
+          <button v-on:click="cancelDescription()"
+                  class="btn btn-link btn-sm"
+                  type="button">Cancel</button>
+        </div>
+      </div>
+    </fieldset>
     <button id="save"
             v-on:click="save()"
             v-bind:disabled="!isModified"
@@ -67,7 +89,9 @@ export default {
     },
     data() {
         return {
-            task: jsonCopy(this.initialTask)
+            task: jsonCopy(this.initialTask),
+            descriptionMode: "view",
+            oldDescription: null
         };
     },
     computed: {
@@ -99,6 +123,18 @@ export default {
     methods: {
         getContextName: function (contextId) {
             return this.contexts.find(item => item.id === contextId).name;
+        },
+        saveDescription: function () {
+            this.setDescriptionMode('view');
+        },
+        cancelDescription: function () {
+          this.task.description = this.oldDescription;
+          this.setDescriptionMode('view');
+        },
+        setDescriptionMode: function(mode) {
+            if (mode === 'edit')
+                this.oldDescription = this.task.description;
+            this.descriptionMode = mode;
         },
         save: function () {
             this.$emit('task-edit-completed', this.task);

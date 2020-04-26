@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import linkify from 'vue-linkify'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import App from './App.vue'
@@ -9,6 +10,8 @@ Vue.config.productionTip = false;
 new Vue({
   render: h => h(App)
 }).$mount('#app');
+
+Vue.directive('linkified', linkify)
 
 export function jsonCopy(src) {
   return JSON.parse(JSON.stringify(src));
